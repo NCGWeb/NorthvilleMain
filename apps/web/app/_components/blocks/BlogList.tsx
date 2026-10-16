@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getCategories, getPosts, getSettings } from "@northville/core";
-import { Section, SectionHead } from "../ui";
+import { Section, SectionHead, TextLink } from "../ui";
 import { str, type BlockProps } from "./types";
 
 export const dateFmt = (d: Date | null) => (d ? new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", year: "numeric" }).format(d) : "");
@@ -9,6 +9,8 @@ export const dateFmt = (d: Date | null) => (d ? new Intl.DateTimeFormat("en-IN",
 export async function BlogList({ data, category }: BlockProps & { category?: string }) {
   const count = Number(data.count) || undefined;
   const [posts, cats, s] = await Promise.all([getPosts({ take: count, categorySlug: category }), getCategories(), getSettings()]);
+  // Embedded on another page (a post count is set): stay hidden until there is something to show.
+  if (count && posts.length === 0) return null;
   return (
     <Section>
       <SectionHead heading={str(data.heading)} />
@@ -40,6 +42,7 @@ export async function BlogList({ data, category }: BlockProps & { category?: str
           ))}
         </div>
       )}
+      {count && posts.length > 0 && <div className="mt-10"><TextLink href="/blog">{s.text.blogAllInsights}</TextLink></div>}
     </Section>
   );
 }

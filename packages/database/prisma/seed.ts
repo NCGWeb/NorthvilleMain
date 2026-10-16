@@ -244,6 +244,7 @@ async function main() {
         b("servicesOverview", { heading: "One Team Across Strategy, Finance, Deals, Tax and Law", intro: "Our experts in finance, taxation, law, marketing and strategy act as an extension of your team, so you get the right expertise without building it all in-house.", layout: "compact" }),
         b("team", { heading: "Meet the Founders", intro: "", show: "leadership" }),
         b("testimonials", { heading: "What They Say About Us" }),
+        b("blogList", { heading: "Latest Insights", count: 3, showFilters: false }),
         b("logoWall", { heading: "Our Clients", wall: "CLIENT" }),
         b("logoWall", { heading: "Our Top Investor Connects", wall: "INVESTOR" }),
         b("logoWall", { heading: "Institutional Collaborations", wall: "INSTITUTION" }),
