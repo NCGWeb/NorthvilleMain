@@ -43,7 +43,7 @@ export function TextLink({ href, children }: { href: string; children: ReactNode
 export function Section({ children, tone = "white", className = "", id }: { children: ReactNode; tone?: "white" | "mist" | "navy"; className?: string; id?: string }) {
   const bg = tone === "mist" ? "bg-mist" : tone === "navy" ? "bg-navy text-white" : "bg-white";
   return (
-    <section id={id} className={`${bg} ${className}`}>
+    <section id={id} className={`${bg} scroll-mt-20 ${className}`}>
       <div className={`${WRAP} py-14 md:py-[72px]`}>{children}</div>
     </section>
   );

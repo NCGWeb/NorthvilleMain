@@ -82,6 +82,7 @@ async function main() {
       mainLinks: [
         { label: "About", href: "/about" },
         { label: "Services", href: "/services" },
+        { label: "Startup Advisory", href: "/services#startup-advisory" },
         { label: "Our Team", href: "/team" },
         { label: "Insights", href: "/blog" },
         { label: "Careers", href: "/careers" },
@@ -91,6 +92,7 @@ async function main() {
       footerLinks: [
         { label: "About", href: "/about" },
         { label: "Services", href: "/services" },
+        { label: "Startup Advisory", href: "/services#startup-advisory" },
         { label: "Our Team", href: "/team" },
         { label: "Insights", href: "/blog" },
         { label: "Careers", href: "/careers" },

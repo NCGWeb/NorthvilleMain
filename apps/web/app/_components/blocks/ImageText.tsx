@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Check } from "lucide-react";
 import { Reveal } from "../Reveal";
+import { slugify } from "@northville/core";
 import { Section, TextLink } from "../ui";
 import { arr, str, type BlockProps } from "./types";
 
@@ -9,7 +10,7 @@ export function ImageText({ data }: BlockProps) {
   const left = str(data.imageSide) === "left";
   const bullets = arr<string>(data.bullets);
   return (
-    <Section>
+    <Section id={slugify(str(data.heading)) || undefined}>
       <Reveal>
         <div className="grid items-center gap-10 md:grid-cols-12 md:gap-14">
           <div className={`md:col-span-5 ${left ? "md:order-2" : ""}`}>
