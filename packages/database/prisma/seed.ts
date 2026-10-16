@@ -87,6 +87,7 @@ async function main() {
         { label: "Insights", href: "/blog" },
         { label: "Careers", href: "/careers" },
       ],
+      servicesMenuLinks: [{ label: "Startup Advisory", href: "/services#startup-advisory" }],
       ctaLabel: "Contact Us",
       ctaHref: "/contact",
       footerLinks: [

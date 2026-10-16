@@ -6,11 +6,12 @@ import { Menu, X } from "lucide-react";
 type Props = {
   links: { label: string; href: string }[];
   menu: { name: string; services: { name: string; slug: string }[] }[];
+  extras: { label: string; href: string }[];
   ctaLabel: string;
   ctaHref: string;
 };
 
-export function MobileMenu({ links, menu, ctaLabel, ctaHref }: Props) {
+export function MobileMenu({ links, menu, extras, ctaLabel, ctaHref }: Props) {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
   return (
@@ -34,6 +35,7 @@ export function MobileMenu({ links, menu, ctaLabel, ctaHref }: Props) {
                         ))}
                       </div>
                     ))}
+                    {extras.map((x) => (<Link key={x.href} href={x.href} onClick={close} className="mt-3 block text-[15px] font-semibold text-sky">{x.label}</Link>))}
                   </div>
                 )}
               </li>

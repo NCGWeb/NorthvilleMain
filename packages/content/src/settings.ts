@@ -79,6 +79,15 @@ export const SETTING_GROUPS: SettingGroup[] = [
           { kind: "url", name: "href", label: "Goes to", required: true, help: "Use /services to place the Services menu here." },
         ],
       },
+      {
+        kind: "list", name: "servicesMenuLinks", label: "Extra links in the Services dropdown", itemLabel: "Link",
+        help: "Shown at the bottom of the Services dropdown, next to View all services. Good for things that are not one of the services, such as Startup Advisory.",
+        where: "Services dropdown in the header, and the phone menu.",
+        fields: [
+          { kind: "text", name: "label", label: "Text", required: true, maxLength: 30 },
+          { kind: "url", name: "href", label: "Goes to", required: true },
+        ],
+      },
       { kind: "text", name: "ctaLabel", label: "Header button text", where: "Right side of the header." },
       { kind: "url", name: "ctaHref", label: "Header button link", where: "Right side of the header." },
       {

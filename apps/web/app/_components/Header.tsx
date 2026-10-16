@@ -39,7 +39,7 @@ export async function Header({ barHeight = 0 }: { barHeight?: number }) {
                         </ul>
                       </div>
                     ))}
-                    <div className="col-span-2 border-t border-line pt-4 text-sm"><Link href="/services" className="font-semibold text-royal hover:underline">View all services</Link></div>
+                    <div className="col-span-2 flex flex-wrap items-center gap-x-8 gap-y-2 border-t border-line pt-4 text-sm"><Link href="/services" className="font-semibold text-royal hover:underline">View all services</Link>{s.navigation.servicesMenuLinks.map((x) => (<SmartLink key={x.href} href={x.href} className="font-semibold text-royal hover:underline">{x.label}</SmartLink>))}</div>
                   </div>
                 </div>
               </div>
@@ -53,7 +53,7 @@ export async function Header({ barHeight = 0 }: { barHeight?: number }) {
           {s.navigation.ctaLabel && (
             <SmartLink href={s.navigation.ctaHref} className="hidden rounded-none bg-royal px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-bright sm:inline-block">{s.navigation.ctaLabel}</SmartLink>
           )}
-          <MobileMenu links={links} menu={menu} ctaLabel={s.navigation.ctaLabel} ctaHref={s.navigation.ctaHref} />
+          <MobileMenu links={links} menu={menu} extras={s.navigation.servicesMenuLinks} ctaLabel={s.navigation.ctaLabel} ctaHref={s.navigation.ctaHref} />
         </div>
       </div>
     </HeaderShell>
