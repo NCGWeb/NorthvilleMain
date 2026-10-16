@@ -1,6 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": ["DATABASE_URL", "DIRECT_URL", "ADMIN_SESSION_JWT_SECRET", "SUPERADMIN_EMAIL", "SUPERADMIN_INITIAL_PASSWORD", "BLOB_READ_WRITE_TOKEN", "RESEND_API_KEY", "REVALIDATE_SECRET", "WEB_URL", "SITE_URL", "ADMIN_URL", "CONTACT_TO_EMAIL", "CONTACT_FROM_EMAIL"],
+  "globalEnv": ["DATABASE_URL", "DIRECT_URL", "ADMIN_SESSION_JWT_SECRET", "SUPERADMIN_EMAIL", "SUPERADMIN_INITIAL_PASSWORD", "BLOB_READ_WRITE_TOKEN", "RESEND_API_KEY", "REVALIDATE_SECRET", "WEB_URL", "SITE_URL", "ADMIN_URL", "CONTACT_FROM_EMAIL"],
   "tasks": {
     "build": { "dependsOn": ["^build"], "outputs": [".next/**", "!.next/cache/**"] },
     "typecheck": { "outputs": [] },

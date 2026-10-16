@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { Spinner } from "../_components/Spinner";
 
 export default function LoginPage() {
   const [error, setError] = useState("");
@@ -26,7 +27,7 @@ export default function LoginPage() {
           <label className="block text-sm font-medium">Email<input name="email" type="email" required autoComplete="username" className="input mt-1.5" /></label>
           <label className="block text-sm font-medium">Password<input name="password" type="password" required autoComplete="current-password" className="input mt-1.5" /></label>
           {error && <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
-          <button disabled={busy} className="btn btn-primary w-full justify-center">{busy ? "Signing in..." : "Sign in"}</button>
+          <button disabled={busy} className="btn btn-primary w-full justify-center">{busy ? <><Spinner /> Signing in...</> : "Sign in"}</button>
         </form>
       </div>
     </main>

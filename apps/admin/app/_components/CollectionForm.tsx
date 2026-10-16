@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { BLOCKS, defaultsFor, type CollectionDef, type Field } from "@northville/content";
 import { FieldEditor, type Values } from "./FieldEditor";
+import { Spinner } from "./Spinner";
 
 type Props = { collectionKey: string; fields: Field[]; initial: Values; id?: string; canEdit: boolean; def: Pick<CollectionDef, "singular" | "label" | "key">; pageLinks: string[]; shared?: { type: string; name: string } };
 
@@ -46,8 +47,8 @@ export function CollectionForm({ collectionKey, fields, initial, id, canEdit, de
         )}
         {activeFields.length > 0 && <FieldEditor fields={activeFields} value={values} onChange={setValues} pageLinks={pageLinks} />}
       </div>
-      <div className="sticky bottom-0 -mx-2 flex items-center gap-4 rounded-2xl border border-line bg-white/95 p-4 backdrop-blur">
-        {canEdit ? <button type="button" disabled={busy} onClick={save} className="btn btn-primary">{busy ? "Saving..." : id ? "Save changes" : `Add ${def.singular.toLowerCase()}`}</button> : <p className="text-sm text-muted">You can view this but not edit it.</p>}
+      <div className="sticky bottom-0 -mx-1 flex flex-wrap items-center gap-4 rounded-2xl border border-line bg-white/95 p-4 backdrop-blur">
+        {canEdit ? <button type="button" disabled={busy} onClick={save} className="btn btn-primary">{busy ? <><Spinner /> Saving...</> : id ? "Save changes" : `Add ${def.singular.toLowerCase()}`}</button> : <p className="text-sm text-muted">You can view this but not edit it.</p>}
         <button type="button" className="btn btn-ghost" onClick={() => router.push(`/${def.key}`)}>Back to {def.label.toLowerCase()}</button>
         {msg && <p role="status" className={`text-sm font-medium ${msg.ok ? "text-green-700" : "text-red-700"}`}>{msg.text}</p>}
       </div>

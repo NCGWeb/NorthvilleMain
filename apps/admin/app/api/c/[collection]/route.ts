@@ -4,7 +4,7 @@ import { refreshWebsite } from "@northville/core";
 import { apiUser } from "../../../_lib/session";
 import { handle } from "../../../_lib/api";
 import { audit } from "../../../_lib/audit";
-import { blockFieldsFor, cleanValues, delegate, getDef, missingRequired } from "../../../_lib/collection";
+import { blockFieldsFor, cleanValues, delegate, getDef, missingRequired, normalizeRow } from "../../../_lib/collection";
 
 type Ctx = { params: Promise<{ collection: string }> };
 
@@ -32,6 +32,7 @@ export const POST = handle(async (req: Request, { params }: Ctx) => {
     data = cleanValues(def.fields, body);
     const missing = missingRequired(def.fields, data);
     if (missing) return NextResponse.json({ error: missing }, { status: 400 });
+    normalizeRow(def.key, data);
     applyDefaults(def.key, data, user.id);
   }
 

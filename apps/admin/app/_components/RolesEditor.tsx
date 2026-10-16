@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ACTIONS, AREAS } from "@northville/content";
+import { Spinner } from "./Spinner";
 
 type Role = { id: string; name: string; description: string; permissions: string[]; users: number };
 
@@ -9,10 +10,12 @@ export function RolesEditor({ roles, canEdit, canDelete }: { roles: Role[]; canE
   const router = useRouter();
   const [state, setState] = useState<Record<string, string[]>>(Object.fromEntries(roles.map((r) => [r.id, r.permissions])));
   const [msg, setMsg] = useState("");
+  const [saving, setSaving] = useState<string | null>(null);
   const toggle = (id: string, key: string) => setState((s) => ({ ...s, [id]: s[id].includes(key) ? s[id].filter((k) => k !== key) : [...s[id], key] }));
   async function save(id: string) {
+    setSaving(id); setMsg("");
     const res = await fetch(`/api/roles/${id}`, { method: "PUT", headers: { "content-type": "application/json" }, body: JSON.stringify({ permissions: state[id] }) });
-    setMsg(res.ok ? "Saved." : (await res.json()).error); router.refresh();
+    setMsg(res.ok ? "Saved." : (await res.json()).error); setSaving(null); router.refresh();
   }
   async function add() {
     const name = prompt("Name for the new role (for example: Marketing team)"); if (!name) return;
@@ -27,7 +30,7 @@ export function RolesEditor({ roles, canEdit, canDelete }: { roles: Role[]; canE
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <div><h2 className="text-lg font-semibold text-navy">{r.name}</h2><p className="text-sm text-muted">{r.description || "No description."} {r.users} {r.users === 1 ? "person has" : "people have"} this role.</p></div>
             <div className="flex gap-2">
-              {canEdit && <button className="btn btn-primary" onClick={() => save(r.id)}>Save {r.name}</button>}
+              {canEdit && <button className="btn btn-primary" disabled={saving === r.id} onClick={() => save(r.id)}>{saving === r.id ? <><Spinner /> Saving...</> : <>Save {r.name}</>}</button>}
               {canDelete && !r.users && <button className="btn btn-danger" onClick={async () => { if (confirm(`Delete the role ${r.name}?`)) { const res = await fetch(`/api/roles/${r.id}`, { method: "DELETE" }); if (res.ok) router.refresh(); else alert((await res.json()).error); } }}>Delete</button>}
             </div>
           </div>

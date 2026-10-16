@@ -28,6 +28,7 @@ const GROUPS: { title: string; items: Item[] }[] = [
     { href: "/media", label: "Media library", area: "media", hint: "Images" },
     { href: "/offices", label: "Offices", area: "settings", hint: "Addresses" },
     { href: "/settings", label: "Site settings", area: "settings", hint: "Contact, menus, footer" },
+    { href: "/redirects", label: "Redirects", area: "settings", hint: "Old address to new page" },
   ] },
   { title: "Access", items: [
     { href: "/users", label: "Users", area: "users", hint: "Who can sign in" },
@@ -36,10 +37,11 @@ const GROUPS: { title: string; items: Item[] }[] = [
   ] },
 ];
 
-export function Sidebar({ user }: { user: CurrentUser }) {
+/** The menu itself. Shown fixed on desktop and inside a slide-out drawer on phones. */
+export function SidebarContent({ user }: { user: CurrentUser }) {
   const allowed = new Set(AREAS.filter((a) => user.permissions.includes(`${a.key}:view`)).map((a) => a.key));
   return (
-    <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col border-r border-line bg-white">
+    <>
       <div className="border-b border-line p-5">
         <Link href="/" className="block text-lg font-semibold text-navy">Website manager</Link>
         <p className="text-xs text-muted">Northville Consulting Group</p>
@@ -52,7 +54,7 @@ export function Sidebar({ user }: { user: CurrentUser }) {
             <div key={g.title} className="mb-5">
               <p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">{g.title}</p>
               {items.map((i) => (
-                <Link key={i.href} href={i.href} className="block rounded-lg px-3 py-2 text-sm text-ink hover:bg-mist" title={i.hint}>{i.label}</Link>
+                <Link key={i.href} href={i.href} className="block rounded-lg px-3 py-2.5 text-sm text-ink hover:bg-mist" title={i.hint}>{i.label}</Link>
               ))}
             </div>
           );
@@ -66,6 +68,14 @@ export function Sidebar({ user }: { user: CurrentUser }) {
           <LogoutButton />
         </div>
       </div>
+    </>
+  );
+}
+
+export function Sidebar({ user }: { user: CurrentUser }) {
+  return (
+    <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-line bg-white lg:flex">
+      <SidebarContent user={user} />
     </aside>
   );
 }

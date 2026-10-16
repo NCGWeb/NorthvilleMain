@@ -30,7 +30,7 @@ export default async function ListPage({ params }: { params: Promise<{ collectio
             const hidden = def.visibleField ? !r[def.visibleField] : false;
             const path = def.publicPath?.(r);
             return (
-              <li key={String(r.id)} className="flex items-center gap-4 p-4">
+              <li key={String(r.id)} className="flex flex-wrap items-center gap-x-4 gap-y-2 p-4">
                 <div className="min-w-0 flex-1">
                   <Link href={`/${def.key}/${r.id}`} className="font-semibold text-navy hover:text-royal">{String(r[def.titleField] ?? "Untitled")}</Link>
                   {def.subtitleField && <p className="truncate text-sm text-muted">{String(r[def.subtitleField] ?? "").slice(0, 110)}</p>}

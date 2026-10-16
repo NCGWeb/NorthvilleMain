@@ -26,9 +26,11 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function ServicePage({ params }: Props) {
   const { slug } = await params;
-  const [service, settings] = await Promise.all([getService(slug), getSettings()]);
+  const [service, settings, all] = await Promise.all([getService(slug), getSettings(), getServices()]);
   const contactStrip = settings.general.servicePageCta ? await getSharedBlock(settings.general.servicePageCta) : null;
   if (!service) notFound();
+  // Internal links help visitors and search engines: same theme first, then fill up from the rest.
+  const related = service ? [...all.filter((x) => x.id !== service.id && x.groupId === service.groupId), ...all.filter((x) => x.id !== service.id && x.groupId !== service.groupId)].slice(0, 3) : [];
   const faqs = (service.faqs as { question: string; answer: string }[]) ?? [];
   const wa = settings.contact.whatsappNumber
     ? whatsappUrl(settings.contact.whatsappNumber, `Hi Northville, I would like to know more about ${service.name}.`)
@@ -92,6 +94,23 @@ export default async function ServicePage({ params }: Props) {
           ))}
         </ol>
       </Section>
+
+      {related.length > 0 && (
+        <Section tone="mist">
+          <h2 className="mb-6 border-b border-navy pb-3 text-xl text-navy">{settings.text.relatedServices}</h2>
+          <ul className="grid gap-8 md:grid-cols-3">
+            {related.map((r) => (
+              <li key={r.id}>
+                <Link href={`/services/${r.slug}`} className="group block">
+                  <h3 className="text-lg text-navy group-hover:text-royal">{r.name}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-ink/80">{r.summary}</p>
+                  <span className="mt-3 inline-flex items-center gap-1.5 text-[15px] font-semibold text-royal">{settings.text.learnMore} &rarr;</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
 
       <FaqList items={faqs} heading={settings.text.faqHeading} />
       {contactStrip && <BlockRenderer blocks={[{ id: "s", type: contactStrip.type, data: contactStrip.data }]} />}

@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const cat = (await getCategories()).find((c) => c.slug === slug);
   if (!cat) return {};
-  return buildMetadata({ title: `${cat.name} insights`, description: `Articles on ${cat.name.toLowerCase()} from the Northville team.`, path: `/blog/category/${cat.slug}` });
+  return buildMetadata({ title: `${cat.name} insights`, description: `Practical articles on ${cat.name.toLowerCase()} from the Northville Consulting team, written for founders and growing businesses.`, path: `/blog/category/${cat.slug}` });
 }
 
 /** The blog page, filtered to one category. Same blocks, so editors change the layout in one place. */

@@ -17,6 +17,7 @@
 }
 
 html { scroll-behavior: smooth; }
+html, body { overflow-x: clip; }
 body { background: #fff; color: var(--nv-ink); font-family: var(--font-serif); font-size: 1rem; line-height: 1.65; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 /* Sans headings, serif reading text. Interface elements stay sans. */
 h1, h2, h3, h4 { font-family: var(--font-sans); letter-spacing: -0.025em; font-weight: 600; }

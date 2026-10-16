@@ -72,6 +72,10 @@ Rules:
 - Domain is attached later by the owner. Then update `SITE_URL` (web) and `WEB_URL` (admin) and redeploy.
 - Commit and push only when asked. Run `npm run typecheck` first. If typecheck shows `Duplicate identifier` from `.next/types/* 2.ts` files, those are stale Finder copies: delete files with " 2" or " 3" in their names under `apps/*/.next/types`.
 
+## SEO
+
+Strategy, keyword targets, content plan and launch checklist: `docs/SEO_PLAN.md`. Keep titles under about 65 characters with the brand ending, keep structured data in `apps/web/app/layout.tsx` and the service and blog pages in sync with the data, and never remove a page without adding a Redirect.
+
 ## Status and open items
 
 See `docs/OPEN_DECISIONS.md`. Keep it current.

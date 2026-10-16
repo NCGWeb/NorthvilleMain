@@ -169,6 +169,16 @@ export const COLLECTIONS: CollectionDef[] = [
     ],
   },
   {
+    key: "redirects", model: "redirect", area: "settings", label: "Redirects", singular: "Redirect",
+    description: "Send an old web address to a new page. Use it when you rename or remove a page so visitors and Google do not hit a dead end. The old Wix addresses are already set up here.",
+    where: "Not shown. Visitors who open the old address are sent to the new one.",
+    titleField: "fromPath", subtitleField: "toPath", orderBy: { fromPath: "asc" },
+    fields: [
+      { kind: "text", name: "fromPath", label: "Old address", required: true, help: "The part after the website name, starting with a slash, for example /what-we-do.", placeholder: "/old-page" },
+      { kind: "text", name: "toPath", label: "New address", required: true, help: "Where visitors should land. A page on this site such as /services, or a full web address.", placeholder: "/services" },
+    ],
+  },
+  {
     key: "shared", model: "sharedBlock", area: "pages", label: "Reusable sections", singular: "Reusable section",
     description: "Sections used on many pages, such as the Contact us strip. Edit one here and every page using it updates.",
     where: "Any page that includes it.", titleField: "name", subtitleField: "type", orderBy: { name: "asc" },

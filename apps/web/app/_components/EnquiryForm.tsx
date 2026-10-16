@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
+import { Spinner } from "./Spinner";
 
 export type FormLabels = { name: string; email: string; phone: string; message: string; send: string; sending: string; error: string };
 
@@ -44,7 +45,8 @@ export function EnquiryForm({ successMessage, labels }: { successMessage: string
       {/* Honeypot: real people never see or fill this. */}
       <input name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
       <div className="sm:col-span-2">
-        <button disabled={state === "sending"} className="rounded-none bg-royal px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-bright disabled:opacity-60">
+        <button disabled={state === "sending"} className="inline-flex items-center gap-2 rounded-sm bg-royal px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-bright disabled:cursor-wait disabled:opacity-70">
+          {state === "sending" && <Spinner />}
           {state === "sending" ? labels.sending : labels.send}
         </button>
         {state === "error" && <p role="alert" className="mt-3 text-sm text-red-600">{error}</p>}

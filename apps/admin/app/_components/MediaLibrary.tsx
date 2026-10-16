@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
 import { Trash2, Upload } from "lucide-react";
+import { Spinner } from "./Spinner";
 
 type Item = { id: string; url: string; name: string; alt: string; sizeBytes: number };
 
@@ -16,7 +17,7 @@ export function MediaLibrary({ canEdit, canDelete }: { canEdit: boolean; canDele
   }
   return (
     <div>
-      {canEdit && <label className="btn btn-primary mb-6 cursor-pointer"><Upload size={16} /> {busy ? "Uploading..." : "Upload pictures"}<input type="file" hidden multiple accept="image/*" onChange={(e) => upload(e.target.files)} /></label>}
+      {canEdit && <label className="btn btn-primary mb-6 cursor-pointer"><Upload size={16} /> {busy ? <><Spinner /> Uploading...</> : "Upload pictures"}<input type="file" hidden multiple accept="image/*" onChange={(e) => upload(e.target.files)} /></label>}
       {err && <p className="mb-4 text-sm text-red-700">{err}</p>}
       <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {items.map((i) => (

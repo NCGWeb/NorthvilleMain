@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowDown, ArrowUp, ChevronDown, ChevronRight, Copy, ExternalLink, History, Plus, Trash2 } from "lucide-react";
 import { BLOCK_BY_TYPE, BLOCKS, defaultsFor, type BlockData } from "@northville/content";
 import { FieldEditor } from "./FieldEditor";
 import { ImageField } from "./MediaPicker";
+import { Spinner } from "./Spinner";
 
 type PageProps = { id: string; slug: string; title: string; seoTitle: string; seoDescription: string; seoImageUrl: string | null; blocks: BlockData[]; hasUnpublishedChanges: boolean; isPublished: boolean };
 type Version = { id: string; at: string; by: string; note: string };
@@ -22,6 +23,13 @@ export function PageEditor({ page, versions, perms, pageLinks, webUrl }: { page:
   const [busy, setBusy] = useState("");
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [showHistory, setShowHistory] = useState(false);
+
+  useEffect(() => {
+    if (!dirty) return;
+    const warn = (e: BeforeUnloadEvent) => { e.preventDefault(); e.returnValue = ""; };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty]);
 
   const change = (next: BlockData[]) => { setBlocks(next); setDirty(true); };
   const move = (i: number, d: number) => { const n = [...blocks]; [n[i], n[i + d]] = [n[i + d], n[i]]; change(n); };
@@ -95,6 +103,13 @@ export function PageEditor({ page, versions, perms, pageLinks, webUrl }: { page:
           <div><label className="block text-sm font-semibold text-navy">Google title</label><input className="input mt-1.5" maxLength={70} value={seo.seoTitle} onChange={(e) => { setSeo({ ...seo, seoTitle: e.target.value }); setDirty(true); }} /><p className="mt-1 text-[13px] text-muted">About 60 characters. Include the main thing people would search for. Shows in Google results and the browser tab.</p></div>
           <div><label className="block text-sm font-semibold text-navy">Google description</label><textarea className="input mt-1.5" rows={3} maxLength={200} value={seo.seoDescription} onChange={(e) => { setSeo({ ...seo, seoDescription: e.target.value }); setDirty(true); }} /><p className="mt-1 text-[13px] text-muted">About 150 characters. Tells searchers why to click. {seo.seoDescription.length}/200</p></div>
           <div><label className="block text-sm font-semibold text-navy">Sharing picture</label><div className="mt-2"><ImageField value={seo.seoImageUrl} onChange={(u) => { setSeo({ ...seo, seoImageUrl: u }); setDirty(true); }} /></div><p className="mt-1 text-[13px] text-muted">Shown when the page is shared on LinkedIn, WhatsApp and similar. Empty uses the default from Site settings.</p></div>
+          <div className="rounded-xl border border-line bg-white p-4">
+            <p className="text-xs font-semibold text-muted">How this page may look in Google</p>
+            <p className={`mt-2 text-lg leading-snug ${(seo.seoTitle || title).length > 60 ? "text-red-700" : "text-[#1a0dab]"}`}>{seo.seoTitle || title}</p>
+            <p className="text-sm text-green-800">yourwebsite.com{page.slug ? `/${page.slug}` : ""}</p>
+            <p className="mt-1 text-sm text-ink/80">{seo.seoDescription || "No description yet. Google will pick some text from the page, which is usually less persuasive than your own."}</p>
+            {(seo.seoTitle || title).length > 60 && <p className="mt-2 text-[13px] text-red-700">The title is longer than 60 characters, so Google may cut it off.</p>}
+          </div>
         </div>
       </details>
 
@@ -114,9 +129,9 @@ export function PageEditor({ page, versions, perms, pageLinks, webUrl }: { page:
         </div>
       )}
 
-      <div className="sticky bottom-0 -mx-2 flex flex-wrap items-center gap-3 rounded-2xl border border-line bg-white/95 p-4 backdrop-blur">
-        {perms.edit && <button type="button" className="btn btn-ghost" disabled={!!busy || !dirty} onClick={saveDraft}>{busy === "save" ? "Saving..." : "Save draft"}</button>}
-        {perms.publish && <button type="button" className="btn btn-primary" disabled={!!busy || (!dirty && !page.hasUnpublishedChanges && page.isPublished)} onClick={publish}>{busy === "publish" ? "Publishing..." : "Publish to website"}</button>}
+      <div className="sticky bottom-0 -mx-1 flex flex-wrap flex-wrap items-center gap-3 rounded-2xl border border-line bg-white/95 p-4 backdrop-blur">
+        {perms.edit && <button type="button" className="btn btn-ghost" disabled={!!busy || !dirty} onClick={saveDraft}>{busy === "save" ? <><Spinner /> Saving...</> : "Save draft"}</button>}
+        {perms.publish && <button type="button" className="btn btn-primary" disabled={!!busy || (!dirty && !page.hasUnpublishedChanges && page.isPublished)} onClick={publish}>{busy === "publish" ? <><Spinner /> Publishing...</> : "Publish to website"}</button>}
         {perms.edit && page.hasUnpublishedChanges && !dirty && <button type="button" className="btn btn-ghost" onClick={async () => { if (confirm("Throw away your draft and go back to what is live?")) { await call(`/api/pages/${page.id}`, "POST", { action: "discard" }, "discard", "Draft reset to the live version."); setTimeout(() => window.location.reload(), 300); } }}>Discard draft</button>}
         {page.isPublished && <a href={`${webUrl}${page.slug ? `/${page.slug}` : ""}`} target="_blank" rel="noopener noreferrer" className="btn btn-ghost"><ExternalLink size={15} /> View live page</a>}
         <span className="text-sm text-muted">{dirty ? "You have unsaved changes." : page.hasUnpublishedChanges ? "Draft saved, not published yet." : "Everything is published."}</span>

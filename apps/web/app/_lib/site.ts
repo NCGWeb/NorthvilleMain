@@ -10,8 +10,10 @@ type Meta = { title: string; description?: string; path: string; image?: string 
 export async function buildMetadata(m: Meta): Promise<Metadata> {
   const s = await getSettings();
   const description = m.description || s.seo.description;
-  const image = abs(m.image || s.seo.image || "/seed/brand/logo-white-trim.png");
-  const fullTitle = m.path === "/" ? m.title : `${m.title} ${s.seo.titleSuffix}`.trim();
+  const image = abs(m.image || s.seo.image || "/seed/brand/og-default.png");
+  // Add the brand ending only when the whole title still fits in a Google result (about 65 characters).
+  const withSuffix = `${m.title} ${s.seo.titleSuffix}`.trim();
+  const fullTitle = m.path === "/" || withSuffix.length > 65 ? m.title : withSuffix;
   return {
     title: { absolute: fullTitle },
     description,

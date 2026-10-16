@@ -38,7 +38,20 @@ export function cleanValues(fields: Field[], raw: Record<string, unknown>): Reco
       case "list": out[f.name] = Array.isArray(v) ? v.map((it) => cleanValues(f.fields, (it ?? {}) as Record<string, unknown>)) : []; break;
     }
   }
+  // A blank web address is made from the name or title, so a page can never be saved without one.
+  for (const f of fields) {
+    if (f.kind === "slug" && !out[f.name]) out[f.name] = slugify(String(out[f.from] ?? ""));
+  }
   return out;
+}
+
+/** Small per-list tidy-ups that do not fit the generic field rules. */
+export function normalizeRow(key: string, data: Record<string, unknown>) {
+  if (key === "redirects") {
+    const clean = (v: unknown) => { const t = String(v ?? "").trim(); return t.startsWith("http") || t.startsWith("/") ? t : `/${t}`; };
+    data.fromPath = clean(data.fromPath).replace(/\/+$/, "") || "/";
+    data.toPath = clean(data.toPath);
+  }
 }
 
 export function missingRequired(fields: Field[], values: Record<string, unknown>): string | null {

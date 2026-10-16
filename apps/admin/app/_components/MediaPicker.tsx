@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
 import { ImagePlus, Upload, X } from "lucide-react";
+import { Spinner } from "./Spinner";
 
 type Item = { id: string; url: string; name: string; alt: string };
 
@@ -53,7 +54,7 @@ export function Picker({ onClose, onPick }: { onClose: () => void; onPick: (url:
           <button type="button" onClick={onClose} aria-label="Close" className="rounded-lg p-2 hover:bg-mist"><X size={18} /></button>
         </div>
         <div className="border-b border-line p-4">
-          <label className="btn btn-primary cursor-pointer"><Upload size={16} /> {busy ? "Uploading..." : "Upload new image"}
+          <label className="btn btn-primary cursor-pointer"><Upload size={16} /> {busy ? <><Spinner /> Uploading...</> : "Upload new image"}
             <input type="file" accept="image/*" multiple hidden onChange={(e) => upload(e.target.files)} />
           </label>
           {error && <span className="ml-3 text-sm text-red-600">{error}</span>}

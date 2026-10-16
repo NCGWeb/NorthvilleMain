@@ -114,6 +114,8 @@ export const SETTING_GROUPS: SettingGroup[] = [
       { kind: "text", name: "titleSuffix", label: "Title ending", help: "Added after every page title.", placeholder: "| Northville Consulting Group" },
       { kind: "textarea", name: "description", label: "Default description", rows: 3, help: "About 150 characters." },
       { kind: "image", name: "image", label: "Default sharing image", help: "1200 by 630 pixels works best." },
+      { kind: "text", name: "googleVerification", label: "Google Search Console code", help: "Paste only the code from Google's verification tag (the content value). Lets you see how the site performs in Google search.", where: "Hidden in the page code, not visible to visitors." },
+      { kind: "text", name: "gaId", label: "Google Analytics ID", help: "Looks like G-XXXXXXXXXX. Leave empty to switch visitor statistics off.", where: "Loads Google Analytics on every page when filled in.", placeholder: "G-XXXXXXXXXX" },
     ],
   },
 ];
@@ -134,6 +136,7 @@ export const UI_TEXT: { name: string; label: string; where: string; default: str
   { name: "learnMore", label: "Learn more link", where: "Services page, under each service.", default: "Learn More" },
   { name: "crumbHome", label: "Breadcrumb: Home", where: "Top of service pages.", default: "Home" },
   { name: "crumbServices", label: "Breadcrumb: Services", where: "Top of service pages.", default: "Services" },
+  { name: "relatedServices", label: "Service page: related services heading", where: "Service pages, below the offerings.", default: "Related Services" },
   { name: "whatWeDo", label: "Service page: offerings heading", where: "Service pages, above the list of offerings.", default: "What We Do" },
   { name: "discussService", label: "Service page: main button", where: "Top of service pages.", default: "Discuss This Service" },
   { name: "whatsappUs", label: "WhatsApp button text", where: "Service pages and contact strips.", default: "WhatsApp Us" },

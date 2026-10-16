@@ -27,7 +27,7 @@ export async function POST(req: Request) {
   const d = parsed.data;
 
   // Bots fill the hidden field or submit instantly. Pretend success, store as spam.
-  const spam = !!d.website || (d.elapsed !== undefined && d.elapsed < 2500);
+  const spam = !!d.website || (d.elapsed !== undefined && d.elapsed < 1500);
   await prisma.enquiry.create({ data: { name: d.name, email: d.email, phone: d.phone, message: d.message, status: spam ? "SPAM" : "NEW" } });
   if (!spam) {
     const s = await getSettings();

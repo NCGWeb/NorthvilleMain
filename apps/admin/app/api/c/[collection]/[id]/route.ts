@@ -4,7 +4,7 @@ import { refreshWebsite } from "@northville/core";
 import { apiUser } from "../../../../_lib/session";
 import { handle } from "../../../../_lib/api";
 import { audit } from "../../../../_lib/audit";
-import { blockFieldsFor, cleanValues, delegate, getDef, missingRequired } from "../../../../_lib/collection";
+import { blockFieldsFor, cleanValues, delegate, getDef, missingRequired, normalizeRow } from "../../../../_lib/collection";
 
 type Ctx = { params: Promise<{ collection: string; id: string }> };
 
@@ -25,6 +25,7 @@ export const PUT = handle(async (req: Request, { params }: Ctx) => {
     data = cleanValues(def.fields, body);
     const missing = missingRequired(def.fields, data);
     if (missing) return NextResponse.json({ error: missing }, { status: 400 });
+    normalizeRow(def.key, data);
     if (def.key === "blog") {
       if (data.status === "PUBLISHED" && !data.publishedAt) data.publishedAt = new Date();
       if (data.status === "SCHEDULED" && !data.publishedAt) return NextResponse.json({ error: 'Scheduled posts need a publish date. Pick one under "Publish date".' }, { status: 400 });

@@ -10,7 +10,7 @@ export type Settings = {
   navigation: { mainLinks: { label: string; href: string }[]; servicesMenuLinks: { label: string; href: string }[]; ctaLabel: string; ctaHref: string; footerLinks: { label: string; href: string }[]; legalLinks: { label: string; href: string }[] };
   text: Record<string, string>;
   announcement: { enabled: boolean; badge: string | null; title: string; text: string; href: string };
-  seo: { titleSuffix: string; description: string; image: string | null };
+  seo: { titleSuffix: string; description: string; image: string | null; googleVerification: string; gaId: string };
 };
 
 export async function getSettings(): Promise<Settings> {
@@ -25,7 +25,7 @@ export async function getSettings(): Promise<Settings> {
     // Editors can blank a box to get the standard wording back.
     text: { ...UI_TEXT_DEFAULTS, ...Object.fromEntries(Object.entries((byKey.text as Record<string, string>) ?? {}).filter(([, v]) => typeof v === "string" && v.trim())) },
     announcement: d("announcement", { enabled: false, badge: null, title: "", text: "", href: "" }),
-    seo: d("seo", { titleSuffix: "", description: "", image: null }),
+    seo: d("seo", { titleSuffix: "", description: "", image: null, googleVerification: "", gaId: "" }),
   };
 }
 

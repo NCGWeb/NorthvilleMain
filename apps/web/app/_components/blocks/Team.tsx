@@ -7,10 +7,10 @@ import { str, type BlockProps } from "./types";
 
 type Person = Awaited<ReturnType<typeof getTeam>>[number];
 
-function Portrait({ p, sizes, ratio = "aspect-[4/5]" }: { p: Person; sizes: string; ratio?: string }) {
+function Portrait({ p, sizes, ratio = "aspect-[4/5]", quality = 75 }: { p: Person; sizes: string; ratio?: string; quality?: number }) {
   return (
     <div className={`relative ${ratio} overflow-hidden bg-mist`}>
-      {p.photoUrl && <Image src={p.photoUrl} alt={`${p.name}, ${p.designation}`} fill sizes={sizes} className="zoom-img object-cover object-top" />}
+      {p.photoUrl && <Image src={p.photoUrl} alt={`${p.name}, ${p.designation}`} fill sizes={sizes} quality={quality} className="zoom-img object-cover object-top" />}
     </div>
   );
 }
@@ -21,10 +21,10 @@ function Leaders({ people, linkedinLabel }: { people: Person[]; linkedinLabel: s
     <div className="grid gap-14 md:grid-cols-2 md:gap-12">
       {people.map((p, i) => (
         <Reveal key={p.id} variant={i % 2 === 0 ? "left" : "right"} delay={i * 80}>
-          <article className="group">
-            <Portrait p={p} sizes="(min-width:768px) 520px, 100vw" ratio="aspect-[5/6]" />
-            <div className="mt-6 border-t border-navy pt-5">
-              <h3 className="text-2xl text-navy">{p.name}</h3>
+          <article className="group grid grid-cols-5 gap-5 md:block">
+            <div className="col-span-2 md:col-span-1"><Portrait p={p} sizes="(min-width:768px) 1040px, 80vw" quality={90} ratio="aspect-[4/5] md:aspect-[5/6]" /></div>
+            <div className="col-span-3 border-t border-navy pt-4 md:col-span-1 md:mt-6 md:pt-5">
+              <h3 className="text-xl text-navy md:text-2xl">{p.name}</h3>
               <p className="mt-1 font-medium text-royal">{p.designation}</p>
               {p.background && <p className="mt-1 text-sm text-muted">{p.background}</p>}
               {p.bio && <p className="mt-4 max-w-md leading-relaxed text-ink/80">{p.bio}</p>}
@@ -90,7 +90,7 @@ export async function Team({ data, first }: BlockProps) {
       </Section>
       {rest.length > 0 && (
         <Section tone="mist">
-          <div className="mb-10 flex items-end justify-between border-b border-navy pb-3">
+          <div className="mb-10 flex flex-col gap-1 border-b border-navy pb-3 sm:flex-row sm:items-end sm:justify-between">
             <h2 className="text-[1.75rem] text-navy sm:text-[2rem]">{s.text.widerTeam}</h2>
             <p className="text-sm text-muted">{s.text.widerTeamNote.replace("{count}", String(rest.length))}</p>
           </div>

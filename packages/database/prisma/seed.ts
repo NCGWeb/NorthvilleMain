@@ -111,7 +111,7 @@ async function main() {
     seo: {
       titleSuffix: "| Northville Consulting Group",
       description: "Northville Consulting Group is an integrated strategy, finance and transaction advisory partner for established and scaling businesses in India, the US, the UK and the UAE.",
-      image: "/seed/brand/logo-white-trim.png",
+      image: "/seed/brand/og-default.png",
     },
   };
   for (const [key, value] of Object.entries(settings)) {
@@ -154,8 +154,8 @@ async function main() {
 
   // ---- Team (founders first, then the team list supplied by the client)
   const team: { name: string; designation: string; background: string; bio?: string; photo: string; lead?: boolean; linkedin?: string }[] = [
-    { name: "Asmeet Bhatia", designation: "Founder and Managing Director", background: "CA, MBA (ISB), B.Com (Hons)", bio: "Chartered Accountant with an MBA from ISB. Previously at EY and Deloitte.", photo: "asmeet-bhatia.png", lead: true, linkedin: "https://www.linkedin.com/in/asmeetbhatia/" },
-    { name: "Achal Bhatt", designation: "Director, Marketing", background: "CPA, MSc Accounting (UIUC)", bio: "CPA with seven years at PwC in New York City. Focuses on financial analysis and strategic planning.", photo: "achal-bhatt.png", lead: true },
+    { name: "Asmeet Bhatia", designation: "Founder and Managing Director", background: "CA, MBA (ISB), B.Com (Hons)", bio: "Chartered Accountant with an MBA from ISB. Previously at EY and Deloitte.", photo: "asmeet-bhatia.jpg", lead: true, linkedin: "https://www.linkedin.com/in/asmeetbhatia/" },
+    { name: "Achal Bhatt", designation: "Director, Marketing", background: "CPA, MSc Accounting (UIUC)", bio: "CPA with seven years at PwC in New York City. Focuses on financial analysis and strategic planning.", photo: "achal-bhatt.jpg", lead: true },
     { name: "MS Rehsi", designation: "Senior Strategy Consultant", background: "Ex-CMO of Aircel", photo: "01_MS_Rehsi.jpeg" },
     { name: "Vishi Agarwal", designation: "Senior Marketing Consultant", background: "CA, MBA (S.P. Jain), MSc (University of Houston)", photo: "02_Vishi_Agarwal.jpeg" },
     { name: "Priya Arora", designation: "Finance Consultant", background: "Chartered Accountant", photo: "03_Priya_Arora.jpeg" },
@@ -171,10 +171,19 @@ async function main() {
     { name: "Mohammad Areeb", designation: "Strategy Intern", background: "B.Com (Hons), SBSC", photo: "13_Mohammad_Areeb.jpeg" },
     { name: "Priyal Kanungo", designation: "Strategy Intern", background: "Economics (Hons), SGGSCC", photo: "14_Priyal_Kanungo.png" },
   ];
+  const LINKEDIN: Record<string, string> = {
+    "Sharlin Dsilva": "https://www.linkedin.com/in/sharlin-doris-dsilva-27891ba2",
+    "Thiru Venkat R": "https://www.linkedin.com/in/thiru-venkat-r-748328251",
+    "Asmeet Bhatia": "https://www.linkedin.com/in/asmeetbhatia",
+    "Mohammad Areeb": "https://www.linkedin.com/in/mohammadareeb3007",
+    "Priya Arora": "https://www.linkedin.com/in/priya-arora111",
+    "Kritika Grover": "https://www.linkedin.com/in/kritika-grover-954b541b8",
+    "Priyal Kanungo": "https://www.linkedin.com/in/priyal-kanungo-b08539282",
+  };
   await prisma.teamMember.createMany({
     data: team.map((t, i) => ({
       name: t.name, designation: t.designation, background: t.background, bio: t.bio ?? "", photoUrl: `/seed/team/${t.photo}`,
-      linkedinUrl: t.linkedin ?? "", isLeadership: !!t.lead, sortOrder: i,
+      linkedinUrl: t.linkedin ?? LINKEDIN[t.name] ?? "", isLeadership: !!t.lead, sortOrder: i,
     })),
   });
 
