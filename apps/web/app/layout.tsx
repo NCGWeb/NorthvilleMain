@@ -3,6 +3,7 @@ import { Inter, Newsreader } from "next/font/google";
 import { getOffices, getSettings } from "@northville/core";
 import { Header } from "./_components/Header";
 import { Footer } from "./_components/Footer";
+import { TopBar } from "./_components/TopBar";
 import { JsonLd } from "./_components/JsonLd";
 import { SITE_URL, abs } from "./_lib/site";
 import "./globals.css";
@@ -39,9 +40,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   };
   return (
     <html lang="en-IN" className={`${inter.variable} ${newsreader.variable}`}>
-      <body className="flex min-h-screen flex-col">
+      <body className="flex min-h-screen flex-col" style={{ ["--bar-h" as string]: s.announcement.enabled && s.announcement.title ? "52px" : "0px" }}>
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-white focus:px-4 focus:py-2">Skip to content</a>
-        <Header />
+        <TopBar a={s.announcement} />
+        <Header barHeight={s.announcement.enabled && s.announcement.title ? 52 : 0} />
         <main id="main" className="flex-1">{children}</main>
         <Footer />
         <JsonLd data={org} />

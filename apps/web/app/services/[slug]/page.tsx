@@ -44,51 +44,53 @@ export default async function ServicePage({ params }: Props) {
 
   return (
     <>
-      <section className="mesh relative overflow-hidden text-white">
+      <section className="mesh relative flex flex-col justify-end overflow-hidden pt-16 text-white" style={{ minHeight: "46svh" }}>
         {service.imageUrl && <Image src={service.imageUrl} alt="" fill priority sizes="100vw" className="object-cover opacity-25 mix-blend-luminosity" />}
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/30" />
-        <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 md:py-24">
+        <div className="relative mx-auto w-full max-w-[1120px] px-6 pb-12 pt-14 lg:px-8 md:pb-16">
           <nav aria-label="Breadcrumb" className="mb-6 text-sm text-white/60">
             <Link href="/" className="hover:text-white">Home</Link> / <Link href="/services" className="hover:text-white">Services</Link>
             {service.group && <> / <span>{service.group.name}</span></>}
           </nav>
-          <h1 className="max-w-4xl text-balance text-4xl leading-[1.05] sm:text-5xl md:text-6xl">{service.heroHeading || service.name}</h1>
-          {(service.heroSubtext || service.summary) && <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/75">{service.heroSubtext || service.summary}</p>}
-          <div className="mt-9 flex flex-wrap gap-3">
+          <h1 className="max-w-4xl text-balance text-3xl leading-[1.1] sm:text-4xl md:text-5xl">{service.heroHeading || service.name}</h1>
+          {(service.heroSubtext || service.summary) && <p className="mt-4 max-w-xl text-[1.0625rem] leading-relaxed text-white/80">{service.heroSubtext || service.summary}</p>}
+          <div className="mt-7 flex flex-wrap gap-3">
             <Button href="/contact">Discuss this service</Button>
-            {wa && <a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-sm border border-white/30 px-6 py-3 text-sm font-semibold hover:bg-white/10"><WhatsappIcon size={16} /> WhatsApp us</a>}
+            {wa && <a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-sm border border-white/50 px-5 py-2.5 text-sm font-semibold hover:bg-white/10"><WhatsappIcon size={16} /> WhatsApp us</a>}
           </div>
         </div>
       </section>
 
       {service.tagline && (
-        <Section tone="white" className="[&>div]:py-12 md:[&>div]:py-16">
-          <p className="max-w-4xl font-sans text-2xl font-medium leading-snug tracking-tight text-navy sm:text-3xl md:text-4xl">{service.tagline}</p>
+        <Section tone="mist" className="[&>div]:py-10 md:[&>div]:py-12">
+          <p className="max-w-3xl text-xl font-medium leading-snug text-navy md:text-2xl">{service.tagline}</p>
         </Section>
       )}
 
-      <Section tone="mist">
-        <div className="space-y-6">
-          {service.offerings.map((o, i) => (
-            <Reveal key={o.id}>
-              <article className="grid gap-8 rounded-none border border-line bg-white p-7 md:grid-cols-12 md:p-10">
-                <div className="md:col-span-5">
-                  <p className="font-sans font-semibold tracking-tight text-4xl text-royal/30">{String(i + 1).padStart(2, "0")}</p>
-                  <h2 className="mt-2 text-3xl text-navy">{o.title}</h2>
-                  {o.tagline && <p className="mt-3 text-lg text-steel">{o.tagline}</p>}
-                </div>
-                <div className="md:col-span-7">
-                  {o.body && <p className="text-lg leading-relaxed text-ink/80">{o.body}</p>}
-                  {o.bullets.length > 0 && (
-                    <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-                      {o.bullets.map((b) => (<li key={b} className="flex gap-3 text-[15px] text-ink"><Check size={18} className="mt-0.5 shrink-0 text-royal" aria-hidden />{b}</li>))}
-                    </ul>
-                  )}
-                </div>
-              </article>
-            </Reveal>
+      <Section>
+        <h2 className="mb-2 border-b border-navy pb-3 text-xl text-navy">What we do</h2>
+        <ol className="divide-y divide-line">
+          {service.offerings.map((o) => (
+            <li key={o.id}>
+              <Reveal>
+                <article className="grid gap-4 py-8 md:grid-cols-12 md:gap-10">
+                  <div className="md:col-span-4">
+                    <h3 className="text-xl text-navy">{o.title}</h3>
+                    {o.tagline && <p className="mt-2 text-[15px] text-steel">{o.tagline}</p>}
+                  </div>
+                  <div className="md:col-span-8">
+                    {o.body && <p className="leading-relaxed text-ink/85">{o.body}</p>}
+                    {o.bullets.length > 0 && (
+                      <ul className="mt-4 grid gap-x-8 gap-y-2 sm:grid-cols-2">
+                        {o.bullets.map((b) => (<li key={b} className="flex gap-3 text-[15px]"><Check size={17} className="mt-0.5 shrink-0 text-royal" aria-hidden />{b}</li>))}
+                      </ul>
+                    )}
+                  </div>
+                </article>
+              </Reveal>
+            </li>
           ))}
-        </div>
+        </ol>
       </Section>
 
       <FaqList items={faqs} heading="Frequently asked questions" />

@@ -5,12 +5,12 @@ import { arr, str, type BlockProps } from "./types";
 export function FaqList({ items, heading }: { items: { question: string; answer: string }[]; heading?: string }) {
   if (!items.length) return null;
   return (
-    <Section tone="mist">
+    <Section>
       <SectionHead heading={heading} />
       <div className="max-w-3xl divide-y divide-line rounded-none border border-line bg-white">
         {items.map((q, i) => (
-          <details key={i} className="group p-6">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-sans text-lg font-semibold text-navy">
+          <details key={i} className="group py-5">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-sans text-[1.0625rem] font-semibold text-navy">
               {q.question}<span aria-hidden className="text-2xl text-royal transition group-open:rotate-45">+</span>
             </summary>
             <p className="mt-3 leading-relaxed text-muted">{q.answer}</p>

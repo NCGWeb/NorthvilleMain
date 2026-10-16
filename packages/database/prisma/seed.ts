@@ -101,6 +101,10 @@ async function main() {
         { label: "Terms and conditions", href: "/terms-conditions" },
       ],
     },
+    announcement: {
+      enabled: true, badge: "/seed/brand/award-badge.png", title: "India Finance Outlook Spotlight Award 2025",
+      text: "Recognised as one of the most prominent virtual CFO service providers", href: "",
+    },
     seo: {
       titleSuffix: "| Northville Consulting Group",
       description: "Northville Consulting Group is an integrated strategy, finance and transaction advisory partner for established and scaling businesses in India, the US, the UK and the UAE.",
@@ -183,13 +187,13 @@ async function main() {
   const logos: [string, string, string][] = [
     ["CLIENT", "The Strutt Store", "client-1.png"], ["CLIENT", "Kaidoo Kids", "client-2.png"], ["CLIENT", "Gravid", "client-3.png"],
     ["CLIENT", "CropZenith", "client-4.png"], ["CLIENT", "Nila", "client-5.png"],
-    ["INVESTOR", "ICICI", "investor-icici.webp"], ["INVESTOR", "Aavishkaar Capital", "investor-8.png"], ["INVESTOR", "RPSG Ventures", "investor-1.png"],
+    ["INVESTOR", "ICICI", "investor-icici.png"], ["INVESTOR", "Aavishkaar Capital", "investor-8.png"], ["INVESTOR", "RPSG Ventures", "investor-1.png"],
     ["INVESTOR", "Faad Network", "investor-2.png"], ["INVESTOR", "Tomorrow Capital", "investor-3.png"], ["INVESTOR", "Makia Capital", "investor-4.png"],
     ["INVESTOR", "Amity Capital Ventures", "investor-5.png"], ["INVESTOR", "Inflexor Ventures", "investor-6.png"], ["INVESTOR", "Investor partner (rename)", "investor-7.png"],
-    ["INSTITUTION", "Institutional collaborator 1 (rename)", "institution-1.jpg"], ["INSTITUTION", "Institutional collaborator 2 (rename)", "institution-2.jpg"],
-    ["INSTITUTION", "Institutional collaborator 3 (rename)", "institution-3.jpg"], ["INSTITUTION", "Institutional collaborator 4 (rename)", "institution-4.jpg"],
-    ["INSTITUTION", "Institutional collaborator 5 (rename)", "institution-5.png"],
-    ["NETWORK", "Network firm 1 (rename)", "network-1.png"], ["NETWORK", "Network firm 2 (rename)", "network-2.png"], ["NETWORK", "Network firm 3 (rename)", "network-3.png"],
+    ["INSTITUTION", "Indian School of Business", "institution-1.png"], ["INSTITUTION", "NMIMS", "institution-2.png"],
+    ["INSTITUTION", "SDA Bocconi Asia Center", "institution-3.png"], ["INSTITUTION", "IIM Kashipur", "institution-4.png"],
+    ["INSTITUTION", "Vivekanand Education Society Business School", "institution-5.png"],
+    ["NETWORK", "White Stone (confirm name)", "network-1.png"], ["NETWORK", "Network firm 2 (rename)", "network-2.png"], ["NETWORK", "A Salwan & Associates", "network-3.png"],
   ];
   await prisma.logoItem.createMany({
     data: logos.map(([wall, name, file], i) => ({ wall: wall as "CLIENT", name, imageUrl: `/seed/logos/${file}`, sortOrder: i })),
@@ -233,8 +237,7 @@ async function main() {
       seoDescription: "Northville Consulting Group is an integrated strategy, finance and transaction advisory partner for scaling businesses in India, the US, the UK and the UAE.",
       blocks: [
         b("hero", { size: "large", heading: "Your success is the only metric that matters to us.", subtext: "An integrated strategy, finance and transaction advisory partner for established and scaling businesses across India, the U.S., the UK and the UAE. Senior expertise, embedded with your leadership team.", primaryLabel: "Talk to us", primaryHref: "/contact", secondaryLabel: "Explore services", secondaryHref: "/services", image: null }),
-        b("banner", { image: "/seed/brand/award-finance-outlook.png", alt: "India Finance Outlook Spotlight Award 2025, for being recognised as one of the most prominent virtual CFO service providers", href: "", tone: "gold" }),
-        b("stats", { heading: "", items: [{ value: "25", suffix: "+", label: "Investor connects" }, { value: "4", suffix: "", label: "Countries served" }, { value: "12", suffix: "", label: "Service areas" }, { value: "16", suffix: "", label: "Professionals" }] }),
+        b("stats", { heading: "Our impact in numbers", items: [{ value: "834", suffix: "+", label: "Projects" }, { value: "15", suffix: "+", label: "Industries" }, { value: "100", suffix: "+", label: "Investor connects" }] }),
         b("servicesOverview", { heading: "One team across strategy, finance, deals, tax and law", intro: "Our experts in finance, taxation, law, marketing and strategy act as an extension of your team, so you get the right expertise without building it all in-house.", layout: "compact" }),
         b("team", { heading: "Meet the founders", intro: "", show: "leadership" }),
         b("testimonials", { heading: "What they say about us" }),

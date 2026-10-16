@@ -4,15 +4,16 @@ import { ChevronDown } from "lucide-react";
 import { getServiceGroups, getSettings } from "@northville/core";
 import { SmartLink } from "./ui";
 import { MobileMenu } from "./MobileMenu";
+import { HeaderShell } from "./HeaderShell";
 
-export async function Header() {
+export async function Header({ barHeight = 0 }: { barHeight?: number }) {
   const [s, groups] = await Promise.all([getSettings(), getServiceGroups()]);
   const links = s.navigation.mainLinks;
   const menu = groups.filter((g) => g.services.length > 0).map((g) => ({ name: g.name, blurb: g.blurb, services: g.services.map((x) => ({ name: x.name, slug: x.slug })) }));
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-navy/95 backdrop-blur supports-[backdrop-filter]:bg-navy/85">
-      <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
+    <HeaderShell barHeight={barHeight}>
+      <div className="mx-auto flex h-16 max-w-[1120px] items-center justify-between px-6 lg:px-8">
         <Link href="/" aria-label={`${s.general.siteName}, home`} className="shrink-0">
           {s.general.logo && <Image src={s.general.logo} alt={s.general.siteName} width={937} height={197} priority className="h-9 w-auto" />}
         </Link>
@@ -55,6 +56,6 @@ export async function Header() {
           <MobileMenu links={links} menu={menu} ctaLabel={s.navigation.ctaLabel} ctaHref={s.navigation.ctaHref} />
         </div>
       </div>
-    </header>
+    </HeaderShell>
   );
 }

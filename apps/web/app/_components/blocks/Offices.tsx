@@ -1,4 +1,3 @@
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { getOffices, getSettings } from "@northville/core";
 import { Section, SectionHead } from "../ui";
 import { str, type BlockProps } from "./types";
@@ -9,20 +8,22 @@ export async function Offices({ data }: BlockProps) {
   return (
     <Section tone="mist">
       <SectionHead heading={str(data.heading)} intro={str(data.intro)} />
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-10 md:grid-cols-3">
         {offices.map((o) => (
-          <div key={o.id} className="rounded-none border border-line bg-white p-7">
-            <MapPin className="text-royal" aria-hidden />
-            <h3 className="mt-4 text-2xl text-navy">{o.city}</h3>
-            <address className="mt-2 not-italic leading-relaxed text-muted">{o.address}</address>
-            {o.mapUrl && <a href={o.mapUrl} target="_blank" rel="noopener noreferrer" className="mt-3 inline-block text-sm font-semibold text-royal hover:underline">Open in Maps</a>}
+          <div key={o.id} className="border-t border-navy pt-4">
+            <h3 className="text-lg text-navy">{o.city}</h3>
+            <address className="mt-2 text-[15px] not-italic leading-relaxed text-ink/80">{o.address}</address>
+            {o.mapUrl && <a href={o.mapUrl} target="_blank" rel="noopener noreferrer" className="mt-3 inline-block text-[15px] font-semibold text-royal hover:text-navy">Open in Maps</a>}
           </div>
         ))}
-        <div className="space-y-4 rounded-none bg-navy p-7 text-white">
-          {c.email && <p className="flex gap-3"><Mail size={20} className="shrink-0 text-sky" aria-hidden /><a href={`mailto:${c.email}`} className="hover:underline">{c.email}</a></p>}
-          {c.phones.map((p) => (<p key={p} className="flex gap-3"><Phone size={20} className="shrink-0 text-sky" aria-hidden /><a href={`tel:${p.replace(/\s/g, "")}`} className="hover:underline">{p}</a></p>))}
-          {c.officeHours && <p className="flex gap-3"><Clock size={20} className="shrink-0 text-sky" aria-hidden />{c.officeHours}</p>}
-          {c.responseTime && <p className="pl-8 text-sm text-white/60">{c.responseTime}</p>}
+        <div className="border-t border-navy pt-4 text-[15px] text-ink/80">
+          <h3 className="text-lg text-navy">Get in touch</h3>
+          <ul className="mt-2 space-y-1.5">
+            {c.email && <li><a href={`mailto:${c.email}`} className="hover:text-royal">{c.email}</a></li>}
+            {c.phones.map((p) => <li key={p}><a href={`tel:${p.replace(/\s/g, "")}`} className="hover:text-royal">{p}</a></li>)}
+            {c.officeHours && <li className="pt-2 text-muted">{c.officeHours}</li>}
+            {c.responseTime && <li className="text-muted">{c.responseTime}</li>}
+          </ul>
         </div>
       </div>
     </Section>

@@ -2,7 +2,7 @@ import { Button } from "./_components/ui";
 
 export default function NotFound() {
   return (
-    <section className="mesh text-white">
+    <section className="mesh pt-16 text-white">
       <div className="mx-auto max-w-3xl px-5 py-32 text-center sm:px-8">
         <p className="text-sm font-semibold  text-sky">404</p>
         <h1 className="mt-4 text-5xl md:text-6xl">This page has moved or does not exist.</h1>

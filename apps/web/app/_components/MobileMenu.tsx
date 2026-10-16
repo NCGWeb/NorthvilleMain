@@ -19,7 +19,7 @@ export function MobileMenu({ links, menu, ctaLabel, ctaHref }: Props) {
         {open ? <X /> : <Menu />}
       </button>
       {open && (
-        <div className="fixed inset-x-0 top-[72px] bottom-0 overflow-y-auto bg-navy px-5 pb-10 pt-4">
+        <div className="fixed inset-x-0 top-16 bottom-0 overflow-y-auto bg-navy px-5 pb-10 pt-4">
           <ul className="space-y-1">
             {links.map((l) => (
               <li key={l.href}>

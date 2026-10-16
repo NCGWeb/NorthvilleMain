@@ -27,6 +27,18 @@ export const SETTING_GROUPS: SettingGroup[] = [
     ],
   },
   {
+    key: "announcement",
+    label: "Top bar (award or announcement)",
+    description: "A slim strip above the menu on every page. Good for an award, a launch or a notice. Switch it off to hide it.",
+    fields: [
+      { kind: "toggle", name: "enabled", label: "Show the top bar", where: "Very top of every page." },
+      { kind: "image", name: "badge", label: "Small badge or icon (optional)", help: "Square picture, shown at the left.", where: "Top bar, left." },
+      { kind: "text", name: "title", label: "Main text", help: "Short and bold, for example the award name.", where: "Top bar.", maxLength: 80 },
+      { kind: "text", name: "text", label: "Supporting text", help: "Optional. Hidden on small phones.", where: "Top bar, after the main text.", maxLength: 140 },
+      { kind: "url", name: "href", label: "Link (optional)", help: "Where the bar goes when clicked.", where: "Top bar." },
+    ],
+  },
+  {
     key: "contact",
     label: "Contact details",
     description: "Phone numbers, emails, WhatsApp and opening hours. Change a number here and it updates everywhere.",

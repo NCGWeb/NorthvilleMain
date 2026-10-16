@@ -8,3 +8,4 @@ node_modules
 apps/web/public/uploads/*
 !apps/web/public/uploads/.gitkeep
 Northville Team/
+.secrets/

@@ -39,16 +39,18 @@ export const BLOCKS: BlockDef[] = [
   },
   {
     type: "stats",
-    label: "Numbers strip",
-    description: "A row of big figures with captions, for example 25 investor connects.",
+    label: "Impact numbers",
+    description: "Big figures with captions, for example 834+ projects. Add as many as you like (up to 6). The layout adjusts by itself, and the numbers count up when a visitor scrolls to them.",
     fields: [
-      { kind: "text", name: "heading", label: "Heading", help: "Optional line above the numbers.", maxLength: 100 },
+      { kind: "text", name: "heading", label: "Heading", default: "Our impact in numbers", help: "Optional line above the numbers.", maxLength: 100 } as Field,
       {
         kind: "list", name: "items", label: "Numbers", itemLabel: "Number", max: 6,
+        help: "Use Add number to include another one. Use the arrows to change the order.",
         fields: [
-          { kind: "text", name: "value", label: "Figure", required: true, help: "Digits only, such as 25. Use the suffix for + or %.", maxLength: 10 },
-          { kind: "text", name: "suffix", label: "Suffix", help: "Optional, such as + or %.", maxLength: 4 },
-          { kind: "text", name: "label", label: "Caption", required: true, help: "What the number means.", maxLength: 50 },
+          { kind: "text", name: "prefix", label: "Before the number", help: "Optional, for example a currency sign.", maxLength: 4 },
+          { kind: "text", name: "value", label: "Number", required: true, help: "Digits only, for example 834. A decimal such as 2.5 also works.", maxLength: 10 },
+          { kind: "text", name: "suffix", label: "After the number", help: "Optional, for example + or % or M.", maxLength: 4 },
+          { kind: "text", name: "label", label: "Caption", required: true, help: "What the number means, for example Projects.", maxLength: 50 },
         ],
       },
     ],

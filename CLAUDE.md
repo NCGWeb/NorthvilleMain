@@ -20,6 +20,9 @@ Stack: Next.js 16, React 19, Tailwind v4, Prisma 7 + `@prisma/adapter-pg`, Postg
 
 ## Run it
 
+Known quirk: the Next dev server (Turbopack) sometimes misses newly added Tailwind classes. If layout looks unstyled after big edits, restart `npm run dev`, or check a production build (`npm run build` then `next start`) which is the source of truth.
+
+
 ```
 npm install            # also runs prisma generate
 npm run db:migrate     # needs local Postgres (brew services postgresql@16)
@@ -39,7 +42,7 @@ Local sign in: `SUPERADMIN_EMAIL` and `SUPERADMIN_INITIAL_PASSWORD` from `.env`.
 5. **Draft and publish.** Pages have `draftBlocks` and `publishedBlocks`. The site reads published only. Admin writes must call `refreshWebsite()` from `@northville/core` so the site updates.
 6. **Permissions.** Every admin API route calls `apiUser("<area>:<action>")`. Every admin page calls `requireUser(...)`. Areas and roles are in `packages/content/src/permissions.ts`.
 7. **SEO and speed are a feature.** Keep pages statically generated with `revalidate`. One `h1` per page. Every image needs real alt text. Use `next/image` with `sizes`. No client component unless it needs state. Use `buildMetadata` and JSON-LD helpers in `apps/web/app/_lib/site.ts`. Old Wix URLs are 301 redirects from the `Redirect` table, keep them.
-8. **Design: flat and editorial.** Square corners (`rounded-none`, `rounded-sm` for controls only), no shadows, no decorative circles or gradients blobs, no small uppercase letter-spaced labels. Sans headings (Inter), serif body (Newsreader). Brand colors from `packages/ui/src/brand.css` only: navy `#00063E`, steel `#2B5672`, royal `#435DF8`, bright `#3D9BE9`, sky `#C9E7FF`.
+8. **Design: flat and editorial.** Square corners (`rounded-none`, `rounded-sm` for controls only), no shadows, no decorative circles or gradients blobs, no small uppercase letter-spaced labels. Sans headings (Inter), serif body (Newsreader). Scale (McKinsey reference): content width 1120px (`WRAP` in `ui.tsx`), section padding 72px, section headings 28 to 32px, hero 48 to 56px, body 16px. Sections are separated by hairlines and flat bands, not boxed cards. Motion is a quiet 8px fade on scroll and a count-up on the numbers band, nothing else. Brand colors from `packages/ui/src/brand.css` only: navy `#00063E`, steel `#2B5672`, royal `#435DF8`, bright `#3D9BE9`, sky `#C9E7FF`.
 9. **No em dash** anywhere (code, comments, copy, seed, docs, commits). A hook enforces it.
 10. **Sanitise rich text** with `cleanHtml` before saving and before rendering.
 11. Next.js 16 has breaking changes. Check `node_modules/next/dist/docs/` before using an API you are unsure of (`params` and `searchParams` are Promises, `proxy.ts` replaces middleware).

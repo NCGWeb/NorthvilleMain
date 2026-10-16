@@ -11,7 +11,7 @@ export async function SocialBand({ data }: BlockProps) {
     <Section tone="white" className="border-t border-line [&>div]:py-12 md:[&>div]:py-14">
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
         <div>
-          <h2 className="text-2xl text-navy sm:text-3xl">{str(data.heading)}</h2>
+          <h2 className="text-xl text-navy">{str(data.heading)}</h2>
           {str(data.text) && <p className="mt-2 text-muted">{str(data.text)}</p>}
         </div>
         <div className="flex gap-3">

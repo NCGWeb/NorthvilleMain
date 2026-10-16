@@ -38,14 +38,14 @@ export default async function PostPage({ params }: Props) {
   ];
   return (
     <>
-      <header className="mesh text-white">
-        <div className="mx-auto max-w-4xl px-5 py-16 sm:px-8 md:py-24">
+      <header className="mesh pt-16 text-white">
+        <div className="mx-auto max-w-[760px] px-6 pb-12 pt-14 lg:px-8 md:pb-16">
           <nav aria-label="Breadcrumb" className="mb-6 text-sm text-white/60"><Link href="/blog" className="hover:text-white">Insights</Link>{post.category && <> / <Link href={`/blog/category/${post.category.slug}`} className="hover:text-white">{post.category.name}</Link></>}</nav>
-          <h1 className="text-balance text-4xl leading-[1.1] sm:text-5xl md:text-6xl">{post.title}</h1>
+          <h1 className="max-w-3xl text-balance text-3xl leading-[1.15] sm:text-4xl md:text-[2.75rem]">{post.title}</h1>
           <p className="mt-6 text-sm text-white/65">{[post.author?.name, dateFmt(post.publishedAt), `${mins} min read`].filter(Boolean).join(" · ")}</p>
         </div>
       </header>
-      <article className="mx-auto max-w-3xl px-5 py-12 sm:px-8 md:py-16">
+      <article className="mx-auto max-w-[760px] px-6 py-12 lg:px-8 md:py-14">
         {post.coverUrl && (
           <div className="relative -mt-24 mb-12 aspect-[16/9] overflow-hidden rounded-none md:-mt-32">
             <Image src={post.coverUrl} alt={post.title} fill priority sizes="(min-width:768px) 768px, 100vw" className="object-cover" />
@@ -60,12 +60,12 @@ export default async function PostPage({ params }: Props) {
       </article>
       {related.length > 0 && (
         <Section tone="mist">
-          <h2 className="mb-8 text-3xl text-navy">Keep reading</h2>
+          <h2 className="mb-6 text-xl text-navy">Keep reading</h2>
           <div className="grid gap-6 md:grid-cols-3">
             {related.map((r) => (
               <Link key={r.id} href={`/blog/${r.slug}`} className="rounded-none border border-line bg-white p-6 transition ">
                 <p className="text-xs font-semibold  text-royal">{r.category?.name ?? "Insights"}</p>
-                <h3 className="mt-2 text-2xl text-navy">{r.title}</h3>
+                <h3 className="mt-2 text-lg text-navy group-hover:text-royal">{r.title}</h3>
                 <p className="mt-2 line-clamp-2 text-sm text-muted">{r.excerpt}</p>
               </Link>
             ))}

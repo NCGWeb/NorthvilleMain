@@ -9,7 +9,7 @@ export async function Footer() {
   const services = groups.flatMap((g) => g.services);
   const social = SOCIALS.filter((x) => s.social[x.key]);
   return (
-    <footer className="mesh text-white">
+    <footer className="bg-navy text-white">
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 md:grid-cols-12">
         <div className="md:col-span-4">
           {s.general.logo && <Image src={s.general.logo} alt={s.general.siteName} width={937} height={197} className="h-10 w-auto" />}
