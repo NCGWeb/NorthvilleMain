@@ -71,3 +71,9 @@ footer p { font-family: var(--font-sans); }
 .zoom-img { transition: transform 1.2s cubic-bezier(.22,.61,.36,1); }
 .group:hover .zoom-img { transform: scale(1.05); }
 @media (prefers-reduced-motion: reduce) { [data-reveal] { opacity: 1; transform: none; clip-path: none; transition: none; } html { scroll-behavior: auto; } }
+
+/* Spinner on the link that was just clicked (see NavProgress) */
+@keyframes nv-spin { to { transform: rotate(360deg); } }
+a[data-pending="inline"]::after { content: ""; display: inline-block; width: .85em; height: .85em; margin-left: .55em; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: nv-spin .7s linear infinite; vertical-align: -.1em; }
+a[data-pending="overlay"] { position: relative; opacity: .8; cursor: progress; }
+a[data-pending="overlay"]::after { content: ""; position: absolute; top: 14px; right: 14px; width: 18px; height: 18px; border: 2px solid #435df8; border-right-color: transparent; border-radius: 50%; animation: nv-spin .7s linear infinite; z-index: 5; }

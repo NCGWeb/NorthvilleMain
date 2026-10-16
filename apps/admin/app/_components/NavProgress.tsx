@@ -2,6 +2,17 @@
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 
+/** Shows a small spinner on the exact link that was clicked, so even tiny links give feedback. */
+function markPending(a: HTMLAnchorElement) {
+  clearPending();
+  const cs = getComputedStyle(a);
+  const inline = cs.display.startsWith("inline") && cs.flexDirection !== "column";
+  a.setAttribute("data-pending", inline ? "inline" : "overlay");
+}
+function clearPending() {
+  document.querySelectorAll("a[data-pending]").forEach((el) => el.removeAttribute("data-pending"));
+}
+
 /** Thin bar at the very top that shows while a page is loading after a click on an internal link. */
 function Bar() {
   const pathname = usePathname();
@@ -11,6 +22,7 @@ function Bar() {
 
   // The address changed, so the new page has arrived.
   useEffect(() => {
+    clearPending();
     setState((s) => (s === "loading" ? "done" : s));
     clearTimeout(timer.current);
     timer.current = setTimeout(() => setState("idle"), 450);
@@ -25,12 +37,14 @@ function Bar() {
       const url = new URL(a.href, location.href);
       if (url.origin !== location.origin) return;
       if (url.pathname === location.pathname && url.search === location.search) return; // same page or #anchor
+      markPending(a);
       setState("loading");
       clearTimeout(timer.current);
-      timer.current = setTimeout(() => setState("idle"), 10000); // never hang
+      timer.current = setTimeout(() => { setState("idle"); clearPending(); }, 10000); // never hang
     };
-    document.addEventListener("click", onClick);
-    return () => document.removeEventListener("click", onClick);
+    // Capture phase: runs before the framework handles the click, which otherwise marks it as already handled.
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
   }, []);
 
   if (state === "idle") return null;

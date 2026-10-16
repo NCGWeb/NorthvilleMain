@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BLOCKS, defaultsFor, type CollectionDef, type Field } from "@northville/content";
 import { FieldEditor, type Values } from "./FieldEditor";
@@ -49,7 +50,7 @@ export function CollectionForm({ collectionKey, fields, initial, id, canEdit, de
       </div>
       <div className="sticky bottom-0 -mx-1 flex flex-wrap items-center gap-4 rounded-2xl border border-line bg-white/95 p-4 backdrop-blur">
         {canEdit ? <button type="button" disabled={busy} onClick={save} className="btn btn-primary">{busy ? <><Spinner /> Saving...</> : id ? "Save changes" : `Add ${def.singular.toLowerCase()}`}</button> : <p className="text-sm text-muted">You can view this but not edit it.</p>}
-        <button type="button" className="btn btn-ghost" onClick={() => router.push(`/${def.key}`)}>Back to {def.label.toLowerCase()}</button>
+        <Link href={`/${def.key}`} className="btn btn-ghost">Back to {def.label.toLowerCase()}</Link>
         {msg && <p role="status" className={`text-sm font-medium ${msg.ok ? "text-green-700" : "text-red-700"}`}>{msg.text}</p>}
       </div>
     </div>

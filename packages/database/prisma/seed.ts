@@ -8,6 +8,8 @@ import bcrypt from "bcryptjs";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { DEFAULT_ROLES } from "../../content/src/permissions";
+import { FAQS } from "./seed-faqs";
+import { POSTS } from "./seed-posts";
 import { GROUPS, SERVICES } from "./seed-services";
 
 try {
@@ -137,7 +139,7 @@ async function main() {
       data: {
         slug: s.slug, name: s.name, group: { connect: { id: groupIds[s.group] } }, summary: s.summary, imageUrl: s.image,
         heroHeading: s.name, heroSubtext: s.summary, tagline: s.tagline, seoTitle: s.seoTitle, seoDescription: s.seoDescription,
-        faqs: s.faqs ?? [], sortOrder: i,
+        faqs: s.faqs ?? FAQS[s.slug] ?? [], sortOrder: i,
         offerings: { create: s.offerings.map((o, j) => ({ ...o, sortOrder: j })) },
       },
     });
@@ -218,14 +220,10 @@ async function main() {
     ),
   );
   const author = await prisma.user.findUnique({ where: { email: adminEmail } });
-  await prisma.blogPost.create({
-    data: {
-      slug: "when-does-a-startup-need-a-virtual-cfo", title: "When Does a Startup Need a Virtual CFO?", status: "DRAFT",
-      excerpt: "Bookkeeping keeps you compliant. A virtual CFO helps you decide. Here is how to tell when it is time to add one.",
-      categoryId: cats[0].id, authorId: author?.id,
-      body: "<h2>The signs</h2><p>Founders usually add finance leadership later than they should. Three signals say it is time: you cannot answer how much runway you have without opening a spreadsheet, investors ask for numbers you assemble by hand, or pricing and hiring decisions are made on instinct.</p><h2>What a virtual CFO does</h2><p>A virtual CFO owns the reporting cadence, builds the forecast, watches cash and gives leadership a clear view before decisions are made. It is the same thinking as a full-time CFO at a fraction of the cost.</p><p><em>This is a sample draft. Replace it with your own article before publishing.</em></p>",
-    },
-  });
+  for (const p of POSTS) {
+    const cat = cats.find((c) => c.slug === p.category);
+    await prisma.blogPost.create({ data: { slug: p.slug, title: p.title, status: "DRAFT", excerpt: p.excerpt, seoDescription: p.seoDescription, body: p.body, categoryId: cat?.id, authorId: author?.id } });
+  }
 
   // ---- Shared sections (written once, used on many pages)
   const sharedContact = await prisma.sharedBlock.create({

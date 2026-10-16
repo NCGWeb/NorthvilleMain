@@ -27,6 +27,11 @@ People search for the service, not the firm. The site wins by being the clearest
 - Editors get a Google preview, length warnings, and per-page, per-service and per-post title and description fields.
 - Optional Search Console code and Google Analytics ID under Site settings, Search and sharing.
 
+- FAQs on every service page (3 questions each, also marked up for Google). They are general starter answers: have the team review and refine them under Services, Questions and answers.
+- Three starter blog drafts are already in the admin under Blog posts, written to the first rows of the content plan below: virtual CFO, data room checklist, ESOP design. Review, add real examples, then publish. The home page "Latest Insights" section appears automatically once a post is published.
+- Empty blog category pages are kept out of Google and the sitemap until they have articles.
+- Office name, address and phone appear in the footer on every page, matching the Contact page and the structured data, which is what local search looks for.
+
 ## Page by page targets
 
 Keep one main phrase per page. Put it in the title, the H1 or first paragraph, and the description. Do not repeat the same phrase on several pages.

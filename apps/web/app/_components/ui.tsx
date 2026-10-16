@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
-import { LinkPending } from "./LinkPending";
 
 export const isExternal = (href: string) => /^https?:\/\//.test(href) || href.startsWith("mailto:") || href.startsWith("tel:");
 
@@ -27,7 +26,6 @@ export function Button({ href, variant = "primary", children, arrow = true }: { 
   return (
     <SmartLink href={href} className={`${base} ${variants[variant]}`}>
       {children}
-      <LinkPending />
       {arrow && <ArrowRight size={15} aria-hidden className="transition-transform duration-200 group-hover:translate-x-0.5" />}
     </SmartLink>
   );
@@ -37,7 +35,7 @@ export function Button({ href, variant = "primary", children, arrow = true }: { 
 export function TextLink({ href, children }: { href: string; children: ReactNode }) {
   return (
     <SmartLink href={href} className="group inline-flex items-center gap-1.5 text-[15px] font-semibold text-royal hover:text-navy">
-      {children}<LinkPending /><ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden />
+      {children}<ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden />
     </SmartLink>
   );
 }

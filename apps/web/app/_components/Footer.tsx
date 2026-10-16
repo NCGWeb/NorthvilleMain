@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getServiceGroups, getSettings, whatsappUrl } from "@northville/core";
+import { getOffices, getServiceGroups, getSettings, whatsappUrl } from "@northville/core";
 import { SmartLink } from "./ui";
 import { SOCIALS, WhatsappIcon } from "./Icons";
 
 export async function Footer() {
-  const [s, groups] = await Promise.all([getSettings(), getServiceGroups()]);
+  const [s, groups, offices] = await Promise.all([getSettings(), getServiceGroups(), getOffices()]);
   const services = groups.flatMap((g) => g.services);
   const social = SOCIALS.filter((x) => s.social[x.key]);
   return (
@@ -41,7 +41,8 @@ export async function Footer() {
           <ul className="mt-4 space-y-2.5 text-[15px] text-white/75">
             {s.contact.email && <li><a href={`mailto:${s.contact.email}`} className="hover:text-white">{s.contact.email}</a></li>}
             {s.contact.phones.map((p) => (<li key={p}><a href={`tel:${p.replace(/\s/g, "")}`} className="hover:text-white">{p}</a></li>))}
-            {s.contact.officeHours && <li className="text-white/55">{s.contact.officeHours}</li>}
+            {s.contact.officeHours && <li className="text-white/60">{s.contact.officeHours}</li>}
+            {offices.map((o) => (<li key={o.id} className="pt-2"><span className="font-semibold text-white">{o.city}</span><br /><address className="not-italic text-white/60">{o.address}</address></li>))}
           </ul>
         </div>
       </div>
