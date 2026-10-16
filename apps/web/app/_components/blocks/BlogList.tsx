@@ -1,0 +1,45 @@
+import Image from "next/image";
+import Link from "next/link";
+import { getCategories, getPosts } from "@northville/core";
+import { Section, SectionHead } from "../ui";
+import { str, type BlockProps } from "./types";
+
+export const dateFmt = (d: Date | null) => (d ? new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", year: "numeric" }).format(d) : "");
+
+export async function BlogList({ data, category }: BlockProps & { category?: string }) {
+  const count = Number(data.count) || undefined;
+  const [posts, cats] = await Promise.all([getPosts({ take: count, categorySlug: category }), getCategories()]);
+  return (
+    <Section>
+      <SectionHead heading={str(data.heading)} />
+      {data.showFilters !== false && cats.length > 0 && (
+        <nav aria-label="Categories" className="mb-10 flex flex-wrap gap-2">
+          <Link href="/blog" className={`rounded-none px-4 py-1.5 text-sm font-medium ${!category ? "bg-navy text-white" : "bg-mist text-steel hover:bg-sky"}`}>All</Link>
+          {cats.map((c) => (
+            <Link key={c.id} href={`/blog/category/${c.slug}`} className={`rounded-none px-4 py-1.5 text-sm font-medium ${category === c.slug ? "bg-navy text-white" : "bg-mist text-steel hover:bg-sky"}`}>{c.name}</Link>
+          ))}
+        </nav>
+      )}
+      {posts.length === 0 ? (
+        <p className="rounded-none border border-line bg-mist p-8 text-lg text-muted">New articles are on the way. Check back soon.</p>
+      ) : (
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.map((p) => (
+            <article key={p.id} className="group overflow-hidden rounded-none border border-line bg-white transition ">
+              <Link href={`/blog/${p.slug}`} className="block">
+                <div className="relative aspect-[16/10] bg-gradient-to-br from-navy to-royal">
+                  {p.coverUrl && <Image src={p.coverUrl} alt="" fill sizes="(min-width:1024px) 30vw, (min-width:640px) 45vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />}
+                </div>
+                <div className="p-6">
+                  <p className="text-xs font-semibold  text-royal">{p.category?.name ?? "Insights"} <span className="text-muted">· {dateFmt(p.publishedAt)}</span></p>
+                  <h3 className="mt-3 text-2xl leading-snug text-navy group-hover:text-royal">{p.title}</h3>
+                  <p className="mt-2 line-clamp-3 text-[15px] text-muted">{p.excerpt}</p>
+                </div>
+              </Link>
+            </article>
+          ))}
+        </div>
+      )}
+    </Section>
+  );
+}

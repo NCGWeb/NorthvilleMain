@@ -1,0 +1,22 @@
+{
+  "name": "northville-consulting",
+  "private": true,
+  "type": "module",
+  "packageManager": "npm@11.6.2",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "postinstall": "npm run db:generate",
+    "db:generate": "npm run db:generate --workspace=@northville/database",
+    "db:migrate": "npm run db:migrate --workspace=@northville/database",
+    "db:seed": "npm run db:seed --workspace=@northville/database"
+  },
+  "engines": { "node": ">=20" },
+  "devDependencies": {
+    "turbo": "^2.1.0",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,299 @@
+// Northville Consulting CMS schema.
+//
+// Design rule: nothing is stored twice. Page layout lives in Page.blocks,
+// shared facts (phone, socials, offices) live once in SiteSetting / Office,
+// and repeating things (services, team, logos) are collections that blocks
+// and menus read from. See docs/ARCHITECTURE.md.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Access management
+// ---------------------------------------------------------------------------
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String
+  passwordHash String
+  bio          String?
+  photoUrl     String?
+  isActive     Boolean    @default(true)
+  roleId       String?
+  role         Role?      @relation(fields: [roleId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  posts        BlogPost[]
+  auditLogs    AuditLog[]
+}
+
+model Role {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String   @default("")
+  // List of permission keys, e.g. "pages:edit". See packages/content/src/permissions.ts
+  permissions String[]
+  isSystem    Boolean  @default(false)
+  users       User[]
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  target    String
+  summary   String   @default("")
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// Pages (layout = ordered list of blocks)
+// ---------------------------------------------------------------------------
+
+model Page {
+  id             String        @id @default(cuid())
+  slug           String        @unique // "" is the home page
+  title          String
+  // Draft is what editors change. Published is what visitors see.
+  draftBlocks    Json          @default("[]")
+  publishedBlocks Json         @default("[]")
+  seoTitle       String        @default("")
+  seoDescription String        @default("")
+  seoImageUrl    String?
+  hasUnpublishedChanges Boolean @default(false)
+  isPublished    Boolean       @default(true)
+  showInFooter   Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  versions       PageVersion[]
+}
+
+model PageVersion {
+  id        String   @id @default(cuid())
+  pageId    String
+  page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  blocks    Json
+  note      String   @default("")
+  createdBy String   @default("")
+  createdAt DateTime @default(now())
+
+  @@index([pageId, createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// Site-wide settings (one row per group, JSON value)
+// ---------------------------------------------------------------------------
+
+model SiteSetting {
+  key       String   @id // "general" | "contact" | "social" | "navigation" | "footer" | "seo"
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+// A block written once and placed on many pages (e.g. the Contact us strip).
+model SharedBlock {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  type      String
+  data      Json     @default("{}")
+  updatedAt DateTime @updatedAt
+}
+
+model Office {
+  id        String  @id @default(cuid())
+  city      String
+  address   String
+  mapUrl    String  @default("")
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
+}
+
+// ---------------------------------------------------------------------------
+// Collections
+// ---------------------------------------------------------------------------
+
+model ServiceGroup {
+  id        String    @id @default(cuid())
+  name      String
+  blurb     String    @default("")
+  sortOrder Int       @default(0)
+  services  Service[]
+}
+
+model Service {
+  id             String            @id @default(cuid())
+  slug           String            @unique
+  name           String
+  groupId        String?
+  group          ServiceGroup?     @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  // Short line shown on cards and the menu.
+  summary        String            @default("")
+  heroHeading    String            @default("")
+  heroSubtext    String            @default("")
+  tagline        String            @default("")
+  imageUrl       String?
+  seoTitle       String            @default("")
+  seoDescription String            @default("")
+  // [{ question, answer }]. Rendered as an FAQ and as Google FAQ markup.
+  faqs           Json              @default("[]")
+  sortOrder      Int               @default(0)
+  isPublished    Boolean           @default(true)
+  offerings      ServiceOffering[]
+  updatedAt      DateTime          @updatedAt
+}
+
+model ServiceOffering {
+  id        String   @id @default(cuid())
+  serviceId String
+  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  title     String
+  tagline   String   @default("")
+  body      String   @default("")
+  bullets   String[]
+  imageUrl  String?
+  sortOrder Int      @default(0)
+}
+
+model TeamMember {
+  id          String  @id @default(cuid())
+  name        String
+  designation String
+  background  String  @default("")
+  bio         String  @default("")
+  photoUrl    String?
+  linkedinUrl String  @default("")
+  // "leadership" members are featured on the home page and About page.
+  isLeadership Boolean @default(false)
+  sortOrder   Int     @default(0)
+  isPublished Boolean @default(true)
+}
+
+model Testimonial {
+  id          String  @id @default(cuid())
+  quote       String
+  authorName  String
+  authorRole  String  @default("")
+  company     String  @default("")
+  photoUrl    String?
+  sortOrder   Int     @default(0)
+  isPublished Boolean @default(true)
+}
+
+enum LogoWall {
+  CLIENT
+  INVESTOR
+  INSTITUTION
+  NETWORK
+}
+
+model LogoItem {
+  id        String   @id @default(cuid())
+  wall      LogoWall
+  name      String
+  imageUrl  String
+  linkUrl   String   @default("")
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+}
+
+model JobOpening {
+  id          String  @id @default(cuid())
+  title       String
+  location    String  @default("")
+  type        String  @default("Full time")
+  description String  @default("")
+  applyEmail  String  @default("")
+  sortOrder   Int     @default(0)
+  isOpen      Boolean @default(true)
+}
+
+// ---------------------------------------------------------------------------
+// Blog
+// ---------------------------------------------------------------------------
+
+model BlogCategory {
+  id    String     @id @default(cuid())
+  slug  String     @unique
+  name  String
+  posts BlogPost[]
+}
+
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+}
+
+model BlogPost {
+  id             String        @id @default(cuid())
+  slug           String        @unique
+  title          String
+  excerpt        String        @default("")
+  // Sanitised HTML from the rich text editor.
+  body           String        @default("")
+  coverUrl       String?
+  status         PostStatus    @default(DRAFT)
+  publishedAt    DateTime?
+  categoryId     String?
+  category       BlogCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  authorId       String?
+  author         User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  seoTitle       String        @default("")
+  seoDescription String        @default("")
+  isFeatured     Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([status, publishedAt])
+}
+
+// ---------------------------------------------------------------------------
+// Media, enquiries, redirects
+// ---------------------------------------------------------------------------
+
+model Media {
+  id        String   @id @default(cuid())
+  url       String
+  name      String
+  alt       String   @default("")
+  mimeType  String   @default("")
+  sizeBytes Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+enum EnquiryStatus {
+  NEW
+  IN_PROGRESS
+  DONE
+  SPAM
+}
+
+model Enquiry {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String        @default("")
+  message   String        @default("")
+  source    String        @default("contact")
+  status    EnquiryStatus @default(NEW)
+  note      String        @default("")
+  createdAt DateTime      @default(now())
+
+  @@index([status, createdAt])
+}
+
+model Redirect {
+  id        String   @id @default(cuid())
+  fromPath  String   @unique
+  toPath    String
+  createdAt DateTime @default(now())
+}

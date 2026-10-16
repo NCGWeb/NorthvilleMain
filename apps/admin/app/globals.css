@@ -1,0 +1,28 @@
+@import "tailwindcss";
+@import "@northville/ui/brand.css";
+
+@theme inline {
+  --color-navy: var(--nv-navy);
+  --color-royal: var(--nv-royal);
+  --color-bright: var(--nv-bright);
+  --color-sky: var(--nv-sky);
+  --color-mist: var(--nv-mist);
+  --color-ink: var(--nv-ink);
+  --color-muted: var(--nv-muted);
+  --color-line: var(--nv-line);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+body { background: #f6f8fc; color: var(--nv-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+.input { width: 100%; border: 1px solid var(--nv-line); border-radius: 10px; background: #fff; padding: 10px 12px; font-size: 14px; outline: none; }
+.input:focus { border-color: var(--nv-royal); box-shadow: 0 0 0 3px rgba(67,93,248,.12); }
+.btn { display: inline-flex; align-items: center; gap: 8px; border-radius: 10px; padding: 9px 16px; font-size: 14px; font-weight: 600; transition: .15s; cursor: pointer; }
+.btn-primary { background: var(--nv-royal); color: #fff; } .btn-primary:hover { background: var(--nv-bright); }
+.btn-ghost { border: 1px solid var(--nv-line); background: #fff; color: var(--nv-ink); } .btn-ghost:hover { border-color: var(--nv-royal); color: var(--nv-royal); }
+.btn-danger { color: #b42318; border: 1px solid #fecdca; background: #fff; } .btn-danger:hover { background: #fef3f2; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.card { background: #fff; border: 1px solid var(--nv-line); border-radius: 16px; }
+.editor-content { min-height: 220px; padding: 14px; outline: none; font-size: 15px; line-height: 1.7; }
+.editor-content h2 { font-size: 1.4rem; font-weight: 600; margin: 1em 0 .4em; } .editor-content h3 { font-size: 1.15rem; font-weight: 600; margin: 1em 0 .4em; }
+.editor-content ul { list-style: disc; padding-left: 1.4em; } .editor-content ol { list-style: decimal; padding-left: 1.4em; }
+.editor-content a { color: var(--nv-royal); text-decoration: underline; } .editor-content blockquote { border-left: 3px solid var(--nv-royal); padding-left: 1em; color: var(--nv-muted); }
+.editor-content img { max-width: 100%; border-radius: 8px; }

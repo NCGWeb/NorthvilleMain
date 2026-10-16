@@ -1,0 +1,10 @@
+node_modules
+.next
+.turbo
+.env
+.env.local
+*.tsbuildinfo
+.DS_Store
+apps/web/public/uploads/*
+!apps/web/public/uploads/.gitkeep
+Northville Team/

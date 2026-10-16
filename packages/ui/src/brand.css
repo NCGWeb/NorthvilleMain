@@ -1,0 +1,17 @@
+/*
+ * Brand tokens shared by the website and the admin.
+ * Colours come from the existing Northville site: navy #00063E, steel #2B5672,
+ * royal blue #435DF8, sky #C9E7FF, bright blue #3D9BE9.
+ */
+:root {
+  --nv-navy: #00063e;
+  --nv-navy-2: #030d46;
+  --nv-steel: #2b5672;
+  --nv-royal: #435df8;
+  --nv-bright: #3d9be9;
+  --nv-sky: #c9e7ff;
+  --nv-mist: #eef4fb;
+  --nv-ink: #0b1230;
+  --nv-muted: #5d6477;
+  --nv-line: #dfe5ef;
+}

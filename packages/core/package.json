@@ -1,0 +1,4 @@
+{ "name": "@northville/core", "version": "0.0.0", "private": true, "type": "module", "main": "./src/index.ts", "types": "./src/index.ts",
+  "scripts": { "typecheck": "tsc --noEmit -p tsconfig.json" },
+  "dependencies": { "@northville/database": "*", "@northville/content": "*", "@vercel/blob": "^2.8.0", "resend": "^6.0.0", "sanitize-html": "^2.17.0" },
+  "devDependencies": { "@types/node": "^24.13.6", "@types/sanitize-html": "^2.16.0", "typescript": "^5.9.3" } }
