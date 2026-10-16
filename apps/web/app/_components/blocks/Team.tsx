@@ -49,7 +49,12 @@ function Members({ people }: { people: Person[] }) {
           <article key={p.id} className="group">
             <Portrait p={p} sizes="(min-width:1024px) 256px, (min-width:768px) 33vw, 46vw" />
             <div className="mt-4 border-t border-line pt-3 transition-colors group-hover:border-navy">
-              <h3 className="font-sans text-[1.0625rem] font-semibold tracking-normal text-navy">{p.name}</h3>
+              <div className="flex items-start justify-between gap-2">
+                <h3 className="font-sans text-[1.0625rem] font-semibold tracking-normal text-navy">{p.name}</h3>
+                {p.linkedinUrl && (
+                  <a href={p.linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} on LinkedIn`} className="mt-0.5 shrink-0 text-steel transition-colors hover:text-royal"><LinkedinIcon size={16} /></a>
+                )}
+              </div>
               <p className="mt-0.5 text-sm font-medium text-royal">{p.designation}</p>
               {p.background && <p className="mt-1.5 text-[13px] leading-snug text-muted">{p.background}</p>}
             </div>

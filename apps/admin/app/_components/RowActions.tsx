@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowDown, ArrowUp, Trash2 } from "lucide-react";
 
@@ -16,7 +17,8 @@ export function RowActions({ collection, id, canMove, first, last, canDelete }: 
   }
   const b = "rounded-lg border border-line p-2 text-ink hover:border-royal hover:text-royal disabled:opacity-30";
   return (
-    <div className="flex gap-1.5">
+    <div className="flex items-center gap-1.5">
+      <Link href={`/${collection}/${id}`} className="rounded-lg border border-line px-3 py-1.5 text-sm font-semibold text-ink hover:border-royal hover:text-royal">Edit</Link>
       {canMove && <><button type="button" className={b} disabled={first} onClick={() => move(-1)} aria-label="Move up"><ArrowUp size={15} /></button>
       <button type="button" className={b} disabled={last} onClick={() => move(1)} aria-label="Move down"><ArrowDown size={15} /></button></>}
       {canDelete && <button type="button" className={`${b} hover:!border-red-300 hover:!text-red-600`} onClick={del} aria-label="Delete"><Trash2 size={15} /></button>}

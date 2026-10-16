@@ -87,7 +87,7 @@ export const COLLECTIONS: CollectionDef[] = [
       { kind: "text", name: "background", label: "Qualifications or background", help: "For example CA, MBA (ISB).", maxLength: 160 },
       { kind: "textarea", name: "bio", label: "Short bio", rows: 4, help: "Shown for leadership. Optional for others." },
       { kind: "image", name: "photoUrl", label: "Photo", help: "Square or portrait headshot." },
-      { kind: "url", name: "linkedinUrl", label: "LinkedIn profile", help: "Optional. Each person gets their own link." },
+      { kind: "url", name: "linkedinUrl", label: "LinkedIn profile", help: "Optional. Paste the address of their LinkedIn page. A LinkedIn icon then appears next to their name.", where: "Our Team page, next to the person (leadership and the wider team).", placeholder: "https://www.linkedin.com/in/..." },
       { kind: "toggle", name: "isLeadership", label: "Leadership", help: "Feature on the home and About pages." },
       { kind: "toggle", name: "isPublished", label: "Show on website", default: true },
     ],

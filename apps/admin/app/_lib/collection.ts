@@ -19,7 +19,13 @@ export function cleanValues(fields: Field[], raw: Record<string, unknown>): Reco
   for (const f of fields) {
     const v = raw[f.name];
     switch (f.kind) {
-      case "text": case "textarea": case "url": out[f.name] = typeof v === "string" ? v.trim() : ""; break;
+      case "text": case "textarea": out[f.name] = typeof v === "string" ? v.trim() : ""; break;
+      case "url": {
+        // Accept "linkedin.com/in/name" by adding https://. Site paths, mailto: and tel: stay as typed.
+        const u = typeof v === "string" ? v.trim() : "";
+        out[f.name] = u && !/^(https?:\/\/|\/|mailto:|tel:|#)/i.test(u) ? `https://${u}` : u;
+        break;
+      }
       case "slug": out[f.name] = slugify(typeof v === "string" ? v : ""); break;
       case "richtext": out[f.name] = cleanHtml(typeof v === "string" ? v : ""); break;
       case "number": out[f.name] = Number(v) || 0; break;
