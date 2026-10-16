@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { ArrowDown, ArrowUp, Plus, Trash2 } from "lucide-react";
 import { defaultsFor, type Field } from "@northville/content";
 import { ImageField } from "./MediaPicker";
@@ -20,7 +20,8 @@ export function FieldEditor({ fields, value, onChange, pageLinks = [] }: { field
 }
 
 function FieldRow({ field: f, value, onChange, parent, pageLinks }: { field: Field; value: unknown; onChange: (v: unknown) => void; parent: Values; pageLinks: string[] }) {
-  const id = `f-${f.name}-${Math.random().toString(36).slice(2, 7)}`;
+  const uid = useId();
+  const id = `f-${f.name}-${uid.replace(/:/g, "")}`;
   const label = (
     <label htmlFor={id} className="block text-sm font-semibold text-navy">
       {f.label}{f.required && <span className="text-red-600"> *</span>}
