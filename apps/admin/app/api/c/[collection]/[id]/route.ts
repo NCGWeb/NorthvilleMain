@@ -31,8 +31,8 @@ export const PUT = handle(async (req: Request, { params }: Ctx) => {
     }
   }
 
-  const children = def.children ? (data[def.children.field.name] as Record<string, unknown>[] | undefined) : undefined;
-  if (def.children) delete data[def.children.field.name];
+  // Child rows (a service's offerings) are not part of the main fields, so clean them separately.
+  const children = def.children ? (cleanValues([def.children.field], body)[def.children.field.name] as Record<string, unknown>[]) : undefined;
   const row = await prisma.$transaction(async (tx) => {
     const t = tx as never as Record<string, ReturnType<typeof delegate>>;
     const updated = await t[def.model].update({ where: { id }, data });

@@ -1,5 +1,5 @@
 import { prisma } from "@northville/database";
-import type { BlockData } from "@northville/content";
+import { UI_TEXT_DEFAULTS, type BlockData } from "@northville/content";
 
 /** Read helpers for the public website. The admin never goes through these. */
 
@@ -8,6 +8,7 @@ export type Settings = {
   contact: { email: string; hrEmail: string; phones: string[]; whatsappNumber: string; whatsappMessage: string; officeHours: string; responseTime: string; enquiryRecipient: string };
   social: { linkedin: string; instagram: string; facebook: string; x: string; youtube: string };
   navigation: { mainLinks: { label: string; href: string }[]; ctaLabel: string; ctaHref: string; footerLinks: { label: string; href: string }[]; legalLinks: { label: string; href: string }[] };
+  text: Record<string, string>;
   announcement: { enabled: boolean; badge: string | null; title: string; text: string; href: string };
   seo: { titleSuffix: string; description: string; image: string | null };
 };
@@ -21,6 +22,8 @@ export async function getSettings(): Promise<Settings> {
     contact: d("contact", { email: "", hrEmail: "", phones: [], whatsappNumber: "", whatsappMessage: "", officeHours: "", responseTime: "", enquiryRecipient: "" }),
     social: d("social", { linkedin: "", instagram: "", facebook: "", x: "", youtube: "" }),
     navigation: d("navigation", { mainLinks: [], ctaLabel: "", ctaHref: "", footerLinks: [], legalLinks: [] }),
+    // Editors can blank a box to get the standard wording back.
+    text: { ...UI_TEXT_DEFAULTS, ...Object.fromEntries(Object.entries((byKey.text as Record<string, string>) ?? {}).filter(([, v]) => typeof v === "string" && v.trim())) },
     announcement: d("announcement", { enabled: false, badge: null, title: "", text: "", href: "" }),
     seo: d("seo", { titleSuffix: "", description: "", image: null }),
   };

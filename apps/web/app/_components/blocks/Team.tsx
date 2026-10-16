@@ -1,52 +1,95 @@
 import Image from "next/image";
-import { getTeam } from "@northville/core";
+import { getSettings, getTeam } from "@northville/core";
 import { LinkedinIcon } from "../Icons";
 import { Reveal } from "../Reveal";
 import { Section, SectionHead } from "../ui";
 import { str, type BlockProps } from "./types";
 
+type Person = Awaited<ReturnType<typeof getTeam>>[number];
+
+function Portrait({ p, sizes, ratio = "aspect-[4/5]" }: { p: Person; sizes: string; ratio?: string }) {
+  return (
+    <div className={`relative ${ratio} overflow-hidden bg-mist`}>
+      {p.photoUrl && <Image src={p.photoUrl} alt={`${p.name}, ${p.designation}`} fill sizes={sizes} className="object-cover object-top" />}
+    </div>
+  );
+}
+
+/** Featured people: large portrait, name, role, credentials and a short bio. */
+function Leaders({ people, linkedinLabel }: { people: Person[]; linkedinLabel: string }) {
+  return (
+    <div className="grid gap-14 md:grid-cols-2 md:gap-12">
+      {people.map((p) => (
+        <Reveal key={p.id}>
+          <article>
+            <Portrait p={p} sizes="(min-width:768px) 520px, 100vw" ratio="aspect-[5/6]" />
+            <div className="mt-6 border-t border-navy pt-5">
+              <h3 className="text-2xl text-navy">{p.name}</h3>
+              <p className="mt-1 font-medium text-royal">{p.designation}</p>
+              {p.background && <p className="mt-1 text-sm text-muted">{p.background}</p>}
+              {p.bio && <p className="mt-4 max-w-md leading-relaxed text-ink/80">{p.bio}</p>}
+              {p.linkedinUrl && (
+                <a href={p.linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} on LinkedIn`} className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-steel hover:text-royal">
+                  <LinkedinIcon size={15} /> {linkedinLabel}
+                </a>
+              )}
+            </div>
+          </article>
+        </Reveal>
+      ))}
+    </div>
+  );
+}
+
+function Members({ people }: { people: Person[] }) {
+  return (
+    <Reveal>
+      <div className="grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-3 lg:grid-cols-4">
+        {people.map((p) => (
+          <article key={p.id} className="group">
+            <Portrait p={p} sizes="(min-width:1024px) 256px, (min-width:768px) 33vw, 46vw" />
+            <div className="mt-4 border-t border-line pt-3 transition-colors group-hover:border-navy">
+              <h3 className="font-sans text-[1.0625rem] font-semibold tracking-normal text-navy">{p.name}</h3>
+              <p className="mt-0.5 text-sm font-medium text-royal">{p.designation}</p>
+              {p.background && <p className="mt-1.5 text-[13px] leading-snug text-muted">{p.background}</p>}
+            </div>
+          </article>
+        ))}
+      </div>
+    </Reveal>
+  );
+}
+
 export async function Team({ data, first }: BlockProps) {
   const leadershipOnly = str(data.show) === "leadership";
-  const people = await getTeam(leadershipOnly);
-  if (!people.length) return null;
+  const [everyone, s] = await Promise.all([getTeam(false), getSettings()]);
+  if (!everyone.length) return null;
+  const leaders = everyone.filter((p) => p.isLeadership);
+  const rest = everyone.filter((p) => !p.isLeadership);
+
+  if (leadershipOnly) {
+    return (
+      <Section>
+        <SectionHead heading={str(data.heading)} intro={str(data.intro)} as={first ? "h1" : "h2"} />
+        <Leaders people={leaders} linkedinLabel={s.text.connectLinkedin} />
+      </Section>
+    );
+  }
   return (
-    <Section>
-      <SectionHead heading={str(data.heading)} intro={str(data.intro)} as={first ? "h1" : "h2"} />
-      {leadershipOnly ? (
-        <div className="grid gap-12 md:grid-cols-2">
-          {people.map((p) => (
-            <Reveal key={p.id}>
-              <article className="grid gap-6 sm:grid-cols-5">
-                <div className="relative aspect-[4/5] overflow-hidden bg-mist sm:col-span-2">
-                  {p.photoUrl && <Image src={p.photoUrl} alt={`${p.name}, ${p.designation}`} fill sizes="(min-width:640px) 200px, 100vw" className="object-cover object-top" />}
-                </div>
-                <div className="flex flex-col sm:col-span-3">
-                  <h3 className="text-xl text-navy">{p.name}</h3>
-                  <p className="mt-1 text-[15px] font-medium text-royal">{p.designation}</p>
-                  {p.background && <p className="mt-0.5 text-sm text-muted">{p.background}</p>}
-                  {p.bio && <p className="mt-4 text-[15px] leading-relaxed text-ink/80">{p.bio}</p>}
-                  {p.linkedinUrl && <a href={p.linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} on LinkedIn`} className="mt-auto inline-flex w-fit items-center gap-2 pt-4 text-sm font-medium text-steel hover:text-royal"><LinkedinIcon size={15} /> LinkedIn</a>}
-                </div>
-              </article>
-            </Reveal>
-          ))}
-        </div>
-      ) : (
-        <Reveal>
-          <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4">
-            {people.map((p) => (
-              <article key={p.id}>
-                <div className="relative aspect-[4/5] overflow-hidden bg-mist">
-                  {p.photoUrl && <Image src={p.photoUrl} alt={`${p.name}, ${p.designation}`} fill sizes="(min-width:768px) 260px, 46vw" className="object-cover object-top" />}
-                </div>
-                <h3 className="mt-3 font-sans text-base font-semibold tracking-normal text-navy">{p.name}</h3>
-                <p className="text-sm text-royal">{p.designation}</p>
-                {p.background && <p className="mt-0.5 text-sm text-muted">{p.background}</p>}
-              </article>
-            ))}
+    <>
+      <Section>
+        <SectionHead heading={str(data.heading)} intro={str(data.intro)} as={first ? "h1" : "h2"} />
+        {leaders.length > 0 && <Leaders people={leaders} linkedinLabel={s.text.connectLinkedin} />}
+      </Section>
+      {rest.length > 0 && (
+        <Section tone="mist">
+          <div className="mb-10 flex items-end justify-between border-b border-navy pb-3">
+            <h2 className="text-[1.75rem] text-navy sm:text-[2rem]">{s.text.widerTeam}</h2>
+            <p className="text-sm text-muted">{s.text.widerTeamNote.replace("{count}", String(rest.length))}</p>
           </div>
-        </Reveal>
+          <Members people={rest} />
+        </Section>
       )}
-    </Section>
+    </>
   );
 }

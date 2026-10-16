@@ -24,20 +24,20 @@ export async function Footer() {
           </div>
         </div>
         <nav aria-label="Footer" className="md:col-span-2">
-          <p className="text-xs font-semibold  text-sky">Company</p>
+          <p className="text-xs font-semibold  text-sky">{s.text.footerCompany}</p>
           <ul className="mt-4 space-y-2.5 text-[15px] text-white/75">
             {s.navigation.footerLinks.map((l) => (<li key={l.href}><SmartLink href={l.href} className="transition hover:text-white">{l.label}</SmartLink></li>))}
           </ul>
         </nav>
         <nav aria-label="Services" className="md:col-span-3">
-          <p className="text-xs font-semibold  text-sky">Services</p>
+          <p className="text-xs font-semibold  text-sky">{s.text.footerServices}</p>
           <ul className="mt-4 space-y-2.5 text-[15px] text-white/75">
             {services.slice(0, 8).map((sv) => (<li key={sv.slug}><Link href={`/services/${sv.slug}`} className="transition hover:text-white">{sv.name}</Link></li>))}
-            <li><Link href="/services" className="font-medium text-white">All services</Link></li>
+            <li><Link href="/services" className="font-medium text-white">{s.text.footerAllServices}</Link></li>
           </ul>
         </nav>
         <div className="md:col-span-3">
-          <p className="text-xs font-semibold  text-sky">Get in touch</p>
+          <p className="text-xs font-semibold  text-sky">{s.text.footerContact}</p>
           <ul className="mt-4 space-y-2.5 text-[15px] text-white/75">
             {s.contact.email && <li><a href={`mailto:${s.contact.email}`} className="hover:text-white">{s.contact.email}</a></li>}
             {s.contact.phones.map((p) => (<li key={p}><a href={`tel:${p.replace(/\s/g, "")}`} className="hover:text-white">{p}</a></li>))}
@@ -47,7 +47,7 @@ export async function Footer() {
       </div>
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-6 text-sm text-white/55 sm:flex-row sm:items-center sm:justify-between sm:px-8">
-          <p>© {new Date().getFullYear()} {s.general.copyright}. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {s.general.copyright}. {s.text.footerRights}</p>
           <ul className="flex gap-6">
             {s.navigation.legalLinks.map((l) => (<li key={l.href}><SmartLink href={l.href} className="hover:text-white">{l.label}</SmartLink></li>))}
           </ul>

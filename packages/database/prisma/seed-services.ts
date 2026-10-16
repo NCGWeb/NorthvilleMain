@@ -81,7 +81,7 @@ export const SERVICES: SeedService[] = [
       { title: "Virtual CFO & Management Reporting", tagline: "A CFO who owns the reporting cadence.", body: "Virtual CFOs own your reporting cadence and flag issues early, so leadership decides with current numbers.", bullets: ["Monthly MIS and board reporting", "Investor reporting and cash flow oversight"] },
       { title: "Bookkeeping, AR/AP & Treasury", tagline: "Clean books, closed on time.", body: "Day-to-day accounting, reconciliations and a disciplined monthly close.", bullets: ["Day-to-day accounting and reconciliations", "Receivables and payables management", "Treasury operations"] },
       { title: "Financial Planning & Analysis", tagline: "See ahead, not just back.", body: "Rolling forecasts, scenario models and variance analysis that show where the business is heading.", bullets: ["Budgets and rolling forecasts", "Scenario and sensitivity modelling", "Variance analysis"] },
-      { title: "Cost & Working Capital Optimization", tagline: "Release cash already inside the business.", body: "We review the cost base and working capital, renegotiate vendor terms and reset payment terms.", bullets: ["Structured cost base reviews", "Vendor renegotiation", "Receivables, payables and inventory cycles"] },
+      { title: "Cost & Working Capital Optimisation", tagline: "Release cash already inside the business.", body: "We review the cost base and working capital, renegotiate vendor terms and reset payment terms.", bullets: ["Structured cost base reviews", "Vendor renegotiation", "Receivables, payables and inventory cycles"] },
     ],
     faqs: [
       { question: "What is a virtual CFO?", answer: "A virtual CFO is a senior finance professional who works with your leadership team part-time or on a retainer. You get reporting, forecasting and financial guidance without the cost of a full-time CFO." },
@@ -149,7 +149,7 @@ export const SERVICES: SeedService[] = [
     ],
   },
   {
-    slug: "people-organization", name: "People & Organization", group: "Operations and Risk",
+    slug: "people-organization", name: "People & Organisation", group: "Operations and Risk",
     summary: "ESOP design and administration that retains the people you cannot afford to lose.",
     image: "/seed/services/people.jpeg",
     tagline: "The organisation your next stage requires.",

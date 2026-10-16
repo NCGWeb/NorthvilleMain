@@ -49,14 +49,14 @@ export default async function ServicePage({ params }: Props) {
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/30" />
         <div className="relative mx-auto w-full max-w-[1120px] px-6 pb-12 pt-14 lg:px-8 md:pb-16">
           <nav aria-label="Breadcrumb" className="mb-6 text-sm text-white/60">
-            <Link href="/" className="hover:text-white">Home</Link> / <Link href="/services" className="hover:text-white">Services</Link>
+            <Link href="/" className="hover:text-white">{settings.text.crumbHome}</Link> / <Link href="/services" className="hover:text-white">{settings.text.crumbServices}</Link>
             {service.group && <> / <span>{service.group.name}</span></>}
           </nav>
           <h1 className="max-w-4xl text-balance text-3xl leading-[1.1] sm:text-4xl md:text-5xl">{service.heroHeading || service.name}</h1>
           {(service.heroSubtext || service.summary) && <p className="mt-4 max-w-xl text-[1.0625rem] leading-relaxed text-white/80">{service.heroSubtext || service.summary}</p>}
           <div className="mt-7 flex flex-wrap gap-3">
-            <Button href="/contact">Discuss this service</Button>
-            {wa && <a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-sm border border-white/50 px-5 py-2.5 text-sm font-semibold hover:bg-white/10"><WhatsappIcon size={16} /> WhatsApp us</a>}
+            <Button href="/contact">{settings.text.discussService}</Button>
+            {wa && <a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-sm border border-white/50 px-5 py-2.5 text-sm font-semibold hover:bg-white/10"><WhatsappIcon size={16} /> {settings.text.whatsappUs}</a>}
           </div>
         </div>
       </section>
@@ -68,7 +68,7 @@ export default async function ServicePage({ params }: Props) {
       )}
 
       <Section>
-        <h2 className="mb-2 border-b border-navy pb-3 text-xl text-navy">What we do</h2>
+        <h2 className="mb-2 border-b border-navy pb-3 text-xl text-navy">{settings.text.whatWeDo}</h2>
         <ol className="divide-y divide-line">
           {service.offerings.map((o) => (
             <li key={o.id}>
@@ -93,7 +93,7 @@ export default async function ServicePage({ params }: Props) {
         </ol>
       </Section>
 
-      <FaqList items={faqs} heading="Frequently asked questions" />
+      <FaqList items={faqs} heading={settings.text.faqHeading} />
       {contactStrip && <BlockRenderer blocks={[{ id: "s", type: contactStrip.type, data: contactStrip.data }]} />}
       <JsonLd data={ld} />
     </>

@@ -42,7 +42,7 @@ export const BLOCKS: BlockDef[] = [
     label: "Impact numbers",
     description: "Big figures with captions, for example 834+ projects. Add as many as you like (up to 6). The layout adjusts by itself, and the numbers count up when a visitor scrolls to them.",
     fields: [
-      { kind: "text", name: "heading", label: "Heading", default: "Our impact in numbers", help: "Optional line above the numbers.", maxLength: 100 } as Field,
+      { kind: "text", name: "heading", label: "Heading", default: "Our Impact in Numbers", help: "Optional line above the numbers.", maxLength: 100 } as Field,
       {
         kind: "list", name: "items", label: "Numbers", itemLabel: "Number", max: 6,
         help: "Use Add number to include another one. Use the arrows to change the order.",
@@ -130,7 +130,7 @@ export const BLOCKS: BlockDef[] = [
     label: "Questions and answers",
     description: "Common questions with answers. Also helps the page show up in Google search results.",
     fields: [
-      { kind: "text", name: "heading", label: "Heading", default: "Frequently asked questions", maxLength: 100 } as Field,
+      { kind: "text", name: "heading", label: "Heading", default: "Frequently Asked Questions", maxLength: 100 } as Field,
       {
         kind: "list", name: "items", label: "Questions", itemLabel: "Question",
         fields: [
@@ -146,7 +146,7 @@ export const BLOCKS: BlockDef[] = [
     description: "Shows what clients say about the firm.",
     pullsFrom: { label: "Testimonials", href: "/testimonials" },
     fields: [
-      { kind: "text", name: "heading", label: "Heading", default: "What they say about us", maxLength: 100 } as Field,
+      { kind: "text", name: "heading", label: "Heading", default: "What They Say About Us", maxLength: 100 } as Field,
     ],
   },
   {

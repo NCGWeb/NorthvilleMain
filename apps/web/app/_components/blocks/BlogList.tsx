@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getCategories, getPosts } from "@northville/core";
+import { getCategories, getPosts, getSettings } from "@northville/core";
 import { Section, SectionHead } from "../ui";
 import { str, type BlockProps } from "./types";
 
@@ -8,20 +8,20 @@ export const dateFmt = (d: Date | null) => (d ? new Intl.DateTimeFormat("en-IN",
 
 export async function BlogList({ data, category }: BlockProps & { category?: string }) {
   const count = Number(data.count) || undefined;
-  const [posts, cats] = await Promise.all([getPosts({ take: count, categorySlug: category }), getCategories()]);
+  const [posts, cats, s] = await Promise.all([getPosts({ take: count, categorySlug: category }), getCategories(), getSettings()]);
   return (
     <Section>
       <SectionHead heading={str(data.heading)} />
       {data.showFilters !== false && cats.length > 0 && (
         <nav aria-label="Categories" className="mb-10 flex flex-wrap gap-2">
-          <Link href="/blog" className={`rounded-none px-4 py-1.5 text-sm font-medium ${!category ? "bg-navy text-white" : "bg-mist text-steel hover:bg-sky"}`}>All</Link>
+          <Link href="/blog" className={`rounded-none px-4 py-1.5 text-sm font-medium ${!category ? "bg-navy text-white" : "bg-mist text-steel hover:bg-sky"}`}>{s.text.blogAll}</Link>
           {cats.map((c) => (
             <Link key={c.id} href={`/blog/category/${c.slug}`} className={`rounded-none px-4 py-1.5 text-sm font-medium ${category === c.slug ? "bg-navy text-white" : "bg-mist text-steel hover:bg-sky"}`}>{c.name}</Link>
           ))}
         </nav>
       )}
       {posts.length === 0 ? (
-        <p className="rounded-none border border-line bg-mist p-8 text-lg text-muted">New articles are on the way. Check back soon.</p>
+        <p className="rounded-none border border-line bg-mist p-8 text-lg text-muted">{s.text.blogEmpty}</p>
       ) : (
         <div className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((p) => (

@@ -58,7 +58,7 @@ async function main() {
     general: {
       siteName: "Northville Consulting Group",
       tagline: "Integrated strategy, finance and transaction advisory",
-      footerBlurb: "Northville Consulting Group helps businesses grow, backed by dedicated experts across Finance, Legal, Marketing and Strategy. Think of us as an extension of your team.",
+      footerBlurb: "Northville Consulting Group helps businesses grow, backed by dedicated experts across finance, legal, marketing and strategy. Think of us as an extension of your team.",
       logo: "/seed/brand/logo-white-trim.png",
       copyright: "Northville Consulting Group",
     },
@@ -82,23 +82,23 @@ async function main() {
       mainLinks: [
         { label: "About", href: "/about" },
         { label: "Services", href: "/services" },
-        { label: "Our team", href: "/team" },
+        { label: "Our Team", href: "/team" },
         { label: "Insights", href: "/blog" },
         { label: "Careers", href: "/careers" },
       ],
-      ctaLabel: "Contact us",
+      ctaLabel: "Contact Us",
       ctaHref: "/contact",
       footerLinks: [
         { label: "About", href: "/about" },
         { label: "Services", href: "/services" },
-        { label: "Our team", href: "/team" },
+        { label: "Our Team", href: "/team" },
         { label: "Insights", href: "/blog" },
         { label: "Careers", href: "/careers" },
         { label: "Contact", href: "/contact" },
       ],
       legalLinks: [
-        { label: "Privacy policy", href: "/privacy-policy" },
-        { label: "Terms and conditions", href: "/terms-conditions" },
+        { label: "Privacy Policy", href: "/privacy-policy" },
+        { label: "Terms and Conditions", href: "/terms-conditions" },
       ],
     },
     announcement: {
@@ -208,7 +208,7 @@ async function main() {
   const author = await prisma.user.findUnique({ where: { email: adminEmail } });
   await prisma.blogPost.create({
     data: {
-      slug: "when-does-a-startup-need-a-virtual-cfo", title: "When does a startup need a virtual CFO?", status: "DRAFT",
+      slug: "when-does-a-startup-need-a-virtual-cfo", title: "When Does a Startup Need a Virtual CFO?", status: "DRAFT",
       excerpt: "Bookkeeping keeps you compliant. A virtual CFO helps you decide. Here is how to tell when it is time to add one.",
       categoryId: cats[0].id, authorId: author?.id,
       body: "<h2>The signs</h2><p>Founders usually add finance leadership later than they should. Three signals say it is time: you cannot answer how much runway you have without opening a spreadsheet, investors ask for numbers you assemble by hand, or pricing and hiring decisions are made on instinct.</p><h2>What a virtual CFO does</h2><p>A virtual CFO owns the reporting cadence, builds the forecast, watches cash and gives leadership a clear view before decisions are made. It is the same thinking as a full-time CFO at a fraction of the cost.</p><p><em>This is a sample draft. Replace it with your own article before publishing.</em></p>",
@@ -217,13 +217,13 @@ async function main() {
 
   // ---- Shared sections (written once, used on many pages)
   const sharedContact = await prisma.sharedBlock.create({
-    data: { name: "Contact us strip", type: "ctaBand", data: { heading: "Contact us for enquiries", text: "Tell us what you are working on. We reply within a few hours on working days.", primaryLabel: "Get in touch", primaryHref: "/contact", showWhatsapp: true, tone: "dark" } },
+    data: { name: "Contact Us Strip", type: "ctaBand", data: { heading: "Contact Us for Enquiries", text: "Tell us what you are working on. We reply within a few hours on working days.", primaryLabel: "Get in Touch", primaryHref: "/contact", showWhatsapp: true, tone: "dark" } },
   });
   const sharedCareers = await prisma.sharedBlock.create({
-    data: { name: "Careers strip", type: "ctaBand", data: { heading: "Be a part of the team", text: "We are building a diverse team of talented professionals across finance, law, marketing and strategy.", primaryLabel: "Say hi", primaryHref: "/careers", showWhatsapp: false, tone: "light" } },
+    data: { name: "Careers Strip", type: "ctaBand", data: { heading: "Be a Part of the Team", text: "We are building a diverse team of talented professionals across finance, law, marketing and strategy.", primaryLabel: "Say Hi", primaryHref: "/careers", showWhatsapp: false, tone: "light" } },
   });
   const sharedFollow = await prisma.sharedBlock.create({
-    data: { name: "Follow us strip", type: "socialBand", data: { heading: "Want updates about us?", text: "Follow us on social media for insights and news from the team." } },
+    data: { name: "Follow Us Strip", type: "socialBand", data: { heading: "Want Updates About Us?", text: "Follow us on social media for insights and news from the team." } },
   });
   const g = await prisma.siteSetting.findUniqueOrThrow({ where: { key: "general" } });
   await prisma.siteSetting.update({ where: { key: "general" }, data: { value: { ...(g.value as object), servicePageCta: sharedContact.id } } });
@@ -236,27 +236,27 @@ async function main() {
       seoTitle: "Strategy, CFO, M&A and Tax Advisory for Scaling Businesses",
       seoDescription: "Northville Consulting Group is an integrated strategy, finance and transaction advisory partner for scaling businesses in India, the US, the UK and the UAE.",
       blocks: [
-        b("hero", { size: "large", heading: "Your success is the only metric that matters to us.", subtext: "An integrated strategy, finance and transaction advisory partner for established and scaling businesses across India, the U.S., the UK and the UAE. Senior expertise, embedded with your leadership team.", primaryLabel: "Talk to us", primaryHref: "/contact", secondaryLabel: "Explore services", secondaryHref: "/services", image: null }),
-        b("stats", { heading: "Our impact in numbers", items: [{ value: "834", suffix: "+", label: "Projects" }, { value: "15", suffix: "+", label: "Industries" }, { value: "100", suffix: "+", label: "Investor connects" }] }),
-        b("servicesOverview", { heading: "One team across strategy, finance, deals, tax and law", intro: "Our experts in finance, taxation, law, marketing and strategy act as an extension of your team, so you get the right expertise without building it all in-house.", layout: "compact" }),
-        b("team", { heading: "Meet the founders", intro: "", show: "leadership" }),
-        b("testimonials", { heading: "What they say about us" }),
-        b("logoWall", { heading: "Our clients", wall: "CLIENT" }),
-        b("logoWall", { heading: "Our top investor connects", wall: "INVESTOR" }),
-        b("logoWall", { heading: "Institutional collaborations", wall: "INSTITUTION" }),
-        b("logoWall", { heading: "Network firms", wall: "NETWORK" }),
+        b("hero", { size: "large", heading: "Your Success Is the Only Metric That Matters to Us.", subtext: "An integrated strategy, finance and transaction advisory partner for established and scaling businesses across India, the US, the UK and the UAE. Senior expertise, embedded with your leadership team.", primaryLabel: "Talk to Us", primaryHref: "/contact", secondaryLabel: "Explore Services", secondaryHref: "/services", image: null }),
+        b("stats", { heading: "Our Impact in Numbers", items: [{ value: "834", suffix: "+", label: "Projects" }, { value: "15", suffix: "+", label: "Industries" }, { value: "100", suffix: "+", label: "Investor Connects" }] }),
+        b("servicesOverview", { heading: "One Team Across Strategy, Finance, Deals, Tax and Law", intro: "Our experts in finance, taxation, law, marketing and strategy act as an extension of your team, so you get the right expertise without building it all in-house.", layout: "compact" }),
+        b("team", { heading: "Meet the Founders", intro: "", show: "leadership" }),
+        b("testimonials", { heading: "What They Say About Us" }),
+        b("logoWall", { heading: "Our Clients", wall: "CLIENT" }),
+        b("logoWall", { heading: "Our Top Investor Connects", wall: "INVESTOR" }),
+        b("logoWall", { heading: "Institutional Collaborations", wall: "INSTITUTION" }),
+        b("logoWall", { heading: "Network Firms", wall: "NETWORK" }),
         shared(sharedContact.id), shared(sharedCareers.id), shared(sharedFollow.id),
       ],
     },
     {
-      slug: "about", title: "About us",
-      seoTitle: "About Northville Consulting Group",
+      slug: "about", title: "About Us",
+      seoTitle: "About Us",
       seoDescription: "An integrated strategy, finance and transaction advisory partner working embedded with leadership across strategy, finance, transactions, tax, legal and marketing.",
       blocks: [
-        b("hero", { size: "compact", heading: "Who are we?", subtext: "Northville Consulting Group is an integrated strategy, finance and transaction advisory partner for established and scaling businesses.", primaryLabel: "", primaryHref: "", secondaryLabel: "", secondaryHref: "", image: null }),
-        b("imageText", { heading: "Senior expertise without the cost of a large in-house function", body: "We work embedded with leadership across strategy, finance, transactions, tax, legal and marketing. One accountable team, so advice on a deal, a tax position and a contract is designed together instead of handed between firms.", bullets: [], image: "/seed/services/people.jpeg", imageSide: "right", ctaLabel: "See our services", ctaHref: "/services" }),
-        b("cardGrid", { heading: "Mission and vision", intro: "", items: [{ title: "Our mission", body: "Turning strategic vision into real-world performance, and helping business leaders solve challenges and drive sustained growth." }, { title: "Our vision", body: "Empower. Enable. Innovate. We empower our clients, enable their growth and drive innovative solutions." }] }),
-        b("team", { heading: "The people behind the firm", intro: "", show: "leadership" }),
+        b("hero", { size: "compact", heading: "Who Are We?", subtext: "Northville Consulting Group is an integrated strategy, finance and transaction advisory partner for established and scaling businesses.", primaryLabel: "", primaryHref: "", secondaryLabel: "", secondaryHref: "", image: null }),
+        b("imageText", { heading: "Senior Expertise Without the Cost of a Large In-House Function", body: "We work embedded with leadership across strategy, finance, transactions, tax, legal and marketing. One accountable team, so advice on a deal, a tax position and a contract is designed together instead of handed between firms.", bullets: [], image: "/seed/services/people.jpeg", imageSide: "right", ctaLabel: "See Our Services", ctaHref: "/services" }),
+        b("cardGrid", { heading: "Mission and Vision", intro: "", items: [{ title: "Our Mission", body: "Turning strategic vision into real-world performance, and helping business leaders solve challenges and drive sustained growth." }, { title: "Our Vision", body: "Empower. Enable. Innovate. We empower our clients, enable their growth and drive innovative solutions." }] }),
+        b("team", { heading: "The People Behind the Firm", intro: "", show: "leadership" }),
         shared(sharedContact.id), shared(sharedCareers.id),
       ],
     },
@@ -265,39 +265,39 @@ async function main() {
       seoTitle: "Consulting Services: Strategy, CFO, M&A, Tax, Legal and More",
       seoDescription: "Twelve service lines under one roof: strategy, CFO services, transaction advisory, fundraising, tax, legal, people, marketing, data, risk, PMO and family business.",
       blocks: [
-        b("hero", { size: "compact", heading: "Crafting your business's future", subtext: "Personalised consulting to help businesses launch, scale and transact, with a focus on startups and growing companies.", primaryLabel: "Talk to us", primaryHref: "/contact", secondaryLabel: "", secondaryHref: "", image: null }),
-        b("servicesOverview", { heading: "Everything under one roof", intro: "Pick a service to see exactly what we cover.", layout: "detailed" }),
+        b("hero", { size: "compact", heading: "Crafting Your Business's Future", subtext: "Personalised consulting to help businesses launch, scale and transact, with a focus on startups and growing companies.", primaryLabel: "Talk to Us", primaryHref: "/contact", secondaryLabel: "", secondaryHref: "", image: null }),
+        b("servicesOverview", { heading: "Everything Under One Roof", intro: "Pick a service to see exactly what we cover.", layout: "detailed" }),
         shared(sharedContact.id), shared(sharedCareers.id),
       ],
     },
     {
-      slug: "team", title: "Our team",
+      slug: "team", title: "Our Team",
       seoTitle: "Our Team: Chartered Accountants, Lawyers and Strategists",
       seoDescription: "Meet the multidisciplinary Northville team: chartered accountants, company secretaries, corporate lawyers, valuation experts, analysts and digital strategists.",
       blocks: [
-        b("hero", { size: "compact", heading: "Meet the team", subtext: "A multidisciplinary group spanning law, finance, management and digital strategy, focused on measurable results for clients.", primaryLabel: "", primaryHref: "", secondaryLabel: "", secondaryHref: "", image: null }),
-        b("team", { heading: "The people you will work with", intro: "Chartered accountants, company secretaries, corporate lawyers, valuation experts, financial analysts and digital marketing strategists. Responsive, detail-oriented and tailored to your business.", show: "everyone" }),
+        b("hero", { size: "compact", heading: "Meet the Team", subtext: "A multidisciplinary group spanning law, finance, management and digital strategy, focused on measurable results for clients.", primaryLabel: "", primaryHref: "", secondaryLabel: "", secondaryHref: "", image: null }),
+        b("team", { heading: "The People You Will Work With", intro: "Chartered accountants, company secretaries, corporate lawyers, valuation experts, financial analysts and digital marketing strategists. Responsive, detail-oriented and tailored to your business.", show: "everyone" }),
         shared(sharedCareers.id), shared(sharedContact.id),
       ],
     },
     {
       slug: "careers", title: "Careers",
-      seoTitle: "Careers at Northville Consulting Group",
+      seoTitle: "Careers",
       seoDescription: "Join a diverse team of finance, legal, marketing and strategy professionals. See open roles or send us your CV.",
       blocks: [
-        b("hero", { size: "compact", heading: "Be a part of the team", subtext: "Join a diverse team of talented professionals building the finance, legal, marketing and strategy partner growing businesses rely on.", primaryLabel: "Say hi", primaryHref: "/contact", secondaryLabel: "", secondaryHref: "", image: null }),
-        b("jobList", { heading: "Open roles", emptyText: "There are no open roles right now, but we always like to hear from strong people. Email your CV to the address below and tell us how you would like to contribute." }),
+        b("hero", { size: "compact", heading: "Be a Part of the Team", subtext: "Join a diverse team of talented professionals building the finance, legal, marketing and strategy partner growing businesses rely on.", primaryLabel: "Say Hi", primaryHref: "/contact", secondaryLabel: "", secondaryHref: "", image: null }),
+        b("jobList", { heading: "Open Roles", emptyText: "There are no open roles right now, but we always like to hear from strong people. Email your CV to the address below and tell us how you would like to contribute." }),
         shared(sharedFollow.id),
       ],
     },
     {
       slug: "contact", title: "Contact",
-      seoTitle: "Contact Northville Consulting Group",
+      seoTitle: "Contact Us",
       seoDescription: "Start a conversation with our team. Offices in New Delhi and Mumbai. Call, email, WhatsApp or send an enquiry.",
       blocks: [
-        b("hero", { size: "compact", heading: "Let's begin a conversation", subtext: "Tell us about your business and what you need. A senior member of the team will reply.", primaryLabel: "", primaryHref: "", secondaryLabel: "", secondaryHref: "", image: null }),
-        b("contactForm", { heading: "Send us an enquiry", intro: "Share a few details and we will come back to you.", successMessage: "Thank you. We will get back to you shortly." }),
-        b("offices", { heading: "Visit us", intro: "" }),
+        b("hero", { size: "compact", heading: "Let's Begin a Conversation", subtext: "Tell us about your business and what you need. A senior member of the team will reply.", primaryLabel: "", primaryHref: "", secondaryLabel: "", secondaryHref: "", image: null }),
+        b("contactForm", { heading: "Send Us an Enquiry", intro: "Share a few details and we will come back to you.", successMessage: "Thank you. We will get back to you shortly." }),
+        b("offices", { heading: "Visit Us", intro: "" }),
       ],
     },
     {
@@ -305,25 +305,25 @@ async function main() {
       seoTitle: "Insights on Finance, Strategy, M&A and Tax",
       seoDescription: "Practical articles from the Northville team on finance, strategy, deals, fundraising, tax and compliance.",
       blocks: [
-        b("hero", { size: "compact", heading: "Ideas for growing businesses", subtext: "Practical thinking on finance, strategy, deals and compliance from the Northville team.", primaryLabel: "", primaryHref: "", secondaryLabel: "", secondaryHref: "", image: null }),
+        b("hero", { size: "compact", heading: "Ideas for Growing Businesses", subtext: "Practical thinking on finance, strategy, deals and compliance from the Northville team.", primaryLabel: "", primaryHref: "", secondaryLabel: "", secondaryHref: "", image: null }),
         b("blogList", { heading: "", count: 0, showFilters: true }),
         shared(sharedContact.id),
       ],
     },
     {
-      slug: "privacy-policy", title: "Privacy policy", footer: true,
+      slug: "privacy-policy", title: "Privacy Policy", footer: true,
       seoTitle: "Privacy Policy", seoDescription: "How Northville Consulting Group collects, uses and protects personal information.",
       blocks: [
-        b("hero", { size: "compact", heading: "Privacy policy", subtext: "", primaryLabel: "", primaryHref: "", secondaryLabel: "", secondaryHref: "", image: null }),
-        b("textSection", { heading: "", align: "left", body: "<p><strong>Draft for legal review.</strong> The Wix site carried only a template here. Replace this with your reviewed policy.</p><h2>Information we collect</h2><p>When you contact us through the website we collect the name, email address, phone number and message you provide. We also collect standard, anonymous usage data to understand how the site is used.</p><h2>How we use it</h2><p>We use your details only to respond to your enquiry and to provide our services. We do not sell personal information.</p><h2>Sharing</h2><p>We share information only with service providers who help us run the website and email, and where the law requires.</p><h2>Your choices</h2><p>You can ask us to access, correct or delete the information we hold about you by emailing hello@northvilleconsultinggroup.com.</p>" }),
+        b("hero", { size: "compact", heading: "Privacy Policy", subtext: "", primaryLabel: "", primaryHref: "", secondaryLabel: "", secondaryHref: "", image: null }),
+        b("textSection", { heading: "", align: "left", body: "<p><strong>Draft for legal review.</strong> The Wix site carried only a template here. Replace this with your reviewed policy.</p><h2>Information We Collect</h2><p>When you contact us through the website we collect the name, email address, phone number and message you provide. We also collect standard, anonymous usage data to understand how the site is used.</p><h2>How We Use It</h2><p>We use your details only to respond to your enquiry and to provide our services. We do not sell personal information.</p><h2>Sharing</h2><p>We share information only with service providers who help us run the website and email, and where the law requires.</p><h2>Your Choices</h2><p>You can ask us to access, correct or delete the information we hold about you by emailing hello@northvilleconsultinggroup.com.</p>" }),
       ],
     },
     {
-      slug: "terms-conditions", title: "Terms and conditions", footer: true,
+      slug: "terms-conditions", title: "Terms and Conditions", footer: true,
       seoTitle: "Terms and Conditions", seoDescription: "The terms that apply when you use the Northville Consulting Group website.",
       blocks: [
-        b("hero", { size: "compact", heading: "Terms and conditions", subtext: "", primaryLabel: "", primaryHref: "", secondaryLabel: "", secondaryHref: "", image: null }),
-        b("textSection", { heading: "", align: "left", body: "<p><strong>Draft for legal review.</strong> The Wix site carried only a template here. Replace this with your reviewed terms.</p><h2>Use of this website</h2><p>The content on this site is general information, not professional advice. Engagements are governed by a written agreement between you and Northville Consulting Group.</p><h2>Intellectual property</h2><p>All content, logos and design on this site belong to Northville Consulting Group or its licensors and may not be reused without permission.</p><h2>Liability</h2><p>We take care to keep the site accurate but give no warranty that it is complete or current.</p>" }),
+        b("hero", { size: "compact", heading: "Terms and Conditions", subtext: "", primaryLabel: "", primaryHref: "", secondaryLabel: "", secondaryHref: "", image: null }),
+        b("textSection", { heading: "", align: "left", body: "<p><strong>Draft for legal review.</strong> The Wix site carried only a template here. Replace this with your reviewed terms.</p><h2>Use of This Website</h2><p>The content on this site is general information, not professional advice. Engagements are governed by a written agreement between you and Northville Consulting Group.</p><h2>Intellectual Property</h2><p>All content, logos and design on this site belong to Northville Consulting Group or its licensors and may not be reused without permission.</p><h2>Liability</h2><p>We take care to keep the site accurate but give no warranty that it is complete or current.</p>" }),
       ],
     },
   ];

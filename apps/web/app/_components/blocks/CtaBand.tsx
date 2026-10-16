@@ -18,7 +18,7 @@ export async function CtaBand({ data }: BlockProps) {
           {str(data.primaryLabel) && <Button href={str(data.primaryHref) || "/contact"} variant={dark ? "light" : "primary"}>{str(data.primaryLabel)}</Button>}
           {wa && (
             <a href={whatsappUrl(s.contact.whatsappNumber, s.contact.whatsappMessage)} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-2 rounded-sm border px-5 py-2.5 text-sm font-semibold transition-colors ${dark ? "border-white/50 text-white hover:bg-white/10" : "border-navy/25 text-navy hover:border-royal"}`}>
-              <WhatsappIcon size={15} /> WhatsApp us
+              <WhatsappIcon size={15} /> {s.text.whatsappUs}
             </a>
           )}
         </div>

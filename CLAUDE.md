@@ -49,12 +49,28 @@ Local sign in: `SUPERADMIN_EMAIL` and `SUPERADMIN_INITIAL_PASSWORD` from `.env`.
 
 ## Deployment (follows parent rules)
 
-- GitHub: `NCGWeb/NorthvilleMain` via SSH alias `github-ncgweb` (key `~/.ssh/id_ed25519_ncgweb`). Remote is `git@github-ncgweb:NCGWeb/NorthvilleMain.git`. Repo-local `user.name` is `NCGWeb`. Never push from another account.
-- Two Vercel projects from this one repo (new Vercel account, not yet created): `web` (root `apps/web`) and `admin` (root `apps/admin`). Deploy by pushing to `main`. Never run a bare `vercel` command. A hook blocks it.
-- Vercel does not run migrations. After a schema change run `npm run db:deploy --workspace=@northville/database` against the production `DIRECT_URL`.
-- Production env vars: `DATABASE_URL`, `DIRECT_URL`, `ADMIN_SESSION_JWT_SECRET`, `SUPERADMIN_EMAIL`, `SUPERADMIN_INITIAL_PASSWORD`, `BLOB_READ_WRITE_TOKEN`, `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `REVALIDATE_SECRET`, `SITE_URL`, `WEB_URL` (admin only), plus the same `DATABASE_URL`/`REVALIDATE_SECRET` on both.
-- Domain is attached later by the owner in Vercel.
-- Commit and push only when asked. Run `npm run typecheck` first.
+Live setup (created 2026-10-16):
+
+| Thing | Value |
+|---|---|
+| GitHub | `NCGWeb/NorthvilleMain`, alias `github-ncgweb`, key `~/.ssh/id_ed25519_ncgweb`, repo-local `user.name` NCGWeb, email `NCGWeb@users.noreply.github.com` |
+| Vercel team | slug `northville`, id `team_mRdVq9OL0sBsh0WCGG4WNezS`, Hobby plan (non-commercial per Vercel terms, move to Pro before real launch) |
+| Web project | `northville-web` (`prj_OOBiyfHWSonqSZzJiqDXm4fUOSEj`), root `apps/web`, https://northville-web.vercel.app |
+| Admin project | `northville-admin` (`prj_lcuCpj7NAL47o7QpuEeI7sAiiOQK`), root `apps/admin`, https://northville-admin.vercel.app |
+| Database | Neon (Vercel Marketplace), Singapore. Integration injects `DATABASE_URL` (pooled) and `DATABASE_URL_UNPOOLED` into both projects. `prisma.config.ts` reads `DIRECT_URL` then `DATABASE_URL_UNPOOLED` |
+| Images | Blob store `northville-public` (public, `sin1`), connected to admin only (`BLOB_READ_WRITE_TOKEN`). Repo images live in `apps/web/public/seed` |
+| Email | Resend. `RESEND_API_KEY` on the web project only (the contact form is the only sender) |
+
+Rules:
+- Deploy by pushing to `main`. Both projects build from the push. Never run a bare `vercel` command (a hook blocks it). For API or CLI work use the token: `VERCEL_TOKEN` in the root `.env`, with `--token "$VERCEL_TOKEN" --scope northville`. Parse it with `grep`, never `source .env` (the file has unquoted values with spaces). Never print secrets.
+- Neon values on Vercel are marked sensitive, so they cannot be read back. For migrations and seeding use `PROD_DIRECT_URL` (unpooled Neon string) in the root `.env`:
+  `cd packages/database && DIRECT_URL="$PROD" DATABASE_URL="$PROD" npx prisma migrate deploy` then `npx tsx prisma/seed.ts` (seed skips content that exists; `SEED_RESET=1` wipes content, never run that against production).
+- Vercel does not run migrations. After any schema change run the migrate command above against production BEFORE pushing, because the web build reads the database during static generation.
+- Production secrets live in `.secrets/prod.env` (gitignored): `ADMIN_SESSION_JWT_SECRET`, `REVALIDATE_SECRET`, `SUPERADMIN_INITIAL_PASSWORD`. The local `.env` has separate dev values.
+- Production owner login: `SUPERADMIN_EMAIL` (admin@northvilleconsultinggroup.com) with the password in `.secrets/prod.env`. Change it in the admin after first sign in.
+- Env split: web needs `DATABASE_URL`, `REVALIDATE_SECRET`, `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `CONTACT_TO_EMAIL`, `SITE_URL`. Admin needs `DATABASE_URL`, `ADMIN_SESSION_JWT_SECRET`, `SUPERADMIN_EMAIL`, `REVALIDATE_SECRET`, `WEB_URL`, `BLOB_READ_WRITE_TOKEN`. After changing an env var, redeploy (env changes do not affect existing deployments).
+- Domain is attached later by the owner. Then update `SITE_URL` (web) and `WEB_URL` (admin) and redeploy.
+- Commit and push only when asked. Run `npm run typecheck` first. If typecheck shows `Duplicate identifier` from `.next/types/* 2.ts` files, those are stale Finder copies: delete files with " 2" or " 3" in their names under `apps/*/.next/types`.
 
 ## Status and open items
 

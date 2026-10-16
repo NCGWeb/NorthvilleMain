@@ -1,14 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { getServiceGroups } from "@northville/core";
+import { getServiceGroups, getSettings } from "@northville/core";
 import { Reveal } from "../Reveal";
 import { Section, SectionHead, TextLink } from "../ui";
 import { str, type BlockProps } from "./types";
 
 /** One block, two layouts. The text always comes from the Services list. */
 export async function ServicesOverview({ data }: BlockProps) {
-  const groups = (await getServiceGroups()).filter((g) => g.services.length > 0);
+  const [allGroups, cfg] = await Promise.all([getServiceGroups(), getSettings()]);
+  const groups = allGroups.filter((g) => g.services.length > 0);
   const detailed = str(data.layout) === "detailed";
   return (
     <Section tone={detailed ? "white" : "mist"}>
@@ -32,7 +33,7 @@ export async function ServicesOverview({ data }: BlockProps) {
                         <h3 className="text-xl text-navy group-hover:text-royal">{s.name}</h3>
                         <p className="mt-2 max-w-xl text-[15px] leading-relaxed text-ink/80">{s.summary}</p>
                         {s.offerings.length > 0 && <p className="mt-3 max-w-xl text-sm text-muted">{s.offerings.map((o) => o.title).join("  |  ")}</p>}
-                        <span className="mt-4 inline-flex items-center gap-1.5 text-[15px] font-semibold text-royal">Learn more <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" aria-hidden /></span>
+                        <span className="mt-4 inline-flex items-center gap-1.5 text-[15px] font-semibold text-royal">{cfg.text.learnMore} <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" aria-hidden /></span>
                       </div>
                     </Link>
                   </li>
@@ -56,7 +57,7 @@ export async function ServicesOverview({ data }: BlockProps) {
               </div>
             ))}
           </div>
-          <div className="mt-10"><TextLink href="/services">See all services</TextLink></div>
+          <div className="mt-10"><TextLink href="/services">{cfg.text.seeAllServices}</TextLink></div>
         </Reveal>
       )}
     </Section>

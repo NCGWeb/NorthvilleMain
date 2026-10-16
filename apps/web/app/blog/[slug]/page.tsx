@@ -40,9 +40,9 @@ export default async function PostPage({ params }: Props) {
     <>
       <header className="mesh pt-16 text-white">
         <div className="mx-auto max-w-[760px] px-6 pb-12 pt-14 lg:px-8 md:pb-16">
-          <nav aria-label="Breadcrumb" className="mb-6 text-sm text-white/60"><Link href="/blog" className="hover:text-white">Insights</Link>{post.category && <> / <Link href={`/blog/category/${post.category.slug}`} className="hover:text-white">{post.category.name}</Link></>}</nav>
+          <nav aria-label="Breadcrumb" className="mb-6 text-sm text-white/60"><Link href="/blog" className="hover:text-white">{s.text.blogInsights}</Link>{post.category && <> / <Link href={`/blog/category/${post.category.slug}`} className="hover:text-white">{post.category.name}</Link></>}</nav>
           <h1 className="max-w-3xl text-balance text-3xl leading-[1.15] sm:text-4xl md:text-[2.75rem]">{post.title}</h1>
-          <p className="mt-6 text-sm text-white/65">{[post.author?.name, dateFmt(post.publishedAt), `${mins} min read`].filter(Boolean).join(" · ")}</p>
+          <p className="mt-6 text-sm text-white/65">{[post.author?.name, dateFmt(post.publishedAt), `${mins} ${s.text.blogMinRead}`].filter(Boolean).join(" · ")}</p>
         </div>
       </header>
       <article className="mx-auto max-w-[760px] px-6 py-12 lg:px-8 md:py-14">
@@ -54,13 +54,13 @@ export default async function PostPage({ params }: Props) {
         <div className="prose-nv" dangerouslySetInnerHTML={{ __html: html }} />
         {post.author && (
           <aside className="mt-14 flex items-start gap-4 rounded-none border border-line bg-mist p-6">
-            <div><p className="text-xs font-semibold  text-royal">Written by</p><p className="font-serif text-xl text-navy">{post.author.name}</p>{post.author.bio && <p className="mt-1 text-sm text-muted">{post.author.bio}</p>}</div>
+            <div><p className="text-xs font-semibold  text-royal">{s.text.blogWrittenBy}</p><p className="font-serif text-xl text-navy">{post.author.name}</p>{post.author.bio && <p className="mt-1 text-sm text-muted">{post.author.bio}</p>}</div>
           </aside>
         )}
       </article>
       {related.length > 0 && (
         <Section tone="mist">
-          <h2 className="mb-6 text-xl text-navy">Keep reading</h2>
+          <h2 className="mb-6 text-xl text-navy">{s.text.blogKeepReading}</h2>
           <div className="grid gap-6 md:grid-cols-3">
             {related.map((r) => (
               <Link key={r.id} href={`/blog/${r.slug}`} className="rounded-none border border-line bg-white p-6 transition ">
@@ -70,7 +70,7 @@ export default async function PostPage({ params }: Props) {
               </Link>
             ))}
           </div>
-          <div className="mt-10"><Button href="/blog" variant="outline">All insights</Button></div>
+          <div className="mt-10"><Button href="/blog" variant="outline">{s.text.blogAllInsights}</Button></div>
         </Section>
       )}
       <JsonLd data={ld} />

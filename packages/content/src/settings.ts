@@ -109,4 +109,58 @@ export const SETTING_GROUPS: SettingGroup[] = [
   },
 ];
 
-export const SETTING_BY_KEY = Object.fromEntries(SETTING_GROUPS.map((g) => [g.key, g]));
+export const SETTING_BY_KEY: Record<string, SettingGroup> = Object.fromEntries(SETTING_GROUPS.map((g) => [g.key, g]));
+
+/**
+ * Small pieces of wording the website shows (buttons, footer headings, form labels).
+ * Every one is editable under Site settings, Wording, so nothing visible is hard-coded.
+ */
+export const UI_TEXT: { name: string; label: string; where: string; default: string }[] = [
+  { name: "footerCompany", label: "Footer: first column heading", where: "Footer, links column.", default: "Company" },
+  { name: "footerServices", label: "Footer: services column heading", where: "Footer, services column.", default: "Services" },
+  { name: "footerContact", label: "Footer: contact column heading", where: "Footer, contact column.", default: "Get in Touch" },
+  { name: "footerAllServices", label: "Footer: link to all services", where: "Footer, services column.", default: "All Services" },
+  { name: "footerRights", label: "Footer: rights line", where: "Very bottom of every page, after the year and company name.", default: "All rights reserved." },
+  { name: "seeAllServices", label: "Link under the services overview", where: "Home page services section.", default: "See All Services" },
+  { name: "learnMore", label: "Learn more link", where: "Services page, under each service.", default: "Learn More" },
+  { name: "crumbHome", label: "Breadcrumb: Home", where: "Top of service pages.", default: "Home" },
+  { name: "crumbServices", label: "Breadcrumb: Services", where: "Top of service pages.", default: "Services" },
+  { name: "whatWeDo", label: "Service page: offerings heading", where: "Service pages, above the list of offerings.", default: "What We Do" },
+  { name: "discussService", label: "Service page: main button", where: "Top of service pages.", default: "Discuss This Service" },
+  { name: "whatsappUs", label: "WhatsApp button text", where: "Service pages and contact strips.", default: "WhatsApp Us" },
+  { name: "faqHeading", label: "Questions and answers heading on service pages", where: "Bottom of service pages.", default: "Frequently Asked Questions" },
+  { name: "widerTeam", label: "Our Team page: second heading", where: "Our Team page, above the full team.", default: "The Wider Team" },
+  { name: "widerTeamNote", label: "Our Team page: line beside the second heading", where: "Our Team page. Use {count} for the number of people.", default: "{count} specialists across finance, strategy, marketing and legal" },
+  { name: "connectLinkedin", label: "Leadership: LinkedIn link text", where: "Our Team page and About page.", default: "Connect on LinkedIn" },
+  { name: "blogAll", label: "Blog: show everything filter", where: "Blog page, category filter.", default: "All" },
+  { name: "blogEmpty", label: "Blog: message when there are no posts", where: "Blog page.", default: "New articles are on the way. Check back soon." },
+  { name: "blogInsights", label: "Blog: breadcrumb to the blog", where: "Top of every blog post.", default: "Insights" },
+  { name: "blogMinRead", label: "Blog: reading time word", where: "Top of every blog post, after the number of minutes.", default: "min read" },
+  { name: "blogWrittenBy", label: "Blog: author label", where: "Bottom of every blog post.", default: "Written By" },
+  { name: "blogKeepReading", label: "Blog: related posts heading", where: "Bottom of every blog post.", default: "Keep Reading" },
+  { name: "blogAllInsights", label: "Blog: link back to all posts", where: "Bottom of every blog post.", default: "All Insights" },
+  { name: "formName", label: "Contact form: name label", where: "Contact page.", default: "Your Name" },
+  { name: "formEmail", label: "Contact form: email label", where: "Contact page.", default: "Email" },
+  { name: "formPhone", label: "Contact form: phone label", where: "Contact page.", default: "Phone" },
+  { name: "formMessage", label: "Contact form: message label", where: "Contact page.", default: "How Can We Help?" },
+  { name: "formSend", label: "Contact form: send button", where: "Contact page.", default: "Send Enquiry" },
+  { name: "formSending", label: "Contact form: button while sending", where: "Contact page.", default: "Sending..." },
+  { name: "formError", label: "Contact form: error message", where: "Contact page, if sending fails.", default: "Something went wrong. Please try again or email us." },
+  { name: "officesGetInTouch", label: "Offices: contact box heading", where: "Contact page.", default: "Get in Touch" },
+  { name: "officesMaps", label: "Offices: map link text", where: "Contact page, under each address.", default: "Open in Maps" },
+  { name: "jobApply", label: "Careers: apply button", where: "Careers page, next to each open role.", default: "Apply" },
+  { name: "notFoundHeading", label: "Page not found: heading", where: "The page shown for a wrong address.", default: "This Page Has Moved or Does Not Exist" },
+  { name: "notFoundText", label: "Page not found: text", where: "The page shown for a wrong address.", default: "Try the home page or tell us what you were looking for." },
+  { name: "notFoundHome", label: "Page not found: home button", where: "The page shown for a wrong address.", default: "Back Home" },
+  { name: "notFoundContact", label: "Page not found: contact button", where: "The page shown for a wrong address.", default: "Contact Us" },
+];
+
+export const UI_TEXT_DEFAULTS: Record<string, string> = Object.fromEntries(UI_TEXT.map((t) => [t.name, t.default]));
+
+SETTING_GROUPS.push({
+  key: "text",
+  label: "Wording (buttons, headings and small text)",
+  description: "The small pieces of text around the website: footer headings, button labels, form labels and the page-not-found message. Leave a box empty to use the standard wording.",
+  fields: UI_TEXT.map((t) => ({ kind: "text" as const, name: t.name, label: t.label, where: t.where, placeholder: t.default })),
+});
+SETTING_BY_KEY.text = SETTING_GROUPS[SETTING_GROUPS.length - 1];

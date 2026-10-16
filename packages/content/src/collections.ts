@@ -135,7 +135,7 @@ export const COLLECTIONS: CollectionDef[] = [
     fields: [
       { kind: "text", name: "title", label: "Role title", required: true },
       { kind: "text", name: "location", label: "Location" },
-      { kind: "text", name: "type", label: "Type", default: "Full time" } as Field,
+      { kind: "text", name: "type", label: "Type", default: "Full-Time" } as Field,
       { kind: "textarea", name: "description", label: "About the role", rows: 6 },
       { kind: "text", name: "applyEmail", label: "Apply to email", help: "Empty uses the Careers email in Site settings." },
       { kind: "toggle", name: "isOpen", label: "Accepting applications", default: true },

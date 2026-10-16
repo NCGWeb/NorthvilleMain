@@ -21,7 +21,7 @@ export async function JobList({ data }: BlockProps) {
                 <p className="mt-1 text-sm text-muted">{[j.location, j.type].filter(Boolean).join(" · ")}</p>
                 {j.description && <p className="mt-3 max-w-2xl text-ink/80">{j.description}</p>}
               </div>
-              <Button href={`mailto:${j.applyEmail || s.contact.hrEmail}?subject=${encodeURIComponent(`Application: ${j.title}`)}`}>Apply</Button>
+              <Button href={`mailto:${j.applyEmail || s.contact.hrEmail}?subject=${encodeURIComponent(`Application: ${j.title}`)}`}>{s.text.jobApply}</Button>
             </li>
           ))}
         </ul>
