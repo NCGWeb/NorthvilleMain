@@ -14,7 +14,7 @@ export function SmartLink({ href, className, children, ...rest }: { href: string
   return <Link href={href} className={className} {...rest}>{children}</Link>;
 }
 
-const base = "inline-flex items-center gap-2 rounded-sm px-5 py-2.5 text-sm font-semibold transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2";
+const base = "group lift inline-flex items-center gap-2 rounded-sm px-5 py-2.5 text-sm font-semibold transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2";
 const variants = {
   primary: "bg-royal text-white hover:bg-navy focus-visible:outline-royal",
   light: "bg-white text-navy hover:bg-sky focus-visible:outline-white",
@@ -26,7 +26,7 @@ export function Button({ href, variant = "primary", children, arrow = true }: { 
   return (
     <SmartLink href={href} className={`${base} ${variants[variant]}`}>
       {children}
-      {arrow && <ArrowRight size={15} aria-hidden />}
+      {arrow && <ArrowRight size={15} aria-hidden className="transition-transform duration-200 group-hover:translate-x-0.5" />}
     </SmartLink>
   );
 }

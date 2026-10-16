@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getCategories, getPosts, getSettings } from "@northville/core";
+import { Reveal } from "../Reveal";
 import { Section, SectionHead, TextLink } from "../ui";
 import { str, type BlockProps } from "./types";
 
@@ -26,19 +27,21 @@ export async function BlogList({ data, category }: BlockProps & { category?: str
         <p className="rounded-none border border-line bg-mist p-8 text-lg text-muted">{s.text.blogEmpty}</p>
       ) : (
         <div className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-          {posts.map((p) => (
-            <article key={p.id} className="group overflow-hidden rounded-none border border-line bg-white transition ">
+          {posts.map((p, i) => (
+            <Reveal key={p.id} delay={(i % 3) * 100}>
+            <article className="group">
               <Link href={`/blog/${p.slug}`} className="block">
-                <div className="relative aspect-[16/10] bg-gradient-to-br from-navy to-royal">
-                  {p.coverUrl && <Image src={p.coverUrl} alt="" fill sizes="(min-width:1024px) 30vw, (min-width:640px) 45vw, 100vw" className="object-cover" />}
+                <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-navy to-royal">
+                  {p.coverUrl && <Image src={p.coverUrl} alt="" fill sizes="(min-width:1024px) 30vw, (min-width:640px) 45vw, 100vw" className="zoom-img object-cover" />}
                 </div>
                 <div className="pt-4">
-                  <p className="text-xs font-semibold  text-royal">{p.category?.name ?? "Insights"} <span className="text-muted">· {dateFmt(p.publishedAt)}</span></p>
+                  <p className="text-sm font-medium text-royal">{p.category?.name ?? "Insights"} <span className="text-muted">· {dateFmt(p.publishedAt)}</span></p>
                   <h3 className="mt-2 text-xl leading-snug text-navy group-hover:text-royal">{p.title}</h3>
                   <p className="mt-2 line-clamp-3 text-[15px] text-ink/75">{p.excerpt}</p>
                 </div>
               </Link>
             </article>
+            </Reveal>
           ))}
         </div>
       )}

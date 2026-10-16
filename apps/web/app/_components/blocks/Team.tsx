@@ -10,7 +10,7 @@ type Person = Awaited<ReturnType<typeof getTeam>>[number];
 function Portrait({ p, sizes, ratio = "aspect-[4/5]" }: { p: Person; sizes: string; ratio?: string }) {
   return (
     <div className={`relative ${ratio} overflow-hidden bg-mist`}>
-      {p.photoUrl && <Image src={p.photoUrl} alt={`${p.name}, ${p.designation}`} fill sizes={sizes} className="object-cover object-top" />}
+      {p.photoUrl && <Image src={p.photoUrl} alt={`${p.name}, ${p.designation}`} fill sizes={sizes} className="zoom-img object-cover object-top" />}
     </div>
   );
 }
@@ -19,9 +19,9 @@ function Portrait({ p, sizes, ratio = "aspect-[4/5]" }: { p: Person; sizes: stri
 function Leaders({ people, linkedinLabel }: { people: Person[]; linkedinLabel: string }) {
   return (
     <div className="grid gap-14 md:grid-cols-2 md:gap-12">
-      {people.map((p) => (
-        <Reveal key={p.id}>
-          <article>
+      {people.map((p, i) => (
+        <Reveal key={p.id} variant={i % 2 === 0 ? "left" : "right"} delay={i * 80}>
+          <article className="group">
             <Portrait p={p} sizes="(min-width:768px) 520px, 100vw" ratio="aspect-[5/6]" />
             <div className="mt-6 border-t border-navy pt-5">
               <h3 className="text-2xl text-navy">{p.name}</h3>
@@ -43,10 +43,11 @@ function Leaders({ people, linkedinLabel }: { people: Person[]; linkedinLabel: s
 
 function Members({ people }: { people: Person[] }) {
   return (
-    <Reveal>
+    <div>
       <div className="grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-3 lg:grid-cols-4">
-        {people.map((p) => (
-          <article key={p.id} className="group">
+        {people.map((p, i) => (
+          <Reveal key={p.id} delay={(i % 4) * 90}>
+          <article className="group">
             <Portrait p={p} sizes="(min-width:1024px) 256px, (min-width:768px) 33vw, 46vw" />
             <div className="mt-4 border-t border-line pt-3 transition-colors group-hover:border-navy">
               <div className="flex items-start justify-between gap-2">
@@ -59,9 +60,10 @@ function Members({ people }: { people: Person[] }) {
               {p.background && <p className="mt-1.5 text-[13px] leading-snug text-muted">{p.background}</p>}
             </div>
           </article>
+          </Reveal>
         ))}
       </div>
-    </Reveal>
+    </div>
   );
 }
 

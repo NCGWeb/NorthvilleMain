@@ -21,7 +21,7 @@ export function ImageText({ data }: BlockProps) {
           </div>
           {image && (
             <div className={`md:col-span-7 ${left ? "md:order-1" : ""}`}>
-              <div className="relative aspect-[3/2] overflow-hidden bg-mist"><Image src={image} alt={str(data.heading)} fill sizes="(min-width:768px) 640px, 100vw" className="object-cover" /></div>
+              <Reveal variant="wipe"><div className="group relative aspect-[3/2] overflow-hidden bg-mist"><Image src={image} alt={str(data.heading)} fill sizes="(min-width:768px) 640px, 100vw" className="zoom-img object-cover" /></div></Reveal>
             </div>
           )}
         </div>

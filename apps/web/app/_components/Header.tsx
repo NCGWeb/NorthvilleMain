@@ -22,7 +22,7 @@ export async function Header({ barHeight = 0 }: { barHeight?: number }) {
           {links.map((l) =>
             l.href === "/services" ? (
               <div key={l.href} className="group relative">
-                <Link href="/services" className="flex items-center gap-1 rounded-none px-3 py-2 text-sm font-medium text-white/85 transition hover:text-white">
+                <Link href="/services" className="link-u mx-1.5 flex items-center gap-1 px-1 py-2 text-sm font-medium text-white/85 hover:text-white">
                   {l.label} <ChevronDown size={14} className="transition group-hover:rotate-180 group-focus-within:rotate-180" aria-hidden />
                 </Link>
                 <div className="invisible absolute left-1/2 top-full w-[860px] -translate-x-1/2 pt-3 opacity-0 transition duration-150 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
@@ -44,7 +44,7 @@ export async function Header({ barHeight = 0 }: { barHeight?: number }) {
                 </div>
               </div>
             ) : (
-              <SmartLink key={l.href} href={l.href} className="rounded-none px-3 py-2 text-sm font-medium text-white/85 transition hover:text-white">{l.label}</SmartLink>
+              <SmartLink key={l.href} href={l.href} className="link-u mx-1.5 px-1 py-2 text-sm font-medium text-white/85 hover:text-white">{l.label}</SmartLink>
             ),
           )}
         </nav>
@@ -53,7 +53,7 @@ export async function Header({ barHeight = 0 }: { barHeight?: number }) {
           {s.navigation.ctaLabel && (
             <SmartLink href={s.navigation.ctaHref} className="hidden rounded-none bg-royal px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-bright sm:inline-block">{s.navigation.ctaLabel}</SmartLink>
           )}
-          <MobileMenu links={links} menu={menu} extras={s.navigation.servicesMenuLinks} ctaLabel={s.navigation.ctaLabel} ctaHref={s.navigation.ctaHref} />
+          <MobileMenu links={links} menu={menu} extras={s.navigation.servicesMenuLinks} ctaLabel={s.navigation.ctaLabel} ctaHref={s.navigation.ctaHref} logo={s.general.logo} siteName={s.general.siteName} email={s.contact.email} phone={s.contact.phones[0] ?? ""} />
         </div>
       </div>
     </HeaderShell>

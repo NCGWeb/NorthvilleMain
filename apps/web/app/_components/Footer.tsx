@@ -26,13 +26,13 @@ export async function Footer() {
         <nav aria-label="Footer" className="md:col-span-2">
           <p className="text-xs font-semibold  text-sky">{s.text.footerCompany}</p>
           <ul className="mt-4 space-y-2.5 text-[15px] text-white/75">
-            {s.navigation.footerLinks.map((l) => (<li key={l.href}><SmartLink href={l.href} className="transition hover:text-white">{l.label}</SmartLink></li>))}
+            {s.navigation.footerLinks.map((l) => (<li key={l.href}><SmartLink href={l.href} className="link-u hover:text-white">{l.label}</SmartLink></li>))}
           </ul>
         </nav>
         <nav aria-label="Services" className="md:col-span-3">
           <p className="text-xs font-semibold  text-sky">{s.text.footerServices}</p>
           <ul className="mt-4 space-y-2.5 text-[15px] text-white/75">
-            {services.slice(0, 8).map((sv) => (<li key={sv.slug}><Link href={`/services/${sv.slug}`} className="transition hover:text-white">{sv.name}</Link></li>))}
+            {services.slice(0, 8).map((sv) => (<li key={sv.slug}><Link href={`/services/${sv.slug}`} className="link-u hover:text-white">{sv.name}</Link></li>))}
             <li><Link href="/services" className="font-medium text-white">{s.text.footerAllServices}</Link></li>
           </ul>
         </nav>

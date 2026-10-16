@@ -47,7 +47,7 @@ export default async function ServicePage({ params }: Props) {
       <section className="mesh relative flex flex-col justify-end overflow-hidden pt-16 text-white" style={{ minHeight: "46svh" }}>
         {service.imageUrl && <Image src={service.imageUrl} alt="" fill priority sizes="100vw" className="object-cover opacity-25 mix-blend-luminosity" />}
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/30" />
-        <div className="relative mx-auto w-full max-w-[1120px] px-6 pb-12 pt-14 lg:px-8 md:pb-16">
+        <div className="hero-in relative mx-auto w-full max-w-[1120px] px-6 pb-12 pt-14 lg:px-8 md:pb-16">
           <nav aria-label="Breadcrumb" className="mb-6 text-sm text-white/60">
             <Link href="/" className="hover:text-white">{settings.text.crumbHome}</Link> / <Link href="/services" className="hover:text-white">{settings.text.crumbServices}</Link>
             {service.group && <> / <span>{service.group.name}</span></>}

@@ -1,4 +1,5 @@
 import { CountUp } from "../CountUp";
+import { Reveal } from "../Reveal";
 import { Section } from "../ui";
 import { arr, str, type BlockProps } from "./types";
 
@@ -19,12 +20,12 @@ export function Stats({ data }: BlockProps) {
           const num = parseFloat(raw);
           const decimals = raw.includes(".") ? raw.split(".")[1].length : 0;
           return (
-            <div key={i} className={`w-1/2 px-4 text-center sm:w-1/2 ${basis} ${i % cols !== 0 ? "md:border-l md:border-line" : ""} ${items.length === 1 ? "w-full" : ""}`}>
+            <Reveal key={i} delay={i * 120} variant="zoom" className={`w-1/2 px-4 text-center sm:w-1/2 ${basis} ${i % cols !== 0 ? "md:border-l md:border-line" : ""} ${items.length === 1 ? "w-full" : ""}`}>
               <dd className="font-serif text-5xl font-normal leading-none text-royal sm:text-6xl md:text-7xl">
                 {Number.isFinite(num) ? <CountUp value={num} decimals={decimals} prefix={str(it.prefix)} suffix={str(it.suffix)} /> : `${str(it.prefix)}${str(it.value)}${str(it.suffix)}`}
               </dd>
               <dt className="mt-3 text-[15px] text-ink">{str(it.label)}</dt>
-            </div>
+            </Reveal>
           );
         })}
       </dl>
