@@ -243,7 +243,7 @@ async function main() {
   const pages: { slug: string; title: string; seoTitle: string; seoDescription: string; blocks: Block[]; footer?: boolean }[] = [
     {
       slug: "", title: "Home",
-      seoTitle: "Northville Consulting Group",
+      seoTitle: "Northville Consulting Group | Strategy, CFO and M&A Advisory",
       seoDescription: "Northville Consulting Group is an integrated strategy, finance and transaction advisory partner for scaling businesses in India, the US, the UK and the UAE.",
       blocks: [
         b("hero", { size: "large", heading: "Your Success Is the Only Metric That Matters to Us.", subtext: "An integrated strategy, finance and transaction advisory partner for established and scaling businesses across India, the US, the UK and the UAE. Senior expertise, embedded with your leadership team.", primaryLabel: "Talk to Us", primaryHref: "/contact", secondaryLabel: "Explore Services", secondaryHref: "/services", image: null }),
