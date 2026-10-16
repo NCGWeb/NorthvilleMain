@@ -267,6 +267,7 @@ async function main() {
       blocks: [
         b("hero", { size: "compact", heading: "Crafting Your Business's Future", subtext: "Personalised consulting to help businesses launch, scale and transact, with a focus on startups and growing companies.", primaryLabel: "Talk to Us", primaryHref: "/contact", secondaryLabel: "", secondaryHref: "", image: null }),
         b("servicesOverview", { heading: "Everything Under One Roof", intro: "Pick a service to see exactly what we cover.", layout: "detailed" }),
+        b("imageText", { heading: "Startup Advisory", body: "Founderstreet is our platform for early-stage founders, from day zero to pre-seed. If you are just getting started, begin there and we will point you to the right support.", bullets: ["Built for founders at day zero to pre-seed", "Guidance and services for early-stage startups in India", "An AI assistant for founders"], image: "/seed/services/family.jpg", imageSide: "right", ctaLabel: "Visit Founderstreet", ctaHref: "https://founderstreet.in" }),
         shared(sharedContact.id), shared(sharedCareers.id),
       ],
     },
