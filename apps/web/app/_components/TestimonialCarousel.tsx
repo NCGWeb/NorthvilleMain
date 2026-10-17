@@ -44,15 +44,17 @@ export function TestimonialCarousel({ items, prev, next, goTo }: { items: Quote[
         ))}
       </ul>
       {many && (
-        <div className="mt-10 flex items-center justify-between border-t border-white/15 pt-5">
-          <div className="flex gap-2" role="group" aria-label="Choose a testimonial">
+        <div className="mt-10 flex items-center justify-between gap-4 border-t border-white/15 pt-5">
+          {/* Phones: a short counter, because a row of bars would push the arrows off screen. */}
+          <p className="font-sans text-sm text-white/70 sm:hidden" aria-hidden>{index + 1} / {items.length}</p>
+          <div className="hidden min-w-0 flex-wrap gap-x-1 sm:flex" role="group" aria-label="Choose a testimonial">
             {items.map((t, i) => (
               <button key={t.id} type="button" onClick={() => move(i)} aria-label={`${goTo} ${i + 1}`} aria-current={i === index} className="grid h-8 w-8 place-items-center focus-visible:outline-2 focus-visible:outline-white">
                 <span className={`block h-[3px] w-6 transition-colors ${i === index ? "bg-white" : "bg-white/30"}`} />
               </button>
             ))}
           </div>
-          <div className="flex gap-2">
+          <div className="flex shrink-0 gap-2">
             <button type="button" className={btn} onClick={() => move(index - 1)} disabled={index === 0} aria-label={prev}><ArrowLeft size={18} aria-hidden /></button>
             <button type="button" className={btn} onClick={() => move(index + 1)} disabled={index === items.length - 1} aria-label={next}><ArrowRight size={18} aria-hidden /></button>
           </div>
