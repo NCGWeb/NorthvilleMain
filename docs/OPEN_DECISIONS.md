@@ -18,7 +18,10 @@
 - Team photo for MS Rehsi is a "Welcome to the team" poster that names a different person (Dr. Manmohan Singh). Send a proper headshot.
 - Several team photos are inconsistent in style and crop. A matching set of headshots would lift the Our Team page.
 
+- Chatbot: review the 17 starter answers (especially fees, which are intentionally "scope based"), then check Chat questions in the admin every few weeks for unanswered questions.
+
 ## Engineering backlog
 - Rate limits are per instance (in memory). Move to Upstash if spam appears.
 - Add tests (vitest) for `cleanValues`, permission checks and the enquiry route.
 - Image optimisation of uploaded files (resize on upload).
+- Chatbot: connect an LLM provider (see docs/CHATBOT.md) once answers have been refined from real questions.

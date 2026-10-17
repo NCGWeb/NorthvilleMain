@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Newsreader } from "next/font/google";
 import Script from "next/script";
-import { getOffices, getServices, getSettings, getTeam } from "@northville/core";
+import { getChatStart, getOffices, getServices, getSettings, getTeam } from "@northville/core";
 import { Header } from "./_components/Header";
 import { Footer } from "./_components/Footer";
 import { TopBar } from "./_components/TopBar";
 import { NavProgress } from "./_components/NavProgress";
+import { ChatLoader } from "./_components/ChatLoader";
 import { JsonLd } from "./_components/JsonLd";
 import { SITE_URL, abs } from "./_lib/site";
 import "./globals.css";
@@ -28,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const [s, offices, services, leaders] = await Promise.all([getSettings(), getOffices(), getServices(), getTeam(true)]);
+  const [s, offices, services, leaders, chat] = await Promise.all([getSettings(), getOffices(), getServices(), getTeam(true), getChatStart()]);
   const sameAs = Object.values(s.social).filter(Boolean);
   const REGION: Record<string, string> = { "New Delhi": "Delhi", Delhi: "Delhi", Mumbai: "Maharashtra", Bengaluru: "Karnataka", Hyderabad: "Telangana", Pune: "Maharashtra" };
   const postal = (a: string) => a.match(/(\d{6})\s*$/)?.[1];
@@ -64,6 +65,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Header barHeight={s.announcement.enabled && s.announcement.title ? 52 : 0} />
         <main id="main" className="flex-1">{children}</main>
         <Footer />
+        {chat.enabled && <ChatLoader start={chat} />}
         <JsonLd data={org} />
         {/^G-[A-Z0-9]{4,}$/.test(s.seo.gaId) && (
           <>

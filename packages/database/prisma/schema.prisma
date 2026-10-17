@@ -297,3 +297,32 @@ model Redirect {
   toPath    String
   createdAt DateTime @default(now())
 }
+
+// ---------------------------------------------------------------------------
+// Chatbot
+// ---------------------------------------------------------------------------
+
+model ChatAnswer {
+  id         String  @id @default(cuid())
+  question   String
+  // Comma separated words or phrases that should trigger this answer.
+  keywords   String  @default("")
+  // Plain text. Can use {email} {phone} {hrEmail} {hours} {response} {offices} {founders}.
+  answer     String
+  linkLabel  String  @default("")
+  linkHref   String  @default("")
+  showAsPill Boolean @default(true)
+  isActive   Boolean @default(true)
+  sortOrder  Int     @default(0)
+}
+
+// Every message a visitor sends, so unanswered questions can be turned into new answers.
+model ChatQuestion {
+  id        String   @id @default(cuid())
+  text      String
+  answered  Boolean
+  answerId  String?
+  createdAt DateTime @default(now())
+
+  @@index([answered, createdAt])
+}

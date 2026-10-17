@@ -24,6 +24,8 @@ export type CollectionDef = {
   fields: Field[];
   /** Rows owned by a parent row (e.g. a service's offerings). Edited inside the parent form. */
   children?: { model: string; fk: string; field: Extract<Field, { kind: "list" }> };
+  /** List is for reading and deleting only (no add, no edit). */
+  readOnly?: boolean;
   /** Public path of a row, used for the "View on site" link and cache refresh. */
   publicPath?: (row: Record<string, unknown>) => string | null;
 };
@@ -167,6 +169,28 @@ export const COLLECTIONS: CollectionDef[] = [
       { kind: "toggle", name: "isFeatured", label: "Feature this post", help: "Featured posts are highlighted at the top of the blog." },
       ...seoFields(),
     ],
+  },
+  {
+    key: "chatAnswers", model: "chatAnswer", area: "settings", label: "Chatbot answers", singular: "Answer",
+    description: "The questions the website chatbot can answer. Visitors see the pills as one-tap questions and can also type their own. The bot picks the answer whose keywords best match what they wrote.",
+    where: "Chat window on every page of the website.",
+    titleField: "question", subtitleField: "answer", orderBy: { sortOrder: "asc" }, visibleField: "isActive",
+    fields: [
+      { kind: "text", name: "question", label: "Question", required: true, help: "Written the way a visitor would ask it. This is also the text on the pill.", maxLength: 100 },
+      { kind: "textarea", name: "keywords", label: "Words that trigger this answer", rows: 3, help: "Separate with commas. Include different ways people say it, for example: price, cost, fees, how much. More specific phrases win over single words." },
+      { kind: "textarea", name: "answer", label: "Answer", required: true, rows: 5, help: "Keep it to two or three short sentences. You can use {email}, {phone}, {hrEmail}, {hours}, {response}, {offices} and {founders}. They are filled in from Site settings, Offices and Team, so they never go out of date.", maxLength: 600 },
+      { kind: "text", name: "linkLabel", label: "Button text (optional)", help: "For example: See our services.", maxLength: 40 },
+      { kind: "url", name: "linkHref", label: "Button link (optional)", help: "A page on this site such as /services, or a full web address." },
+      { kind: "toggle", name: "showAsPill", label: "Show as a tap-to-ask pill", default: true, help: "Pills are the suggestions visitors can tap. The first few answers in the list are shown first." },
+      { kind: "toggle", name: "isActive", label: "Switch on", default: true, help: "Switch off to stop the bot using this answer without deleting it." },
+    ],
+  },
+  {
+    key: "chatQuestions", model: "chatQuestion", area: "settings", label: "Chat questions asked", singular: "Question", readOnly: true,
+    description: "Everything visitors have typed into the chatbot, newest first. Questions marked Not answered are where the bot had no good answer. Turn the common ones into a new answer under Chatbot answers.",
+    where: "Not shown on the website. Private.",
+    titleField: "text", subtitleField: "createdAt", orderBy: { createdAt: "desc" },
+    fields: [],
   },
   {
     key: "redirects", model: "redirect", area: "settings", label: "Redirects", singular: "Redirect",

@@ -2,15 +2,18 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { prisma } from "@northville/database";
 import { PageHeader } from "../../_components/Chrome";
+import { SavedNotice } from "../../_components/SavedNotice";
 import { requireUser } from "../../_lib/session";
 
-export default async function UsersPage() {
+export default async function UsersPage({ searchParams }: { searchParams: Promise<{ saved?: string }> }) {
+  const { saved } = await searchParams;
   const me = await requireUser("users:view");
   const users = await prisma.user.findMany({ include: { role: true }, orderBy: { name: "asc" } });
   return (
     <>
       <PageHeader title="Users" description="People who can sign in to this manager. What each person can do depends on their role."
         actions={me.permissions.includes("users:edit") && <Link href="/users/new" className="btn btn-primary"><Plus size={16} /> Add user</Link>} />
+      <SavedNotice show={saved === "1"} text="Saved." />
       <ul className="card divide-y divide-line">
         {users.map((u) => {
           const owner = process.env.SUPERADMIN_EMAIL?.toLowerCase() === u.email.toLowerCase();

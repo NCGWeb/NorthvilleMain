@@ -8,6 +8,7 @@ import bcrypt from "bcryptjs";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { DEFAULT_ROLES } from "../../content/src/permissions";
+import { CHATBOT_SETTINGS, CHAT_ANSWERS } from "./seed-chat";
 import { FAQS } from "./seed-faqs";
 import { POSTS } from "./seed-posts";
 import { GROUPS, SERVICES } from "./seed-services";
@@ -119,6 +120,11 @@ async function main() {
   for (const [key, value] of Object.entries(settings)) {
     await prisma.siteSetting.upsert({ where: { key }, update: { value }, create: { key, value } });
   }
+
+  // ---- Chatbot
+  await prisma.siteSetting.upsert({ where: { key: "chatbot" }, update: { value: CHATBOT_SETTINGS }, create: { key: "chatbot", value: CHATBOT_SETTINGS } });
+  await prisma.chatAnswer.deleteMany();
+  await prisma.chatAnswer.createMany({ data: CHAT_ANSWERS.map((a, i) => ({ question: a.question, keywords: a.keywords, answer: a.answer, linkLabel: a.linkLabel ?? "", linkHref: a.linkHref ?? "", showAsPill: a.showAsPill ?? true, sortOrder: i })) });
 
   // ---- Offices
   await prisma.office.createMany({

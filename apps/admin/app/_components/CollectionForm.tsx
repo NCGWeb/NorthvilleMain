@@ -19,16 +19,20 @@ export function CollectionForm({ collectionKey, fields, initial, id, canEdit, de
 
   const activeFields = shared ? (BLOCKS.find((b) => b.type === sharedType)?.fields ?? []) : fields;
 
-  async function save() {
+  async function save(stay = false) {
     setBusy(true); setMsg(null);
     const payload = shared !== undefined ? { name: sharedName, type: sharedType, data: values } : values;
     const res = await fetch(id ? `/api/c/${collectionKey}/${id}` : `/api/c/${collectionKey}`, { method: id ? "PUT" : "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) });
     const j = await res.json();
     setBusy(false);
     if (!res.ok) { setMsg({ ok: false, text: j.error }); return; }
-    if (!id) { router.push(`/${collectionKey}/${j.id}`); router.refresh(); return; }
-    setMsg({ ok: true, text: "Saved. The website will show this within a few seconds." });
-    router.refresh();
+    if (stay) {
+      if (!id) { router.push(`/${collectionKey}/${j.id}`); router.refresh(); return; }
+      setMsg({ ok: true, text: "Saved. The website will show this within a few seconds." });
+      router.refresh();
+      return;
+    }
+    router.push(`/${collectionKey}?saved=1`);
   }
 
   return (
@@ -49,7 +53,7 @@ export function CollectionForm({ collectionKey, fields, initial, id, canEdit, de
         {activeFields.length > 0 && <FieldEditor fields={activeFields} value={values} onChange={setValues} pageLinks={pageLinks} />}
       </div>
       <div className="sticky bottom-0 -mx-1 flex flex-wrap items-center gap-4 rounded-2xl border border-line bg-white/95 p-4 backdrop-blur">
-        {canEdit ? <button type="button" disabled={busy} onClick={save} className="btn btn-primary">{busy ? <><Spinner /> Saving...</> : id ? "Save changes" : `Add ${def.singular.toLowerCase()}`}</button> : <p className="text-sm text-muted">You can view this but not edit it.</p>}
+        {canEdit ? <><button type="button" disabled={busy} onClick={() => save(false)} className="btn btn-primary">{busy ? <><Spinner /> Saving...</> : id ? "Save changes" : `Add ${def.singular.toLowerCase()}`}</button><button type="button" disabled={busy} onClick={() => save(true)} className="btn btn-ghost">Save and keep editing</button></> : <p className="text-sm text-muted">You can view this but not edit it.</p>}
         <Link href={`/${def.key}`} className="btn btn-ghost">Back to {def.label.toLowerCase()}</Link>
         {msg && <p role="status" className={`text-sm font-medium ${msg.ok ? "text-green-700" : "text-red-700"}`}>{msg.text}</p>}
       </div>

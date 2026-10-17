@@ -23,6 +23,8 @@ const GROUPS: { title: string; items: Item[] }[] = [
   { title: "Careers and enquiries", items: [
     { href: "/jobs", label: "Open roles", area: "careers", hint: "Careers page" },
     { href: "/enquiries", label: "Enquiries", area: "enquiries", hint: "Contact form messages" },
+    { href: "/chatAnswers", label: "Chatbot answers", area: "settings", hint: "What the chatbot says" },
+    { href: "/chatQuestions", label: "Chat questions", area: "settings", hint: "What visitors asked the bot" },
   ] },
   { title: "Site", items: [
     { href: "/media", label: "Media library", area: "media", hint: "Images" },

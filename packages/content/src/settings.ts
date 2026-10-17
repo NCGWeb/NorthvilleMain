@@ -39,6 +39,18 @@ export const SETTING_GROUPS: SettingGroup[] = [
     ],
   },
   {
+    key: "chatbot",
+    label: "Chatbot",
+    description: "The chat window in the corner of the website. Edit its answers under Chatbot answers.",
+    fields: [
+      { kind: "toggle", name: "enabled", label: "Show the chatbot", default: true, where: "Corner of every page." },
+      { kind: "text", name: "title", label: "Window title", where: "Top of the chat window.", placeholder: "Ask Northville", maxLength: 40 },
+      { kind: "textarea", name: "greeting", label: "Opening message", rows: 3, where: "First message in the chat window.", maxLength: 300 },
+      { kind: "textarea", name: "fallback", label: "Message when the bot has no answer", rows: 3, help: "Point people to a human. The contact buttons are added automatically.", where: "Chat window.", maxLength: 300 },
+      { kind: "text", name: "placeholder", label: "Typing box hint", where: "Chat window.", placeholder: "Type your question", maxLength: 60 },
+    ],
+  },
+  {
     key: "contact",
     label: "Contact details",
     description: "Phone numbers, emails, WhatsApp and opening hours. Change a number here and it updates everywhere.",

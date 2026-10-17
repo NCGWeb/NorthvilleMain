@@ -9,6 +9,7 @@ export type Settings = {
   social: { linkedin: string; instagram: string; facebook: string; x: string; youtube: string };
   navigation: { mainLinks: { label: string; href: string }[]; servicesMenuLinks: { label: string; href: string }[]; ctaLabel: string; ctaHref: string; footerLinks: { label: string; href: string }[]; legalLinks: { label: string; href: string }[] };
   text: Record<string, string>;
+  chatbot: { enabled: boolean; title: string; greeting: string; fallback: string; placeholder: string };
   announcement: { enabled: boolean; badge: string | null; title: string; text: string; href: string };
   seo: { titleSuffix: string; description: string; image: string | null; googleVerification: string; gaId: string };
 };
@@ -24,6 +25,7 @@ export async function getSettings(): Promise<Settings> {
     navigation: d("navigation", { mainLinks: [], servicesMenuLinks: [], ctaLabel: "", ctaHref: "", footerLinks: [], legalLinks: [] }),
     // Editors can blank a box to get the standard wording back.
     text: { ...UI_TEXT_DEFAULTS, ...Object.fromEntries(Object.entries((byKey.text as Record<string, string>) ?? {}).filter(([, v]) => typeof v === "string" && v.trim())) },
+    chatbot: d("chatbot", { enabled: false, title: "Ask Northville", greeting: "", fallback: "", placeholder: "Type your question" }),
     announcement: d("announcement", { enabled: false, badge: null, title: "", text: "", href: "" }),
     seo: d("seo", { titleSuffix: "", description: "", image: null, googleVerification: "", gaId: "" }),
   };
