@@ -51,7 +51,7 @@ export async function Header({ barHeight = 0 }: { barHeight?: number }) {
 
         <div className="flex items-center gap-3">
           {s.navigation.ctaLabel && (
-            <SmartLink href={s.navigation.ctaHref} className={buttonClass("royal", "md", "hidden sm:inline-flex")}>{s.navigation.ctaLabel}</SmartLink>
+            <span className="hidden sm:block"><SmartLink href={s.navigation.ctaHref} className={buttonClass("royal")}>{s.navigation.ctaLabel}</SmartLink></span>
           )}
           <MobileMenu viewAll={s.text.viewAllServices} links={links} menu={menu} extras={s.navigation.servicesMenuLinks} ctaLabel={s.navigation.ctaLabel} ctaHref={s.navigation.ctaHref} logo={s.general.logo} siteName={s.general.siteName} email={s.contact.email} phone={s.contact.phones[0] ?? ""} />
         </div>

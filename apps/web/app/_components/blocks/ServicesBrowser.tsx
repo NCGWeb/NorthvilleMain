@@ -47,7 +47,7 @@ export function ServicesBrowser({ groups, learnMore, allLabel, filterLabel }: { 
                 <li key={s.id}>
                   <Reveal delay={(i % 3) * 80}>
                   <Link href={`/services/${s.slug}`} className="group grid gap-6 py-8 md:grid-cols-12">
-                    <div className="relative aspect-[16/9] overflow-hidden bg-mist md:col-span-4 md:aspect-[4/3]">
+                    <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-navy to-royal md:col-span-4 md:aspect-[4/3]">
                       {s.imageUrl && <Image src={s.imageUrl} alt={s.name} fill sizes="(min-width:768px) 360px, 100vw" loading={i < 3 ? "eager" : "lazy"} className="zoom-img object-cover" />}
                     </div>
                     <div className="md:col-span-8">

@@ -7,9 +7,13 @@ import { str, type BlockProps } from "./types";
 
 type Person = Awaited<ReturnType<typeof getTeam>>[number];
 
+/** Shown on a navy block when a person has no photo yet. Titles like Dr or CA are skipped. */
+const initials = (name: string) => name.replace(/^(dr|mr|ms|mrs|ca|cs|adv)\.?\s+/i, "").split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]!.toUpperCase()).join("");
+
 function Portrait({ p, sizes, ratio = "aspect-[4/5]", quality = 75, eager = false }: { p: Person; sizes: string; ratio?: string; quality?: number; eager?: boolean }) {
   return (
     <div className={`relative ${ratio} overflow-hidden bg-mist`}>
+      {!p.photoUrl && <div aria-hidden className="absolute inset-0 grid place-items-center bg-navy font-sans text-5xl font-semibold text-white/70 sm:text-6xl">{initials(p.name)}</div>}
       {p.photoUrl && <Image src={p.photoUrl} alt={`${p.name}, ${p.designation}`} fill sizes={sizes} quality={quality} loading={eager ? "eager" : "lazy"} className="zoom-img object-cover object-top" />}
     </div>
   );
