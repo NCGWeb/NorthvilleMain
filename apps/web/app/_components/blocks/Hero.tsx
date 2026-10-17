@@ -22,7 +22,7 @@ export function Hero({ data, first }: BlockProps) {
           <path key={i} pathLength={1} style={{ animationDelay: `${0.2 + i * 0.12}s` }} d={`M ${520 + i * 34} 0 C ${760 + i * 22} 240, ${1080 - i * 10} 360, 1440 ${120 + i * 26}`} strokeOpacity={0.16} />
         ))}
       </svg>
-      <div className={`hero-in relative mx-auto w-full max-w-[1120px] px-6 lg:px-8 ${large ? "pb-14 pt-24 md:pb-20" : "pb-10 pt-16 md:pb-14"}`}>
+      <div className={`hero-in relative mx-auto w-full max-w-[1120px] px-6 lg:px-8 ${large ? "pb-24 pt-24 md:pb-32" : "pb-10 pt-16 md:pb-14"}`}>
         <H className={`text-balance leading-[1.05] ${large ? "max-w-5xl" : "max-w-3xl"} ${large ? "text-[2.5rem] sm:text-6xl lg:text-[4.5rem]" : "text-3xl sm:text-4xl md:text-5xl"}`}>{str(data.heading)}</H>
         {str(data.subtext) && <p className={`mt-6 leading-relaxed text-white/85 ${large ? "max-w-2xl text-[1.0625rem] md:text-[1.375rem]" : "max-w-xl text-[1.0625rem] md:text-lg"}`}>{str(data.subtext)}</p>}
         {(p || s) && (
