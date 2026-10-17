@@ -7,13 +7,14 @@ export function FaqList({ items, heading }: { items: { question: string; answer:
   return (
     <Section>
       <SectionHead heading={heading} />
-      <div className="max-w-3xl divide-y divide-line rounded-none border border-line bg-white">
+      <div className="max-w-3xl border-t border-navy">
         {items.map((q, i) => (
-          <details key={i} className="group py-5">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-sans text-[1.0625rem] font-semibold text-navy">
-              {q.question}<span aria-hidden className="text-2xl text-royal transition group-open:rotate-45">+</span>
+          <details key={i} className="group border-b border-line">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-5 font-sans text-[1.0625rem] font-semibold text-navy transition-colors hover:text-royal [&::-webkit-details-marker]:hidden">
+              <span>{q.question}</span>
+              <span aria-hidden className="grid h-7 w-7 shrink-0 place-items-center border border-line text-royal"><span className="block text-xl leading-none transition-transform duration-200 group-open:rotate-45">+</span></span>
             </summary>
-            <p className="mt-3 leading-relaxed text-muted">{q.answer}</p>
+            <p className="max-w-2xl pb-6 leading-relaxed text-ink/80">{q.answer}</p>
           </details>
         ))}
       </div>
