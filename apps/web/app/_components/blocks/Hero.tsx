@@ -26,7 +26,7 @@ export function Hero({ data, first }: BlockProps) {
         <H className={`text-balance leading-[1.05] ${large ? "max-w-5xl" : "max-w-3xl"} ${large ? "text-[2.5rem] sm:text-6xl lg:text-[4.5rem]" : "text-3xl sm:text-4xl md:text-5xl"}`}>{str(data.heading)}</H>
         {str(data.subtext) && <p className={`mt-6 leading-relaxed text-white/85 ${large ? "max-w-2xl text-[1.0625rem] md:text-[1.375rem]" : "max-w-xl text-[1.0625rem] md:text-lg"}`}>{str(data.subtext)}</p>}
         {(p || s) && (
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-[37px] flex flex-wrap gap-3">
             {p && <Button href={str(data.primaryHref) || "/contact"} variant="light">{p}</Button>}
             {s && <SmartLink href={str(data.secondaryHref) || "/"} className="inline-flex items-center rounded-sm border border-white/50 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10">{s}</SmartLink>}
           </div>
