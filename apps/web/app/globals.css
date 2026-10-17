@@ -26,9 +26,10 @@ footer p { font-family: var(--font-sans); }
 
 .gradient-brand { background: linear-gradient(135deg, var(--nv-navy) 0%, #0a1a6b 55%, var(--nv-steel) 120%); }
 .gradient-text { background: linear-gradient(90deg, var(--nv-sky), var(--nv-bright)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.mesh { background:
-  radial-gradient(70% 90% at 100% 0%, rgba(61,155,233,.85) 0%, rgba(61,155,233,0) 60%),
-  linear-gradient(35deg, #00063e 0%, #08187f 32%, #2745e6 68%, #3d84f0 100%); }
+/* The blue hero. The base never changes; the lighter glow sits on its own layer so motion only moves that layer (cheap, no repaint). */
+.mesh { position: relative; isolation: isolate; overflow: hidden; background: linear-gradient(35deg, #00063e 0%, #08187f 32%, #2745e6 68%, #3d84f0 100%); }
+.mesh::before { content: ""; position: absolute; inset: -25%; z-index: -1; pointer-events: none;
+  background: radial-gradient(45% 55% at 85% 20%, rgba(61,155,233,.85) 0%, rgba(61,155,233,0) 70%); }
 
 /* Article body */
 .prose-nv { font-size: 1.0625rem; line-height: 1.75; color: #1b2240; }
@@ -52,15 +53,16 @@ footer p { font-family: var(--font-sans); }
 [data-reveal].in { opacity: 1; transform: none; }
 
 /* Hero entrance and ambient motion */
-@keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
-@keyframes drift { from { background-position: 100% 0%, 0% 100%; } to { background-position: 0% 100%, 100% 0%; } }
+/* Hero text only moves; it is never invisible, so the browser can count it as painted straight away. */
+@keyframes rise { from { transform: translateY(28px); } to { transform: none; } }
+@keyframes drift { from { transform: translate3d(-6%, 4%, 0) scale(1); } to { transform: translate3d(6%, -4%, 0) scale(1.15); } }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: no-preference) {
   .hero-in > * { animation: rise 1s cubic-bezier(.22,.61,.36,1) both; }
   .hero-in > *:nth-child(1) { animation-delay: .1s; }
   .hero-in > *:nth-child(2) { animation-delay: .28s; }
   .hero-in > *:nth-child(3) { animation-delay: .46s; }
-  .mesh { background-size: 130% 130%, 170% 170%; animation: drift 22s ease-in-out infinite alternate; }
+  .mesh::before { animation: drift 22s ease-in-out infinite alternate; will-change: transform; }
   .hero-lines path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 2.8s cubic-bezier(.22,.61,.36,1) forwards; }
 }
 

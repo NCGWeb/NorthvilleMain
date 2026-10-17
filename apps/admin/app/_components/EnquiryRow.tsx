@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-type E = { id: string; name: string; email: string; phone: string; message: string; status: string; note: string; at: string };
+type E = { id: string; name: string; email: string; phone: string; message: string; status: string; note: string; emailStatus: string; at: string };
 const LABEL: Record<string, string> = { NEW: "New", IN_PROGRESS: "In progress", DONE: "Done", SPAM: "Spam" };
 
 export function EnquiryRow({ e, canEdit, canDelete }: { e: E; canEdit: boolean; canDelete: boolean }) {
@@ -14,6 +14,8 @@ export function EnquiryRow({ e, canEdit, canDelete }: { e: E; canEdit: boolean; 
         <div><p className="font-semibold text-navy">{e.name}</p><p className="text-sm text-muted"><a className="hover:text-royal" href={`mailto:${e.email}`}>{e.email}</a>{e.phone && <> · <a className="hover:text-royal" href={`tel:${e.phone}`}>{e.phone}</a></>} · {new Date(e.at).toLocaleString("en-IN")}</p></div>
         {canEdit ? <select className="input !w-auto" value={e.status} onChange={(ev) => patch({ status: ev.target.value })}>{Object.entries(LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select> : <span className="text-sm">{LABEL[e.status]}</span>}
       </div>
+      {e.emailStatus === "failed" && <p role="alert" className="mt-3 text-sm font-semibold text-red-700">Email not sent. The email service failed when this came in, so nobody was notified. Please reply to {e.email} yourself.</p>}
+      {e.emailStatus === "skipped" && e.status !== "SPAM" && <p className="mt-3 text-sm text-amber-800">Email not sent. The email service is not set up on the server.</p>}
       {e.message && <p className="mt-3 whitespace-pre-wrap text-[15px] text-ink/85">{e.message}</p>}
       {canEdit && <input className="input mt-3" placeholder="Private note for your team" value={note} onChange={(ev) => setNote(ev.target.value)} onBlur={() => note !== e.note && patch({ note })} />}
       {canDelete && <button className="mt-3 text-xs text-red-600" onClick={async () => { if (confirm("Delete this enquiry for good?")) { await fetch(`/api/enquiries/${e.id}`, { method: "DELETE" }); router.refresh(); } }}>Delete</button>}

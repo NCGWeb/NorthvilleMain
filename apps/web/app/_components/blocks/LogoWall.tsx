@@ -11,15 +11,15 @@ export async function LogoWall({ data }: BlockProps) {
   if (!logos.length) return null;
   return (
     <Section className="[&>div]:py-10 md:[&>div]:py-12">
-      <h2 className="mb-6 text-lg text-navy">{str(data.heading)}</h2>
+      <h2 className="mb-6 text-[1.75rem] leading-[1.2] sm:text-[2rem] text-navy">{str(data.heading)}</h2>
       <ul className="grid grid-cols-3 border-l border-t border-line lg:grid-cols-5">
         {logos.map((l, i) => {
           const img = (
             <div className="relative h-20 border-b border-r border-line bg-white sm:h-24">
-              <Image src={l.imageUrl} alt={l.name} fill sizes="(min-width:1024px) 220px, 45vw" className="object-contain p-3 sm:p-5" />
+              <Image src={l.imageUrl} alt={l.name.replace(/\s*\(rename\)\s*$/i, "").trim() || "Partner logo"} fill sizes="(min-width:1024px) 220px, 45vw" className="object-contain p-3 sm:p-5" />
             </div>
           );
-          return <li key={l.id}><Reveal variant="fade" delay={(i % 5) * 70}>{l.linkUrl ? <a href={l.linkUrl} target="_blank" rel="noopener noreferrer" aria-label={l.name}>{img}</a> : img}</Reveal></li>;
+          return <li key={l.id}><Reveal variant="fade" delay={(i % 5) * 70}>{l.linkUrl ? <a href={l.linkUrl} target="_blank" rel="noopener noreferrer" aria-label={l.name.replace(/\s*\(rename\)\s*$/i, "").trim() || "Partner logo"}>{img}</a> : img}</Reveal></li>;
         })}
       </ul>
     </Section>

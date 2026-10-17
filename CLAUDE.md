@@ -69,8 +69,16 @@ Rules:
 - Production secrets live in `.secrets/prod.env` (gitignored): `ADMIN_SESSION_JWT_SECRET`, `REVALIDATE_SECRET`, `SUPERADMIN_INITIAL_PASSWORD`. The local `.env` has separate dev values.
 - Production owner login: `SUPERADMIN_EMAIL` (admin@northvilleconsultinggroup.com) with the password in `.secrets/prod.env`. Change it in the admin after first sign in.
 - Env split: web needs `DATABASE_URL`, `REVALIDATE_SECRET`, `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `CONTACT_TO_EMAIL`, `SITE_URL`. Admin needs `DATABASE_URL`, `ADMIN_SESSION_JWT_SECRET`, `SUPERADMIN_EMAIL`, `REVALIDATE_SECRET`, `WEB_URL`, `BLOB_READ_WRITE_TOKEN`. After changing an env var, redeploy (env changes do not affect existing deployments).
-- Domain is attached later by the owner. Then update `SITE_URL` (web) and `WEB_URL` (admin) and redeploy.
+- Domains (DNS at GoDaddy, nameservers external): the site is on `https://www.northvilleconsultinggroup.com` (the bare domain 308-redirects to www). `SITE_URL` (web) and `WEB_URL` (admin) are set to the www address. The admin is intended for `https://admin.northvilleconsultinggroup.com`: the domain is added to the admin project and needs a CNAME `admin` pointing to the value Vercel shows under the admin project domains (`49bd17ff462ba8e1.vercel-dns-017.com.`). `northville-admin.vercel.app` keeps working. After any env change, redeploy.
 - Commit and push only when asked. Run `npm run typecheck` first. If typecheck shows `Duplicate identifier` from `.next/types/* 2.ts` files, those are stale Finder copies: delete files with " 2" or " 3" in their names under `apps/*/.next/types`.
+
+## Checks, previews and redirects
+
+- `npm run check` = typecheck + vitest + em dash check. CI (`.github/workflows/ci.yml`) runs the same on every push.
+- Draft preview: the page editor's "Preview draft" button opens `/preview/<pageId>?t=<signed token>` on the web app (HMAC with `REVALIDATE_SECRET`, valid 2 hours, never indexed).
+- Old addresses: `apps/web/proxy.ts` redirects from the `Redirect` table (in-memory, refreshed every 60s) plus the `/post/<slug>` rule in `packages/content/src/redirects.ts`. The admin adds a redirect by itself when a service, post or category address changes or the item is deleted.
+- Uploads are resized to 2400px and compressed with sharp; width and height are saved on `Media`. SVG is not accepted. A picture still in use cannot be deleted.
+- Shared buttons: always use `Button` / `buttonClass` from `apps/web/app/_components/ui.tsx`.
 
 ## Chatbot
 

@@ -8,17 +8,26 @@ import { SavedNotice } from "../../_components/SavedNotice";
 import { delegate } from "../../_lib/collection";
 import { requireUser } from "../../_lib/session";
 
-export default async function ListPage({ params, searchParams }: { params: Promise<{ collection: string }>; searchParams: Promise<{ saved?: string }> }) {
+export default async function ListPage({ params, searchParams }: { params: Promise<{ collection: string }>; searchParams: Promise<{ saved?: string; q?: string; page?: string }> }) {
   const { collection } = await params;
-  const { saved } = await searchParams;
+  const { saved, q = "", page: pageRaw } = await searchParams;
   const def = COLLECTION_BY_KEY[collection];
   if (!def) notFound();
   const user = await requireUser(`${def.area}:view`);
   const canEdit = user.permissions.includes(`${def.area}:edit`) && !def.readOnly;
   const canDelete = user.permissions.includes(`${def.area}:delete`);
-  const rows: Record<string, unknown>[] = await delegate(def.model).findMany({ orderBy: def.orderBy });
+  // Long lists (chat questions, blog posts) are searched and shown 50 at a time.
+  const PAGE_SIZE = 50;
+  const page = Math.max(1, Number(pageRaw) || 1);
+  const where = q.trim() ? { [def.titleField]: { contains: q.trim(), mode: "insensitive" } } : undefined;
+  const [rows, total]: [Record<string, unknown>[], number] = await Promise.all([
+    delegate(def.model).findMany({ where, orderBy: def.orderBy, skip: (page - 1) * PAGE_SIZE, take: PAGE_SIZE }),
+    delegate(def.model).count({ where }),
+  ]);
+  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const href = (p: number) => `/${def.key}?${new URLSearchParams({ ...(q ? { q } : {}), page: String(p) })}`;
   const web = process.env.WEB_URL ?? "http://localhost:3000";
-  const sortable = "sortOrder" in (rows[0] ?? {}) || (def.orderBy.sortOrder !== undefined);
+  const sortable = ("sortOrder" in (rows[0] ?? {}) || def.orderBy.sortOrder !== undefined) && !q;
   const groupLabel = (r: Record<string, unknown>) => (def.groupBy ? String(r[def.groupBy] ?? "") : "");
 
   return (
@@ -26,8 +35,15 @@ export default async function ListPage({ params, searchParams }: { params: Promi
       <PageHeader title={def.label} description={def.description} where={def.where}
         actions={canEdit && <Link href={`/${def.key}/new`} className="btn btn-primary"><Plus size={16} /> Add {def.singular.toLowerCase()}</Link>} />
       <SavedNotice show={saved === "1"} />
+      {(total > PAGE_SIZE || q) && (
+        <form className="mb-4 flex gap-2" role="search">
+          <input name="q" defaultValue={q} className="input max-w-sm" placeholder={`Search ${def.label.toLowerCase()}`} aria-label={`Search ${def.label.toLowerCase()}`} />
+          <button className="btn btn-ghost">Search</button>
+          {q && <Link href={`/${def.key}`} className="btn btn-ghost">Clear</Link>}
+        </form>
+      )}
       {rows.length === 0 ? (
-        <div className="card p-10 text-center text-muted">Nothing here yet.{canEdit && <> <Link href={`/${def.key}/new`} className="font-semibold text-royal">Add the first one.</Link></>}</div>
+        <div className="card p-10 text-center text-muted">{q ? "Nothing matches that search." : "Nothing here yet."}{!q && canEdit && <> <Link href={`/${def.key}/new`} className="font-semibold text-royal">Add the first one.</Link></>}{canEdit && <> <Link href={`/${def.key}/new`} className="font-semibold text-royal">Add the first one.</Link></>}</div>
       ) : (
         <ul className="card divide-y divide-line">
           {rows.map((r, i) => {
@@ -44,11 +60,20 @@ export default async function ListPage({ params, searchParams }: { params: Promi
                 {def.key === "blog" && <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${r.status === "PUBLISHED" ? "bg-green-100 text-green-800" : r.status === "SCHEDULED" ? "bg-sky/60 text-navy" : "bg-mist text-muted"}`}>{r.status === "PUBLISHED" ? "Live" : r.status === "SCHEDULED" ? "Scheduled" : "Draft"}</span>}
                 {path && !hidden && <a href={`${web}${path}`} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-royal" aria-label="View on website"><ExternalLink size={16} /></a>}
                 {def.key === "chatQuestions" && <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${r.answered ? "bg-green-100 text-green-800" : "bg-amber-100 text-amber-800"}`}>{r.answered ? "Answered" : "Not answered"}</span>}
-                {(canEdit || (def.readOnly && canDelete)) && <RowActions collection={def.key} id={String(r.id)} canMove={sortable && def.key !== "blog" && !def.readOnly} canOpen={!def.readOnly} first={i === 0} last={i === rows.length - 1} canDelete={user.permissions.includes(`${def.area}:delete`)} />}
+                {(canEdit || (def.readOnly && canDelete)) && <RowActions collection={def.key} id={String(r.id)} canMove={sortable && def.key !== "blog" && !def.readOnly} canOpen={!def.readOnly} first={(page - 1) * PAGE_SIZE + i === 0} last={(page - 1) * PAGE_SIZE + i === total - 1} canDelete={user.permissions.includes(`${def.area}:delete`)} />}
               </li>
             );
           })}
         </ul>
+      )}
+      {pages > 1 && (
+        <nav aria-label="Pages" className="mt-6 flex items-center justify-between text-sm text-muted">
+          <span>Page {page} of {pages} ({total} in all)</span>
+          <span className="flex gap-2">
+            {page > 1 && <Link href={href(page - 1)} className="btn btn-ghost">Previous</Link>}
+            {page < pages && <Link href={href(page + 1)} className="btn btn-ghost">Next</Link>}
+          </span>
+        </nav>
       )}
     </>
   );

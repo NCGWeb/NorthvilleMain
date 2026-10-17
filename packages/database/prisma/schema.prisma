@@ -25,6 +25,8 @@ model User {
   bio          String?
   photoUrl     String?
   isActive     Boolean    @default(true)
+  // Raised when the password changes or the account is switched off, which ends every older sign in.
+  sessionVersion Int      @default(0)
   roleId       String?
   role         Role?      @relation(fields: [roleId], references: [id])
   createdAt    DateTime   @default(now())
@@ -71,6 +73,8 @@ model Page {
   seoImageUrl    String?
   hasUnpublishedChanges Boolean @default(false)
   isPublished    Boolean       @default(true)
+  // Asks search engines to skip the page and keeps it out of the sitemap (for pages still being written).
+  noindex        Boolean       @default(false)
   showInFooter   Boolean       @default(false)
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
@@ -224,6 +228,9 @@ model BlogCategory {
   id    String     @id @default(cuid())
   slug  String     @unique
   name  String
+  // Shown at the top of the category page. Blank gives the standard wording.
+  heading     String @default("")
+  description String @default("")
   posts BlogPost[]
 }
 
@@ -267,6 +274,8 @@ model Media {
   alt       String   @default("")
   mimeType  String   @default("")
   sizeBytes Int      @default(0)
+  width     Int?
+  height    Int?
   createdAt DateTime @default(now())
 }
 
@@ -286,6 +295,8 @@ model Enquiry {
   source    String        @default("contact")
   status    EnquiryStatus @default(NEW)
   note      String        @default("")
+  // Did the notification email go out? "sent", "failed" or "skipped" (no email service set up).
+  emailStatus String      @default("sent")
   createdAt DateTime      @default(now())
 
   @@index([status, createdAt])
@@ -325,4 +336,17 @@ model ChatQuestion {
   createdAt DateTime @default(now())
 
   @@index([answered, createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// Sign in protection
+// ---------------------------------------------------------------------------
+
+// One row per failed sign in, keyed by IP address and by email. Old rows are pruned on use.
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  key       String
+  createdAt DateTime @default(now())
+
+  @@index([key, createdAt])
 }

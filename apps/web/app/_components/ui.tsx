@@ -14,17 +14,26 @@ export function SmartLink({ href, className, children, ...rest }: { href: string
   return <Link href={href} className={className} {...rest}>{children}</Link>;
 }
 
-const base = "group lift inline-flex items-center gap-2 rounded-sm px-5 py-2.5 text-sm font-semibold transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2";
+const base = "group lift inline-flex items-center gap-2 rounded-sm font-semibold transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2";
+const sizes = { md: "px-5 py-2.5 text-sm", sm: "px-3 py-1.5 text-[13px]", lg: "px-8 py-3.5 text-sm" } as const;
 const variants = {
   primary: "bg-royal text-white hover:bg-navy focus-visible:outline-royal",
+  /** Solid blue for use on the dark navy header and bands, where a navy hover would vanish. */
+  royal: "bg-royal text-white hover:bg-bright focus-visible:outline-white",
   light: "bg-white text-navy hover:bg-sky focus-visible:outline-white",
   ghost: "border border-white/50 text-white hover:bg-white/10 focus-visible:outline-white",
   outline: "border border-navy/25 text-navy hover:border-royal hover:text-royal focus-visible:outline-royal",
 } as const;
 
-export function Button({ href, variant = "primary", children, arrow = true }: { href: string; variant?: keyof typeof variants; children: ReactNode; arrow?: boolean }) {
+/** The one button style. Use it for links (Button) and, through buttonClass, for real form buttons, so every button matches. */
+export function buttonClass(variant: keyof typeof variants = "primary", size: keyof typeof sizes = "md", extra = "") {
+  return `${base} ${sizes[size]} ${variants[variant]} ${extra}`.trim();
+}
+
+export function Button({ href, variant = "primary", children, arrow = true, icon, size = "md", className = "" }: { href: string; variant?: keyof typeof variants; children: ReactNode; arrow?: boolean; icon?: ReactNode; size?: keyof typeof sizes; className?: string }) {
   return (
-    <SmartLink href={href} className={`${base} ${variants[variant]}`}>
+    <SmartLink href={href} className={buttonClass(variant, size, className)}>
+      {icon}
       {children}
       {arrow && <ArrowRight size={15} aria-hidden className="transition-transform duration-200 group-hover:translate-x-0.5" />}
     </SmartLink>

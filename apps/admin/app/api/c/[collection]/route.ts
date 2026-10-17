@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { prisma } from "@northville/database";
 import { refreshWebsite } from "@northville/core";
 import { apiUser } from "../../../_lib/session";
@@ -19,7 +20,9 @@ export const GET = handle(async (req: Request, { params }: Ctx) => {
 export const POST = handle(async (req: Request, { params }: Ctx) => {
   const def = getDef((await params).collection);
   const user = await apiUser(`${def.area}:edit`);
-  const body = (await req.json()) as Record<string, unknown>;
+  const parsedBody = z.record(z.string(), z.unknown()).safeParse(await req.json().catch(() => null));
+  if (!parsedBody.success) return NextResponse.json({ error: "That form could not be read. Please reload and try again." }, { status: 400 });
+  const body = parsedBody.data;
   let data: Record<string, unknown>;
 
   if (def.key === "shared") {

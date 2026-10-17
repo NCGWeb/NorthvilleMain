@@ -8,7 +8,7 @@ const GROUPS: { title: string; items: Item[] }[] = [
   { title: "Website pages", items: [
     { href: "/pages", label: "Pages", area: "pages", hint: "Home, About, Contact..." },
     { href: "/shared", label: "Reusable sections", area: "pages", hint: "Used on many pages" },
-    { href: "/services", label: "Services", area: "services", hint: "The 12 services" },
+    { href: "/services", label: "Services", area: "services", hint: "What you offer" },
     { href: "/serviceGroups", label: "Service themes", area: "services", hint: "Menu grouping" },
   ] },
   { title: "People and proof", items: [
@@ -23,14 +23,14 @@ const GROUPS: { title: string; items: Item[] }[] = [
   { title: "Careers and enquiries", items: [
     { href: "/jobs", label: "Open roles", area: "careers", hint: "Careers page" },
     { href: "/enquiries", label: "Enquiries", area: "enquiries", hint: "Contact form messages" },
-    { href: "/chatAnswers", label: "Chatbot answers", area: "settings", hint: "What the chatbot says" },
-    { href: "/chatQuestions", label: "Chat questions", area: "settings", hint: "What visitors asked the bot" },
+    { href: "/chatAnswers", label: "Chatbot answers", area: "pages", hint: "What the chatbot says" },
+    { href: "/chatQuestions", label: "Chat questions", area: "pages", hint: "What visitors asked the bot" },
   ] },
   { title: "Site", items: [
     { href: "/media", label: "Media library", area: "media", hint: "Images" },
-    { href: "/offices", label: "Offices", area: "settings", hint: "Addresses" },
+    { href: "/offices", label: "Offices", area: "pages", hint: "Addresses" },
     { href: "/settings", label: "Site settings", area: "settings", hint: "Contact, menus, footer" },
-    { href: "/redirects", label: "Redirects", area: "settings", hint: "Old address to new page" },
+    { href: "/redirects", label: "Redirects", area: "pages", hint: "Old address to new page" },
   ] },
   { title: "Access", items: [
     { href: "/users", label: "Users", area: "users", hint: "Who can sign in" },

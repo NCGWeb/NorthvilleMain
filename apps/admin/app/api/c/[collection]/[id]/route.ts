@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { prisma } from "@northville/database";
 import { refreshWebsite } from "@northville/core";
 import { apiUser } from "../../../../_lib/session";
 import { handle } from "../../../../_lib/api";
 import { audit } from "../../../../_lib/audit";
+import { redirectOnDelete, redirectOnRename } from "../../../../_lib/redirects";
 import { blockFieldsFor, cleanValues, delegate, getDef, missingRequired, normalizeRow } from "../../../../_lib/collection";
 
 type Ctx = { params: Promise<{ collection: string; id: string }> };
@@ -12,7 +14,9 @@ export const PUT = handle(async (req: Request, { params }: Ctx) => {
   const { collection, id } = await params;
   const def = getDef(collection);
   const user = await apiUser(`${def.area}:edit`);
-  const body = (await req.json()) as Record<string, unknown>;
+  const parsedBody = z.record(z.string(), z.unknown()).safeParse(await req.json().catch(() => null));
+  if (!parsedBody.success) return NextResponse.json({ error: "That form could not be read. Please reload and try again." }, { status: 400 });
+  const body = parsedBody.data;
   let data: Record<string, unknown>;
 
   if (def.key === "shared") {
@@ -34,6 +38,7 @@ export const PUT = handle(async (req: Request, { params }: Ctx) => {
 
   // Child rows (a service's offerings) are not part of the main fields, so clean them separately.
   const children = def.children ? (cleanValues([def.children.field], body)[def.children.field.name] as Record<string, unknown>[]) : undefined;
+  const before = await delegate(def.model).findUnique({ where: { id }, select: { slug: true } }).catch(() => null);
   const row = await prisma.$transaction(async (tx) => {
     const t = tx as never as Record<string, ReturnType<typeof delegate>>;
     const updated = await t[def.model].update({ where: { id }, data });
@@ -43,6 +48,8 @@ export const PUT = handle(async (req: Request, { params }: Ctx) => {
     }
     return updated;
   });
+  // A changed web address keeps working: the old one now points to the new one.
+  await redirectOnRename(def.key, before?.slug, typeof row.slug === "string" ? row.slug : undefined);
   await audit(user.id, "edited", `${def.singular}: ${String(row[def.titleField] ?? "")}`);
   await refreshWebsite();
   return NextResponse.json({ ok: true });
@@ -58,6 +65,7 @@ export const DELETE = handle(async (_req: Request, { params }: Ctx) => {
     if (pages.length) return NextResponse.json({ error: `This section is still used on: ${pages.join(", ")}. Remove it from those pages first.` }, { status: 409 });
   }
   const row = await delegate(def.model).delete({ where: { id } });
+  await redirectOnDelete(def.key, typeof row.slug === "string" ? row.slug : undefined);
   await audit(user.id, "deleted", `${def.singular}: ${String(row[def.titleField] ?? "")}`);
   await refreshWebsite();
   return NextResponse.json({ ok: true });

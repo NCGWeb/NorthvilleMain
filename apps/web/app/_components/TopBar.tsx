@@ -12,7 +12,7 @@ export function TopBar({ a }: { a: Settings["announcement"] }) {
     </div>
   );
   return (
-    <div className="relative z-40 h-[52px]" style={{ background: "linear-gradient(90deg, #e4e4e4 0%, #dcdcdc 40%, #d6bf6a 100%)" }}>
+    <div className="relative z-40 h-[52px]" style={{ background: "var(--nv-gold)" }}>
       {a.href ? <SmartLink href={a.href} className="block">{inner}</SmartLink> : inner}
     </div>
   );

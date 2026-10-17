@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { getServiceGroups, getSettings } from "@northville/core";
-import { SmartLink } from "./ui";
+import { buttonClass, SmartLink } from "./ui";
 import { MobileMenu } from "./MobileMenu";
 import { HeaderShell } from "./HeaderShell";
 
@@ -39,7 +39,7 @@ export async function Header({ barHeight = 0 }: { barHeight?: number }) {
                         </ul>
                       </div>
                     ))}
-                    <div className="col-span-2 flex flex-wrap items-center gap-x-8 gap-y-2 border-t border-line pt-4 text-sm"><Link href="/services" className="font-semibold text-royal hover:underline">View all services</Link>{s.navigation.servicesMenuLinks.map((x) => (<SmartLink key={x.href} href={x.href} className="font-semibold text-royal hover:underline">{x.label}</SmartLink>))}</div>
+                    <div className="col-span-2 flex flex-wrap items-center gap-x-8 gap-y-2 border-t border-line pt-4 text-sm"><Link href="/services" className="font-semibold text-royal hover:underline">{s.text.viewAllServices}</Link>{s.navigation.servicesMenuLinks.map((x) => (<SmartLink key={x.href} href={x.href} className="font-semibold text-royal hover:underline">{x.label}</SmartLink>))}</div>
                   </div>
                 </div>
               </div>
@@ -51,9 +51,9 @@ export async function Header({ barHeight = 0 }: { barHeight?: number }) {
 
         <div className="flex items-center gap-3">
           {s.navigation.ctaLabel && (
-            <SmartLink href={s.navigation.ctaHref} className="hidden rounded-none bg-royal px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-bright sm:inline-block">{s.navigation.ctaLabel}</SmartLink>
+            <SmartLink href={s.navigation.ctaHref} className={buttonClass("royal", "md", "hidden sm:inline-flex")}>{s.navigation.ctaLabel}</SmartLink>
           )}
-          <MobileMenu links={links} menu={menu} extras={s.navigation.servicesMenuLinks} ctaLabel={s.navigation.ctaLabel} ctaHref={s.navigation.ctaHref} logo={s.general.logo} siteName={s.general.siteName} email={s.contact.email} phone={s.contact.phones[0] ?? ""} />
+          <MobileMenu viewAll={s.text.viewAllServices} links={links} menu={menu} extras={s.navigation.servicesMenuLinks} ctaLabel={s.navigation.ctaLabel} ctaHref={s.navigation.ctaHref} logo={s.general.logo} siteName={s.general.siteName} email={s.contact.email} phone={s.contact.phones[0] ?? ""} />
         </div>
       </div>
     </HeaderShell>

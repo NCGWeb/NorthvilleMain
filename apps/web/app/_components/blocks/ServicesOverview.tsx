@@ -17,7 +17,8 @@ export async function ServicesOverview({ data }: BlockProps) {
       {detailed ? (
         <ServicesBrowser
           learnMore={cfg.text.learnMore}
-          allLabel={cfg.text.blogAll}
+          allLabel={cfg.text.servicesAll}
+          filterLabel={cfg.text.servicesFilterLabel}
           groups={groups.map((g) => ({ id: g.id, name: g.name, blurb: g.blurb, services: g.services.map((sv) => ({ id: sv.id, slug: sv.slug, name: sv.name, summary: sv.summary, imageUrl: sv.imageUrl, offerings: sv.offerings.map((o) => o.title) })) }))}
         />
       ) : (
@@ -25,7 +26,7 @@ export async function ServicesOverview({ data }: BlockProps) {
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0 lg:divide-x lg:divide-line">
             {groups.map((g, i) => (
               <Reveal key={g.id} delay={i * 110} className="lg:px-7 lg:first:pl-0 lg:last:pr-0">
-                <h3 className="border-b border-navy pb-3 text-lg text-navy">{g.name}</h3>
+                <h3 className="border-b border-navy pb-3 text-xl text-navy">{g.name}</h3>
                 {g.blurb && <p className="mt-3 text-[15px] leading-relaxed text-muted">{g.blurb}</p>}
                 <ul className="mt-4 space-y-2.5">
                   {g.services.map((s) => (

@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Newsreader } from "next/font/google";
-import Script from "next/script";
 import { getChatStart, getOffices, getServices, getSettings, getTeam } from "@northville/core";
 import { Header } from "./_components/Header";
 import { Footer } from "./_components/Footer";
 import { TopBar } from "./_components/TopBar";
 import { NavProgress } from "./_components/NavProgress";
 import { ChatLoader } from "./_components/ChatLoader";
+import { Analytics } from "./_components/Analytics";
 import { JsonLd } from "./_components/JsonLd";
 import { SITE_URL, abs } from "./_lib/site";
 import "./globals.css";
@@ -59,7 +59,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en-IN" className={`${inter.variable} ${newsreader.variable}`}>
       <body className="flex min-h-screen flex-col" style={{ ["--bar-h" as string]: s.announcement.enabled && s.announcement.title ? "52px" : "0px" }}>
-        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-white focus:px-4 focus:py-2">Skip to content</a>
+        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-white focus:px-4 focus:py-2">{s.text.skipToContent}</a>
         <NavProgress />
         <TopBar a={s.announcement} />
         <Header barHeight={s.announcement.enabled && s.announcement.title ? 52 : 0} />
@@ -67,12 +67,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Footer />
         {chat.enabled && <ChatLoader start={chat} />}
         <JsonLd data={org} />
-        {/^G-[A-Z0-9]{4,}$/.test(s.seo.gaId) && (
-          <>
-            <Script src={`https://www.googletagmanager.com/gtag/js?id=${s.seo.gaId}`} strategy="lazyOnload" />
-            <Script id="ga" strategy="lazyOnload">{`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","${s.seo.gaId}");`}</Script>
-          </>
-        )}
+        {/^G-[A-Z0-9]{4,}$/.test(s.seo.gaId) && <Analytics gaId={s.seo.gaId} text={s.text.consentText} accept={s.text.consentAccept} decline={s.text.consentDecline} />}
       </body>
     </html>
   );

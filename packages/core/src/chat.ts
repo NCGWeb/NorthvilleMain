@@ -106,9 +106,12 @@ export function getChatProvider(): ChatProvider {
 /** Opening state for the widget: greeting and the first pills. */
 export async function getChatStart() {
   const [s, answers] = await Promise.all([getSettings(), prisma.chatAnswer.findMany({ where: { isActive: true, showAsPill: true }, orderBy: { sortOrder: "asc" }, take: 5 })]);
-  return { enabled: s.chatbot.enabled && answers.length > 0, title: s.chatbot.title || "Ask Northville", greeting: s.chatbot.greeting || "Hello! How can we help you today?", placeholder: s.chatbot.placeholder || "Type your question", pills: answers.map((a) => a.question), whatsappNumber: s.contact.whatsappNumber, whatsappMessage: s.contact.whatsappMessage };
+  return { enabled: s.chatbot.enabled && answers.length > 0, title: s.chatbot.title || "Ask Northville", greeting: s.chatbot.greeting || "Hello! How can we help you today?", placeholder: s.chatbot.placeholder || "Type your question", pills: answers.map((a) => a.question), whatsappNumber: s.contact.whatsappNumber, whatsappMessage: s.contact.whatsappMessage,
+    labels: { subtitle: s.text.chatSubtitle, close: s.text.chatClose, send: s.text.chatSend, enquiry: s.text.chatEnquiry, whatsapp: s.text.chatWhatsapp, serverError: s.text.chatServerError, offline: s.text.chatOffline } };
 }
 
 export async function logChatQuestion(text: string, answered: boolean, answerId?: string) {
   await prisma.chatQuestion.create({ data: { text: text.slice(0, 300), answered, answerId: answerId ?? null } }).catch(() => {});
+  // Keep 12 months. Pruning on a small share of requests avoids needing a scheduled job.
+  if (Math.random() < 0.02) await prisma.chatQuestion.deleteMany({ where: { createdAt: { lt: new Date(Date.now() - 365 * 86400_000) } } }).catch(() => {});
 }

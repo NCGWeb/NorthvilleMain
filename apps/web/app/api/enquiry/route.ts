@@ -28,16 +28,18 @@ export async function POST(req: Request) {
 
   // Bots fill the hidden field or submit instantly. Pretend success, store as spam.
   const spam = !!d.website || (d.elapsed !== undefined && d.elapsed < 1500);
-  await prisma.enquiry.create({ data: { name: d.name, email: d.email, phone: d.phone, message: d.message, status: spam ? "SPAM" : "NEW" } });
+  // Save first so a message is never lost, then email, then record whether the email went out so the team can see it in the admin.
+  const saved = await prisma.enquiry.create({ data: { name: d.name, email: d.email, phone: d.phone, message: d.message, status: spam ? "SPAM" : "NEW" } });
   if (!spam) {
     const s = await getSettings();
     const to = s.contact.enquiryRecipient || s.contact.email;
-    if (to) {
-      await sendMail({
-        to, replyTo: d.email, subject: `New website enquiry from ${d.name}`,
-        text: `Name: ${d.name}\nEmail: ${d.email}\nPhone: ${d.phone || "-"}\n\n${d.message || "(no message)"}`,
-      });
-    }
+    const result = to
+      ? await sendMail({
+          to, replyTo: d.email, subject: `New website enquiry from ${d.name}`,
+          text: `Name: ${d.name}\nEmail: ${d.email}\nPhone: ${d.phone || "-"}\n\n${d.message || "(no message)"}`,
+        })
+      : "skipped";
+    if (result !== "sent") await prisma.enquiry.update({ where: { id: saved.id }, data: { emailStatus: result } });
   }
   return NextResponse.json({ ok: true });
 }

@@ -74,6 +74,7 @@ export const BLOCKS: BlockDef[] = [
       { kind: "textarea", name: "body", label: "Text", rows: 5 },
       { kind: "stringlist", name: "bullets", label: "Bullet points", itemLabel: "Bullet", help: "Optional short points shown as a list." },
       { kind: "image", name: "image", label: "Image" },
+      { kind: "text", name: "imageAlt", label: "Describe the image", help: "Read aloud by screen readers and used by Google. Leave empty to use the description saved with the picture in the Media library.", where: "Hidden image description.", maxLength: 160 },
       { kind: "select", name: "imageSide", label: "Image position", options: [{ value: "right", label: "Right" }, { value: "left", label: "Left" }], default: "right" },
       ...cta("cta", "Button"),
     ],

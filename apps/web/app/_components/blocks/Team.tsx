@@ -22,15 +22,15 @@ function Leaders({ people, linkedinLabel }: { people: Person[]; linkedinLabel: s
       {people.map((p, i) => (
         <Reveal key={p.id} variant={i % 2 === 0 ? "left" : "right"} delay={i * 80}>
           <article className="group grid grid-cols-5 gap-5 md:block">
-            <div className="col-span-2 md:col-span-1"><Portrait p={p} sizes="(min-width:768px) 1040px, 80vw" quality={90} eager ratio="aspect-[4/5] md:aspect-[5/6]" /></div>
+            <div className="col-span-2 md:col-span-1"><Portrait p={p} sizes="(min-width:768px) 520px, 40vw" quality={80} eager={i < 2} ratio="aspect-[4/5] md:aspect-[5/6]" /></div>
             <div className="col-span-3 border-t border-navy pt-4 md:col-span-1 md:mt-6 md:pt-5">
               <h3 className="text-xl text-navy md:text-2xl">{p.name}</h3>
               <p className="mt-1 font-medium text-royal">{p.designation}</p>
               {p.background && <p className="mt-1 text-sm text-muted">{p.background}</p>}
               {p.bio && <p className="mt-4 max-w-md leading-relaxed text-ink/80">{p.bio}</p>}
               {p.linkedinUrl && (
-                <a href={p.linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} on LinkedIn`} className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-steel hover:text-royal">
-                  <LinkedinIcon size={15} /> {linkedinLabel}
+                <a href={p.linkedinUrl} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-steel hover:text-royal">
+                  <LinkedinIcon size={15} /> {linkedinLabel}<span className="sr-only">: {p.name}</span>
                 </a>
               )}
             </div>
@@ -48,7 +48,7 @@ function Members({ people }: { people: Person[] }) {
         {people.map((p, i) => (
           <Reveal key={p.id} delay={(i % 4) * 90}>
           <article className="group">
-            <Portrait p={p} eager={i < 8} sizes="(min-width:1024px) 256px, (min-width:768px) 33vw, 46vw" />
+            <Portrait p={p} eager={i < 4} sizes="(min-width:1024px) 256px, (min-width:768px) 33vw, 46vw" />
             <div className="mt-4 border-t border-line pt-3 transition-colors group-hover:border-navy">
               <div className="flex items-start justify-between gap-2">
                 <h3 className="font-sans text-[1.0625rem] font-semibold tracking-normal text-navy">{p.name}</h3>

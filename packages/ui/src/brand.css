@@ -14,4 +14,6 @@
   --nv-ink: #0b1230;
   --nv-muted: #5d6477;
   --nv-line: #dfe5ef;
+  /* Award strip behind the top bar and the recognition banner. */
+  --nv-gold: linear-gradient(90deg, #e4e4e4 0%, #dcdcdc 38%, #d6bf6a 100%);
 }

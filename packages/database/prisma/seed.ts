@@ -268,7 +268,7 @@ async function main() {
     {
       slug: "about", title: "About Us",
       seoTitle: "About Us",
-      seoDescription: "An integrated strategy, finance and transaction advisory partner working embedded with leadership across strategy, finance, transactions, tax, legal and marketing.",
+      seoDescription: "An integrated strategy, finance and transaction advisory partner, embedded with leadership across strategy, finance, deals, tax, legal and marketing.",
       blocks: [
         b("hero", { size: "compact", heading: "Who Are We?", subtext: "Northville Consulting Group is an integrated strategy, finance and transaction advisory partner for established and scaling businesses.", primaryLabel: "", primaryHref: "", secondaryLabel: "", secondaryHref: "", image: null }),
         b("imageText", { heading: "Senior Expertise Without the Cost of a Large In-House Function", body: "We work embedded with leadership across strategy, finance, transactions, tax, legal and marketing. One accountable team, so advice on a deal, a tax position and a contract is designed together instead of handed between firms.", bullets: [], image: "/seed/services/people.jpeg", imageSide: "right", ctaLabel: "See Our Services", ctaHref: "/services" }),
@@ -280,7 +280,7 @@ async function main() {
     {
       slug: "services", title: "Services",
       seoTitle: "Consulting Services: Strategy, CFO, M&A, Tax, Legal and More",
-      seoDescription: "Twelve service lines under one roof: strategy, CFO services, transaction advisory, fundraising, tax, legal, people, marketing, data, risk, PMO and family business.",
+      seoDescription: "Twelve service lines under one roof: strategy, CFO services, deals, fundraising, tax, legal, people, marketing, data, risk, PMO and family business.",
       blocks: [
         b("hero", { size: "compact", heading: "Crafting Your Business's Future", subtext: "Personalised consulting to help businesses launch, scale and transact, with a focus on startups and growing companies.", primaryLabel: "Talk to Us", primaryHref: "/contact", secondaryLabel: "", secondaryHref: "", image: null }),
         b("servicesOverview", { heading: "Everything Under One Roof", intro: "Pick a service to see exactly what we cover.", layout: "detailed" }),

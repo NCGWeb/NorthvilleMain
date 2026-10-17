@@ -58,7 +58,7 @@ export default async function ServicePage({ params }: Props) {
           {(service.heroSubtext || service.summary) && <p className="mt-4 max-w-xl text-[1.0625rem] leading-relaxed text-white/80">{service.heroSubtext || service.summary}</p>}
           <div className="mt-7 flex flex-wrap gap-3">
             <Button href="/contact">{settings.text.discussService}</Button>
-            {wa && <a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-sm border border-white/50 px-5 py-2.5 text-sm font-semibold hover:bg-white/10"><WhatsappIcon size={16} /> {settings.text.whatsappUs}</a>}
+            {wa && <Button href={wa} variant="ghost" arrow={false} icon={<WhatsappIcon size={15} />}>{settings.text.whatsappUs}</Button>}
           </div>
         </div>
       </section>
@@ -70,7 +70,7 @@ export default async function ServicePage({ params }: Props) {
       )}
 
       <Section>
-        <h2 className="mb-2 border-b border-navy pb-3 text-xl text-navy">{settings.text.whatWeDo}</h2>
+        <h2 className="mb-2 border-b border-navy pb-3 text-[1.75rem] leading-[1.2] sm:text-[2rem] text-navy">{settings.text.whatWeDo}</h2>
         <ol className="divide-y divide-line">
           {service.offerings.map((o) => (
             <li key={o.id}>
@@ -97,12 +97,12 @@ export default async function ServicePage({ params }: Props) {
 
       {related.length > 0 && (
         <Section tone="mist">
-          <h2 className="mb-6 border-b border-navy pb-3 text-xl text-navy">{settings.text.relatedServices}</h2>
+          <h2 className="mb-6 border-b border-navy pb-3 text-[1.75rem] leading-[1.2] sm:text-[2rem] text-navy">{settings.text.relatedServices}</h2>
           <ul className="grid gap-8 md:grid-cols-3">
             {related.map((r) => (
               <li key={r.id}>
                 <Link href={`/services/${r.slug}`} className="group block">
-                  <h3 className="text-lg text-navy group-hover:text-royal">{r.name}</h3>
+                  <h3 className="text-xl text-navy group-hover:text-royal">{r.name}</h3>
                   <p className="mt-2 text-[15px] leading-relaxed text-ink/80">{r.summary}</p>
                   <span className="mt-3 inline-flex items-center gap-1.5 text-[15px] font-semibold text-royal">{settings.text.learnMore} &rarr;</span>
                 </Link>

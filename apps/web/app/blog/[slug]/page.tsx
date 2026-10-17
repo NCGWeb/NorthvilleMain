@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { cleanHtml, getPost, getPosts, getRelatedPosts, getSettings, readingMinutes } from "@northville/core";
+import { altFillHtml, cleanHtml, getPost, getPosts, getRelatedPosts, getSettings, readingMinutes } from "@northville/core";
 import { dateFmt } from "../../_components/blocks/BlogList";
 import { JsonLd } from "../../_components/JsonLd";
 import { Button, Section } from "../../_components/ui";
@@ -25,10 +25,10 @@ export default async function PostPage({ params }: Props) {
   const post = await getPost(slug);
   if (!post) notFound();
   const [related, s] = await Promise.all([getRelatedPosts(post.id, post.categoryId), getSettings()]);
-  const html = cleanHtml(post.body);
+  const html = await altFillHtml(cleanHtml(post.body));
   const mins = readingMinutes(post.body);
   const ld = [
-    breadcrumbLd([{ name: "Home", path: "/" }, { name: "Insights", path: "/blog" }, { name: post.title, path: `/blog/${post.slug}` }]),
+    breadcrumbLd([{ name: "Home", path: "/" }, { name: s.text.blogInsights, path: "/blog" }, { name: post.title, path: `/blog/${post.slug}` }]),
     {
       "@context": "https://schema.org", "@type": "Article", headline: post.title, description: post.excerpt,
       image: post.coverUrl ? [abs(post.coverUrl)] : undefined, datePublished: post.publishedAt?.toISOString(), dateModified: post.updatedAt.toISOString(),
@@ -53,28 +53,29 @@ export default async function PostPage({ params }: Props) {
         )}
         <div className="prose-nv" dangerouslySetInnerHTML={{ __html: html }} />
         {post.author && (
-          <aside className="mt-14 flex items-start gap-4 rounded-none border border-line bg-mist p-6">
-            <div><p className="text-xs font-semibold  text-royal">{s.text.blogWrittenBy}</p><p className="font-serif text-xl text-navy">{post.author.name}</p>{post.author.bio && <p className="mt-1 text-sm text-muted">{post.author.bio}</p>}</div>
+          <aside className="mt-14 border-y border-line py-6">
+            <p className="font-sans text-sm font-medium text-royal">{s.text.blogWrittenBy}</p><p className="mt-1 font-sans text-xl font-semibold text-navy">{post.author.name}</p>{post.author.bio && <p className="mt-1 text-sm text-muted">{post.author.bio}</p>}
           </aside>
         )}
       </article>
       {related.length > 0 && (
         <Section tone="mist">
-          <h2 className="mb-6 text-xl text-navy">{s.text.blogKeepReading}</h2>
-          <div className="grid gap-6 md:grid-cols-3">
+          <h2 className="mb-6 border-b border-navy pb-3 text-[1.75rem] leading-[1.2] text-navy sm:text-[2rem]">{s.text.blogKeepReading}</h2>
+          <ul className="divide-y divide-line">
             {related.map((r) => (
-              <Link key={r.id} href={`/blog/${r.slug}`} className="rounded-none border border-line bg-white p-6 transition ">
-                <p className="text-xs font-semibold  text-royal">{r.category?.name ?? "Insights"}</p>
-                <h3 className="mt-2 text-lg text-navy group-hover:text-royal">{r.title}</h3>
-                <p className="mt-2 line-clamp-2 text-sm text-muted">{r.excerpt}</p>
-              </Link>
+              <li key={r.id}>
+                <Link href={`/blog/${r.slug}`} className="group block py-6">
+                  <p className="text-sm font-medium text-royal">{r.category?.name ?? s.text.blogInsights}</p>
+                  <h3 className="mt-1 text-xl text-navy group-hover:text-royal">{r.title}</h3>
+                  <p className="mt-2 line-clamp-2 text-[15px] text-muted">{r.excerpt}</p>
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
           <div className="mt-10"><Button href="/blog" variant="outline">{s.text.blogAllInsights}</Button></div>
         </Section>
       )}
       <JsonLd data={ld} />
-      <p className="sr-only">{s.general.siteName}</p>
     </>
   );
 }

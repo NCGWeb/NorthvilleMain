@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Button, SmartLink } from "../ui";
+import { Button } from "../ui";
 import type { BlockProps } from "./types";
 import { str } from "./types";
 
@@ -28,7 +28,7 @@ export function Hero({ data, first }: BlockProps) {
         {(p || s) && (
           <div className="mt-[37px] flex flex-wrap gap-3">
             {p && <Button href={str(data.primaryHref) || "/contact"} variant="light">{p}</Button>}
-            {s && <SmartLink href={str(data.secondaryHref) || "/"} className="inline-flex items-center rounded-sm border border-white/50 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10">{s}</SmartLink>}
+            {s && <Button href={str(data.secondaryHref) || "/"} variant="ghost" arrow={false}>{s}</Button>}
           </div>
         )}
       </div>

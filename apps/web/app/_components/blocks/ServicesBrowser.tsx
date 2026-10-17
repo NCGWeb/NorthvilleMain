@@ -14,7 +14,7 @@ export type BrowserGroup = {
 };
 
 /** The detailed services list with filter pills, so a visitor can jump to a theme without scrolling the whole page. */
-export function ServicesBrowser({ groups, learnMore, allLabel }: { groups: BrowserGroup[]; learnMore: string; allLabel: string }) {
+export function ServicesBrowser({ groups, learnMore, allLabel, filterLabel }: { groups: BrowserGroup[]; learnMore: string; allLabel: string; filterLabel: string }) {
   const [active, setActive] = useState<string>("all");
   const shown = active === "all" ? groups : groups.filter((g) => g.id === active);
   const total = groups.reduce((n, g) => n + g.services.length, 0);
@@ -26,7 +26,7 @@ export function ServicesBrowser({ groups, learnMore, allLabel }: { groups: Brows
     <div>
       <div className="sticky top-16 z-30 -mx-6 border-b border-line bg-white/95 backdrop-blur lg:-mx-8">
         <div className={`${WRAP} !max-w-none`}>
-          <div role="group" aria-label="Filter services by theme" className="flex gap-2 overflow-x-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div role="group" aria-label={filterLabel} className="flex gap-2 overflow-x-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <button type="button" aria-pressed={active === "all"} onClick={() => setActive("all")} className={pill(active === "all")}>{allLabel} ({total})</button>
             {groups.map((g) => (
               <button key={g.id} type="button" aria-pressed={active === g.id} onClick={() => setActive(g.id)} className={pill(active === g.id)}>{g.name} ({g.services.length})</button>
@@ -39,7 +39,7 @@ export function ServicesBrowser({ groups, learnMore, allLabel }: { groups: Brows
         {shown.map((g) => (
           <section key={g.id} aria-label={g.name}>
             <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2 border-b border-navy pb-3">
-              <h2 className="text-xl text-navy">{g.name}</h2>
+              <h2 className="text-[1.75rem] leading-[1.2] sm:text-[2rem] text-navy">{g.name}</h2>
               {g.blurb && <p className="text-[15px] text-muted">{g.blurb}</p>}
             </div>
             <ul className="divide-y divide-line">

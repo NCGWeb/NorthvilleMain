@@ -21,7 +21,8 @@
 - Chatbot: review the 17 starter answers (especially fees, which are intentionally "scope based"), then check Chat questions in the admin every few weeks for unanswered questions.
 
 ## Engineering backlog
-- Rate limits are per instance (in memory). Move to Upstash if spam appears.
-- Add tests (vitest) for `cleanValues`, permission checks and the enquiry route.
-- Image optimisation of uploaded files (resize on upload).
+- Contact form and chatbot rate limits are still per instance (in memory). Sign-in limits are already shared (database). Move the others to the database or Upstash if spam appears.
+- Full audit plan and rollout steps: `docs/SITE_AUDIT_PLAN.md`.
+- Old Wix sitemap: map every old blog and page address to its new home before the domain cutover (only the `/post/<slug>` pattern is automatic).
+- Decide the cookie notice wording and whether to switch Google Analytics on (needs a GA ID).
 - Chatbot: connect an LLM provider (see docs/CHATBOT.md) once answers have been refined from real questions.

@@ -43,7 +43,11 @@ export function RichText({ value, onChange }: { value: string; onChange: (html: 
         <Btn label="Undo" on={() => editor.chain().focus().undo().run()}><Undo2 size={17} /></Btn>
       </div>
       <EditorContent editor={editor} />
-      {pickImage && <Picker onClose={() => setPickImage(false)} onPick={(u) => { editor.chain().focus().setImage({ src: u }).run(); setPickImage(false); }} />}
+      {pickImage && <Picker onClose={() => setPickImage(false)} onPick={(u, libraryAlt) => {
+        // Every picture in an article needs a description for screen readers and Google. Start from the one saved in the Media library.
+        const alt = window.prompt("Describe this picture in a few words (read aloud by screen readers, and used by Google).", libraryAlt) ?? libraryAlt;
+        editor.chain().focus().setImage({ src: u, alt }).run(); setPickImage(false);
+      }} />}
     </div>
   );
 }

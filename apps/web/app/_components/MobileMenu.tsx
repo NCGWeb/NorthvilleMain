@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ChevronDown, Menu, X } from "lucide-react";
 
-type Props = {
+type Props = { viewAll: string;
   links: { label: string; href: string }[];
   menu: { name: string; services: { name: string; slug: string }[] }[];
   extras: { label: string; href: string }[];
@@ -18,7 +18,7 @@ type Props = {
 };
 
 /** Full-screen phone menu: big tappable rows, Services opens like an accordion, contact details at the bottom. */
-export function MobileMenu({ links, menu, extras, ctaLabel, ctaHref, logo, siteName, email, phone }: Props) {
+export function MobileMenu({ viewAll, links, menu, extras, ctaLabel, ctaHref, logo, siteName, email, phone }: Props) {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const pathname = usePathname();
@@ -73,7 +73,7 @@ export function MobileMenu({ links, menu, extras, ctaLabel, ctaHref, logo, siteN
                           </div>
                         ))}
                         <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 font-sans text-[15px] font-semibold text-sky">
-                          <Link href="/services" onClick={close}>View all services</Link>
+                          <Link href="/services" onClick={close}>{viewAll}</Link>
                           {extras.map((x) => (<Link key={x.href} href={x.href} onClick={close}>{x.label}</Link>))}
                         </div>
                       </div>

@@ -1,5 +1,5 @@
 import { notFound, permanentRedirect } from "next/navigation";
-import { getAllPageSlugs, getPage, getRedirect } from "@northville/core";
+import { getAllPageSlugs, getPage, getPosts, getRedirect } from "@northville/core";
 import { BlockRenderer } from "../_components/blocks";
 import { JsonLd } from "../_components/JsonLd";
 import { buildMetadata, breadcrumbLd } from "../_lib/site";
@@ -21,7 +21,9 @@ export async function generateMetadata({ params }: Props) {
   const slug = toSlug((await params).slug);
   const page = await getPage(slug);
   if (!page) return {};
-  return buildMetadata({ title: page.seoTitle || page.title, description: page.seoDescription, path: slug ? `/${slug}` : "/", image: page.seoImageUrl });
+  // The Insights page stays out of Google until there is at least one article.
+  const empty = slug === "blog" && (await getPosts({ take: 1 })).length === 0;
+  return buildMetadata({ title: page.seoTitle || page.title, description: page.seoDescription, path: slug ? `/${slug}` : "/", image: page.seoImageUrl, noindex: page.noindex || empty });
 }
 
 export default async function CmsPage({ params }: Props) {

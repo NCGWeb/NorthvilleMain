@@ -29,7 +29,7 @@ export const SERVICES: SeedService[] = [
     summary: "Growth strategy, corporate strategy, pricing and turnaround programs that maximise shareholder value.",
     image: "/seed/services/strategy.jpg",
     tagline: "Focused on maximising shareholder value for your business, from the boardroom decision to the operational rollout.",
-    seoTitle: "Business Strategy and Transformation Consulting in India",
+    seoTitle: "Business Strategy and Transformation Consulting",
     seoDescription: "Growth strategy, corporate strategy, pricing and turnaround consulting for scaling businesses across India, the US, UK and UAE.",
     oldSlugs: ["company-incorporation-page"],
     offerings: [
@@ -93,7 +93,7 @@ export const SERVICES: SeedService[] = [
     summary: "Fundraising readiness, due diligence for investors and portfolio value enhancement.",
     image: "/seed/services/fundraising.jpeg",
     tagline: "Both sides of the capital table: companies raising, and investors deploying.",
-    seoTitle: "Fundraising and Investor Services for Startups in India",
+    seoTitle: "Fundraising and Investor Services for Startups",
     seoDescription: "Fundraising readiness, investor introductions, due diligence and portfolio value enhancement for startups and investors.",
     oldSlugs: ["essential-legal-services"],
     offerings: [
@@ -139,7 +139,7 @@ export const SERVICES: SeedService[] = [
     summary: "Commercial contracts, deal structuring and legal due diligence, designed with tax and finance.",
     image: "/seed/services/legal.jpg",
     tagline: "Legal architecture that holds under pressure: commercial, not just cautious.",
-    seoTitle: "Commercial Contracts and Legal Due Diligence Services",
+    seoTitle: "Commercial Contracts and Legal Due Diligence",
     seoDescription: "Commercial contracts, M&A and PE legal structuring, FDI advisory and legal due diligence from an integrated advisory team.",
     oldSlugs: ["copy-of-virtual-cfo-accounting-serv"],
     offerings: [

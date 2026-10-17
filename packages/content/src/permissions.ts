@@ -4,7 +4,7 @@
  */
 export const AREAS = [
   { key: "pages", label: "Pages", help: "Home, About, Contact and the other pages." },
-  { key: "services", label: "Services", help: "The 12 services and their offerings." },
+  { key: "services", label: "Services", help: "The services you offer and what each includes." },
   { key: "team", label: "Team", help: "People shown on the Our Team page." },
   { key: "testimonials", label: "Testimonials", help: "Client quotes." },
   { key: "logos", label: "Logos", help: "Clients, investors, collaborators and network firms." },

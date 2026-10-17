@@ -3,7 +3,10 @@
   "private": true,
   "type": "module",
   "packageManager": "npm@11.6.2",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
@@ -12,11 +15,16 @@
     "postinstall": "npm run db:generate",
     "db:generate": "npm run db:generate --workspace=@northville/database",
     "db:migrate": "npm run db:migrate --workspace=@northville/database",
-    "db:seed": "npm run db:seed --workspace=@northville/database"
+    "db:seed": "npm run db:seed --workspace=@northville/database",
+    "test": "vitest run",
+    "check": "npm run typecheck && npm test && bash scripts/check-em-dash.sh"
   },
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "devDependencies": {
     "turbo": "^2.1.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5"
   }
 }

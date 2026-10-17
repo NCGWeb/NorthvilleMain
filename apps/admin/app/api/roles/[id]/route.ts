@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { prisma } from "@northville/database";
 import { ALL_PERMISSIONS } from "@northville/content";
 import { apiUser } from "../../../_lib/session";
@@ -8,7 +9,9 @@ import { audit } from "../../../_lib/audit";
 export const PUT = handle(async (req: Request, { params }: { params: Promise<{ id: string }> }) => {
   const me = await apiUser("users:edit");
   const { id } = await params;
-  const b = (await req.json()) as { permissions?: string[]; description?: string };
+  const parsed = z.object({ permissions: z.array(z.string().max(60)).max(200).optional(), description: z.string().max(300).optional() }).safeParse(await req.json().catch(() => null));
+  if (!parsed.success) return NextResponse.json({ error: "Those permissions could not be read." }, { status: 400 });
+  const b = parsed.data;
   const perms = (b.permissions ?? []).filter((p) => ALL_PERMISSIONS.includes(p));
   // Anything editable needs to be viewable, so the person can open the screen.
   const withView = [...new Set([...perms, ...perms.map((p) => `${p.split(":")[0]}:view`)])];

@@ -14,7 +14,7 @@ export async function BlogList({ data, category }: BlockProps & { category?: str
   if (count && posts.length === 0) return null;
   return (
     <Section>
-      <SectionHead heading={str(data.heading)} />
+      <SectionHead heading={str(data.heading) || (count ? "" : s.text.insightsHeading)} intro={str(data.intro)} />
       {data.showFilters !== false && cats.length > 0 && (
         <nav aria-label="Categories" className="mb-10 flex flex-wrap gap-2">
           <Link href="/blog" className={`rounded-none px-4 py-1.5 text-sm font-medium ${!category ? "bg-navy text-white" : "bg-mist text-steel hover:bg-sky"}`}>{s.text.blogAll}</Link>
@@ -24,7 +24,7 @@ export async function BlogList({ data, category }: BlockProps & { category?: str
         </nav>
       )}
       {posts.length === 0 ? (
-        <p className="rounded-none border border-line bg-mist p-8 text-lg text-muted">{s.text.blogEmpty}</p>
+        <p className="border-y border-line py-8 text-lg text-muted">{s.text.blogEmpty}</p>
       ) : (
         <div className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((p, i) => (

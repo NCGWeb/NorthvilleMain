@@ -7,7 +7,7 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
   const secret = process.env.ADMIN_SESSION_JWT_SECRET;
   if (!token || !secret) return null;
   const session = await verifySessionToken(token, secret);
-  return session ? loadUser(session.userId) : null;
+  return session ? loadUser(session.userId, session.version) : null;
 }
 
 /** For pages: signed in and allowed, otherwise redirect. */

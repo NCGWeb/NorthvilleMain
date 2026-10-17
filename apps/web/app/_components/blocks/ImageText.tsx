@@ -1,16 +1,17 @@
 import Image from "next/image";
 import { Check } from "lucide-react";
 import { Reveal } from "../Reveal";
-import { slugify } from "@northville/core";
+import { altFor } from "@northville/core";
 import { Section, TextLink } from "../ui";
 import { arr, str, type BlockProps } from "./types";
 
-export function ImageText({ data }: BlockProps) {
+export async function ImageText({ data, anchor }: BlockProps) {
   const image = str(data.image);
+  const alt = await altFor(image, str(data.imageAlt), str(data.heading));
   const left = str(data.imageSide) === "left";
   const bullets = arr<string>(data.bullets);
   return (
-    <Section id={slugify(str(data.heading)) || undefined}>
+    <Section id={anchor}>
       <Reveal>
         <div className="grid items-center gap-10 md:grid-cols-12 md:gap-14">
           <div className={`md:col-span-5 ${left ? "md:order-2" : ""}`}>
@@ -21,7 +22,7 @@ export function ImageText({ data }: BlockProps) {
           </div>
           {image && (
             <div className={`md:col-span-7 ${left ? "md:order-1" : ""}`}>
-              <Reveal variant="wipe"><div className="group relative aspect-[3/2] overflow-hidden bg-mist"><Image src={image} alt={str(data.heading)} fill sizes="(min-width:768px) 640px, 100vw" className="zoom-img object-cover" /></div></Reveal>
+              <Reveal variant="wipe"><div className="group relative aspect-[3/2] overflow-hidden bg-mist"><Image src={image} alt={alt} fill sizes="(min-width:768px) 640px, 100vw" className="zoom-img object-cover" /></div></Reveal>
             </div>
           )}
         </div>

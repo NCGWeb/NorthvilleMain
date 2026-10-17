@@ -1,15 +1,15 @@
 import Image from "next/image";
-import { getTestimonials } from "@northville/core";
+import { getSettings, getTestimonials } from "@northville/core";
 import { Reveal } from "../Reveal";
 import { Section } from "../ui";
 import { str, type BlockProps } from "./types";
 
 export async function Testimonials({ data }: BlockProps) {
-  const items = await getTestimonials();
+  const [items, s] = await Promise.all([getTestimonials(), getSettings()]);
   if (!items.length) return null;
   return (
     <Section tone="navy">
-      <h2 className="mb-10 text-[1.75rem] text-white sm:text-[2rem]">{str(data.heading) || "What they say about us"}</h2>
+      <h2 className="mb-10 text-[1.75rem] text-white sm:text-[2rem]">{str(data.heading) || s.text.testimonialsHeading}</h2>
       <div className="space-y-12">
         {items.map((t, i) => (
           <Reveal key={t.id} variant="fade" delay={i * 100}>

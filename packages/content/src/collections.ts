@@ -120,7 +120,7 @@ export const COLLECTIONS: CollectionDef[] = [
     ],
   },
   {
-    key: "offices", model: "office", area: "settings", label: "Offices", singular: "Office",
+    key: "offices", model: "office", area: "pages", label: "Offices", singular: "Office",
     description: "Office locations.", where: "Contact page and search-engine business details.",
     titleField: "city", subtitleField: "address", orderBy: { sortOrder: "asc" }, visibleField: "isActive",
     fields: [
@@ -149,6 +149,8 @@ export const COLLECTIONS: CollectionDef[] = [
     fields: [
       { kind: "text", name: "name", label: "Category name", required: true, maxLength: 50 },
       { kind: "slug", name: "slug", label: "Web address", from: "name" },
+      { kind: "text", name: "heading", label: "Page heading (optional)", help: "Large heading on this category's page. Leave empty for the standard wording plus the category name.", where: "Top of the category page and its Google title.", maxLength: 100 },
+      { kind: "textarea", name: "description", label: "Page description (optional)", rows: 3, help: "One or two sentences about this topic. Also used as the Google description.", where: "Category page, under the heading.", maxLength: 200 },
     ],
   },
   {
@@ -171,7 +173,7 @@ export const COLLECTIONS: CollectionDef[] = [
     ],
   },
   {
-    key: "chatAnswers", model: "chatAnswer", area: "settings", label: "Chatbot answers", singular: "Answer",
+    key: "chatAnswers", model: "chatAnswer", area: "pages", label: "Chatbot answers", singular: "Answer",
     description: "The questions the website chatbot can answer. Visitors see the pills as one-tap questions and can also type their own. The bot picks the answer whose keywords best match what they wrote.",
     where: "Chat window on every page of the website.",
     titleField: "question", subtitleField: "answer", orderBy: { sortOrder: "asc" }, visibleField: "isActive",
@@ -186,14 +188,14 @@ export const COLLECTIONS: CollectionDef[] = [
     ],
   },
   {
-    key: "chatQuestions", model: "chatQuestion", area: "settings", label: "Chat questions asked", singular: "Question", readOnly: true,
+    key: "chatQuestions", model: "chatQuestion", area: "pages", label: "Chat questions asked", singular: "Question", readOnly: true,
     description: "Everything visitors have typed into the chatbot, newest first. Questions marked Not answered are where the bot had no good answer. Turn the common ones into a new answer under Chatbot answers.",
     where: "Not shown on the website. Private.",
     titleField: "text", subtitleField: "createdAt", orderBy: { createdAt: "desc" },
     fields: [],
   },
   {
-    key: "redirects", model: "redirect", area: "settings", label: "Redirects", singular: "Redirect",
+    key: "redirects", model: "redirect", area: "pages", label: "Redirects", singular: "Redirect",
     description: "Send an old web address to a new page. Use it when you rename or remove a page so visitors and Google do not hit a dead end. The old Wix addresses are already set up here.",
     where: "Not shown. Visitors who open the old address are sent to the new one.",
     titleField: "fromPath", subtitleField: "toPath", orderBy: { fromPath: "asc" },

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getSettings } from "@northville/core";
+import { resolveTitle } from "@northville/content";
 
 export const SITE_URL = (process.env.SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
 export const abs = (path: string) => (path.startsWith("http") ? path : `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`);
@@ -11,9 +12,8 @@ export async function buildMetadata(m: Meta): Promise<Metadata> {
   const s = await getSettings();
   const description = m.description || s.seo.description;
   const image = abs(m.image || s.seo.image || "/seed/brand/og-default.png");
-  // Add the brand ending only when the whole title still fits in a Google result (about 65 characters).
-  const withSuffix = `${m.title} ${s.seo.titleSuffix}`.trim();
-  const fullTitle = m.path === "/" || withSuffix.length > 65 ? m.title : withSuffix;
+  // Full brand ending if the title still fits in a Google result (about 65 characters), else the short ending.
+  const fullTitle = resolveTitle(m.title, m.path, s.seo);
   return {
     title: { absolute: fullTitle },
     description,

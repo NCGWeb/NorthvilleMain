@@ -51,7 +51,7 @@ function Bar() {
   return (
     <div aria-hidden className="pointer-events-none fixed inset-x-0 top-0 z-[90] h-[3px]">
       <div
-        className="h-full bg-bright shadow-[0_0_8px_rgba(61,155,233,.8)]"
+        className="h-full bg-bright"
         style={{ width: state === "done" ? "100%" : "85%", opacity: state === "done" ? 0 : 1, transition: state === "done" ? "width .2s ease-out, opacity .35s ease .15s" : "width 8s cubic-bezier(.1,.6,.2,1)" }}
       />
     </div>
