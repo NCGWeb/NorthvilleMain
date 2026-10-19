@@ -78,7 +78,10 @@ Rules:
 - Draft preview: the page editor's "Preview draft" button opens `/preview/<pageId>?t=<signed token>` on the web app (HMAC with `REVALIDATE_SECRET`, valid 2 hours, never indexed).
 - Old addresses: `apps/web/proxy.ts` redirects from the `Redirect` table (in-memory, refreshed every 60s) plus the `/post/<slug>` rule in `packages/content/src/redirects.ts`. The admin adds a redirect by itself when a service, post or category address changes or the item is deleted.
 - Uploads are resized to 2400px and compressed with sharp; width and height are saved on `Media`. SVG is not accepted. A picture still in use cannot be deleted.
-- Shared buttons: always use `Button` / `buttonClass` from `apps/web/app/_components/ui.tsx`.
+- Shared buttons: always use `Button` / `buttonClass` from `apps/web/app/_components/ui.tsx`. Do not pass `hidden` or other `display` classes into `buttonClass` (the base is `inline-flex` and wins). Hide a button with a wrapper element instead.
+- Missing photos: Team shows initials on navy, Services show the navy to royal gradient, blog cards the same gradient, testimonials simply omit the photo. Logos need an image.
+- Testimonials render as a carousel (`TestimonialCarousel.tsx`): scroll-snap, arrows, dots from tablet up, an `n / total` counter on phones. No autoplay.
+- Analytics: Google Analytics loads only after a visitor accepts the cookie notice (`Analytics.tsx`), and only when a GA ID is set.
 
 ## Chatbot
 
@@ -90,4 +93,4 @@ Strategy, keyword targets, content plan and launch checklist: `docs/SEO_PLAN.md`
 
 ## Status and open items
 
-See `docs/OPEN_DECISIONS.md`. Keep it current.
+Live at www.northvilleconsultinggroup.com (admin at admin.northvilleconsultinggroup.com). The October 2026 site audit shipped on 2026-10-17 (`docs/SITE_AUDIT_PLAN.md`), with production migration `audit_fixes` applied. Remaining work is mostly client content and owner tasks: see `docs/OPEN_DECISIONS.md`. Keep it current.

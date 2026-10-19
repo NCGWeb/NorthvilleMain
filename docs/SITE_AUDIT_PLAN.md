@@ -1,6 +1,6 @@
 # Site audit plan (17 October 2026)
 
-Status: all code items built and verified locally on 2026-10-17. Not deployed yet. See "Rollout" at the bottom.
+Status: shipped 2026-10-17 (commits 71411ad, a774ff1, 7103b5e). Production migration `audit_fixes` and `apply-audit-fixes.ts` already run. Item 3 done (admin CNAME live). Follow-ups after the audit: header Contact button hidden on phones again, testimonials became a carousel (counter instead of dots on phones), Team shows initials and Services show the brand gradient when a photo is missing.
 
 Source: audit artifact https://claude.ai/artifact/ASrepRs8aXxmQhfZXwDb2u. Tick items as they ship. Keep `OPEN_DECISIONS.md` in sync.
 
@@ -10,7 +10,7 @@ Baseline: Lighthouse mobile Home 94, Team 93. A11y, SEO, best practices 100. LCP
 
 - [x] 1. Slow Wix redirects and 404s. Resolve in `proxy.ts` from a cached map, or build into `redirects()` in `next.config`.
 - [x] 2. Placeholder content live and indexed: privacy "Draft for legal review", two logo alts ending "(rename)", empty Insights in sitemap. Noindex until real content exists, or publish real content.
-- [ ] 3. (Owner, not code) Admin domain has no DNS. Add `admin` CNAME at GoDaddy (`49bd17ff462ba8e1.vercel-dns-017.com.`).
+- [x] 3. Admin domain: CNAME added at GoDaddy, https://admin.northvilleconsultinggroup.com works. Add `admin` CNAME at GoDaddy (`49bd17ff462ba8e1.vercel-dns-017.com.`).
 - [x] 4. Auto-create a redirect when a service/post URL changes or an item is deleted.
 - [x] 5. Media delete: block while image in use, and remove the stored Blob file too.
 - [x] 13. Service page titles drop the brand (over 65 chars). Fall back to short ending "| Northville", editable in CMS.
@@ -75,10 +75,10 @@ Baseline: Lighthouse mobile Home 94, Team 93. A11y, SEO, best practices 100. LCP
 - 13: titles use the full ending if they fit in 65 characters, else a short ending ("| Northville", editable), else none. Three service titles were shortened so the short ending fits.
 - 34: vitest (53 tests) and a GitHub Actions workflow (typecheck, tests, em dash check). The build is not run in CI because it reads the database.
 
-## Rollout (in this order, nothing has been pushed)
+## Rollout (done 2026-10-17, kept as the pattern for future schema changes)
 
 1. Migrate production BEFORE pushing: `cd packages/database && DIRECT_URL="$PROD" DATABASE_URL="$PROD" npx prisma migrate deploy` (migration `audit_fixes`).
 2. Fix production data once: same env, `npx tsx prisma/apply-audit-fixes.ts`.
 3. Commit and push to `main`. Both Vercel projects build.
 4. Check both builds shipped on the right projects, then try: an old Wix address, a draft preview, a picture upload, and the cookie notice (after a GA ID is set).
-5. Owner: add the `admin` CNAME at GoDaddy (item 3).
+5. Owner: add the `admin` CNAME at GoDaddy (item 3). Done.
