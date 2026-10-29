@@ -152,6 +152,7 @@ model Service {
   sortOrder      Int               @default(0)
   isPublished    Boolean           @default(true)
   offerings      ServiceOffering[]
+  caseStudies    CaseStudy[]
   updatedAt      DateTime          @updatedAt
 }
 
@@ -190,6 +191,7 @@ model Testimonial {
   photoUrl    String?
   sortOrder   Int     @default(0)
   isPublished Boolean @default(true)
+  caseStudies CaseStudy[]
 }
 
 enum LogoWall {
@@ -349,4 +351,57 @@ model LoginAttempt {
   createdAt DateTime @default(now())
 
   @@index([key, createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// Case studies. Domains (Web Development, Performance Marketing, Finance...) are
+// an editable list, so a new area of work is one new row, never a code change.
+// ---------------------------------------------------------------------------
+
+model CaseStudyDomain {
+  id        String      @id @default(cuid())
+  slug      String      @unique
+  name      String
+  blurb     String      @default("")
+  sortOrder Int         @default(0)
+  isActive  Boolean     @default(true)
+  main      CaseStudy[] @relation("MainDomain")
+  also      CaseStudy[] @relation("AlsoDomain")
+}
+
+model CaseStudy {
+  id             String           @id @default(cuid())
+  slug           String           @unique
+  clientName     String
+  industry       String           @default("")
+  domainId       String?
+  domain         CaseStudyDomain? @relation("MainDomain", fields: [domainId], references: [id], onDelete: SetNull)
+  alsoDomainId   String?
+  alsoDomain     CaseStudyDomain? @relation("AlsoDomain", fields: [alsoDomainId], references: [id], onDelete: SetNull)
+  // The one number shown big on the card, for example "47%" with "lower cost per lead".
+  metricValue    String           @default("")
+  metricLabel    String           @default("")
+  summary        String           @default("")
+  coverUrl       String?
+  mobileUrl      String?
+  websiteUrl     String           @default("")
+  challenge      String           @default("")
+  // [{ title, body }]
+  approach       Json             @default("[]")
+  results        String           @default("")
+  // [{ prefix, value, suffix, label }]
+  stats          Json             @default("[]")
+  testimonialId  String?
+  testimonial    Testimonial?     @relation(fields: [testimonialId], references: [id], onDelete: SetNull)
+  serviceId      String?
+  service        Service?         @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  seoTitle       String           @default("")
+  seoDescription String           @default("")
+  isFeatured     Boolean          @default(false)
+  isPublished    Boolean          @default(true)
+  sortOrder      Int              @default(0)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@index([isPublished, sortOrder])
 }

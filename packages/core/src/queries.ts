@@ -109,6 +109,30 @@ export const getRelatedPosts = (postId: string, categoryId: string | null) =>
 
 export const getCategories = cache(() => prisma.blogCategory.findMany({ orderBy: { name: "asc" } }));
 
+/** Areas of work that have at least one live case study, in the editor's order. Each becomes a filter tab. */
+export const getCaseStudyDomains = cache(() =>
+  prisma.caseStudyDomain.findMany({
+    where: { isActive: true, OR: [{ main: { some: { isPublished: true } } }, { also: { some: { isPublished: true } } }] },
+    orderBy: { sortOrder: "asc" },
+  }),
+);
+
+export const getCaseStudies = cache((opts: { featured?: boolean; take?: number } = {}) =>
+  prisma.caseStudy.findMany({
+    where: { isPublished: true, ...(opts.featured ? { isFeatured: true } : {}) },
+    orderBy: { sortOrder: "asc" },
+    take: opts.take,
+    include: { domain: true, alsoDomain: true },
+  }),
+);
+
+export const getCaseStudy = cache((slug: string) =>
+  prisma.caseStudy.findFirst({
+    where: { slug, isPublished: true },
+    include: { domain: true, alsoDomain: true, service: true, testimonial: true },
+  }),
+);
+
 export const getRedirect = (fromPath: string) => prisma.redirect.findUnique({ where: { fromPath } });
 
 /** Every redirect as one lookup table. The website proxy keeps this in memory so old addresses resolve without rendering a page. */

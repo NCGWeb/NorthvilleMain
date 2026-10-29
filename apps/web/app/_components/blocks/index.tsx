@@ -4,6 +4,7 @@ import type { ComponentType } from "react";
 import { Banner } from "./Banner";
 import { BlogList } from "./BlogList";
 import { CardGrid } from "./CardGrid";
+import { CaseStudies } from "./CaseStudies";
 import { ContactForm } from "./ContactForm";
 import { CtaBand } from "./CtaBand";
 import { Faq } from "./Faq";
@@ -27,7 +28,7 @@ const REGISTRY: Record<string, Renderer> = {
   servicesOverview: ServicesOverview as Renderer, testimonials: Testimonials as Renderer, team: Team as Renderer,
   logoWall: LogoWall as Renderer, ctaBand: CtaBand as Renderer, socialBand: SocialBand as Renderer,
   contactForm: ContactForm, offices: Offices as Renderer, jobList: JobList as Renderer,
-  blogList: BlogList as Renderer, faq: Faq,
+  blogList: BlogList as Renderer, faq: Faq, caseStudies: CaseStudies as Renderer,
 };
 
 export async function BlockRenderer({ blocks, category, heading, intro }: { blocks: BlockData[]; category?: string; heading?: string; intro?: string }) {

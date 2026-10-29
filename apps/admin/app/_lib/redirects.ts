@@ -4,6 +4,7 @@ import { prisma } from "@northville/database";
 const ADDRESSES: Record<string, { path: (slug: string) => string; fallback: string }> = {
   services: { path: (s) => `/services/${s}`, fallback: "/services" },
   blog: { path: (s) => `/blog/${s}`, fallback: "/blog" },
+  caseStudies: { path: (s) => `/case-studies/${s}`, fallback: "/case-studies" },
   blogCategories: { path: (s) => `/blog/category/${s}`, fallback: "/blog" },
 };
 

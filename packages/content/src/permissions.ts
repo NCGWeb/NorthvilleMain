@@ -7,6 +7,7 @@ export const AREAS = [
   { key: "services", label: "Services", help: "The services you offer and what each includes." },
   { key: "team", label: "Team", help: "People shown on the Our Team page." },
   { key: "testimonials", label: "Testimonials", help: "Client quotes." },
+  { key: "caseStudies", label: "Case studies", help: "Past work, shown by area (web, marketing, finance...)." },
   { key: "logos", label: "Logos", help: "Clients, investors, collaborators and network firms." },
   { key: "blog", label: "Blog", help: "Insights articles and categories." },
   { key: "careers", label: "Careers", help: "Open roles." },

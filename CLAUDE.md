@@ -83,6 +83,10 @@ Rules:
 - Testimonials render as a carousel (`TestimonialCarousel.tsx`): scroll-snap, arrows, dots from tablet up, an `n / total` counter on phones. No autoplay.
 - Analytics: Google Analytics loads only after a visitor accepts the cookie notice (`Analytics.tsx`), and only when a GA ID is set.
 
+## Case studies
+
+Two lists in the admin: **Case study areas** (`CaseStudyDomain`, the filter tabs: Web Development, Performance Marketing, later Finance) and **Case studies** (`CaseStudy`, each with a main area plus an optional second one). A new area of work is one new row, no code. Public: the `case-studies` CMS page holds the `caseStudies` block (filter tabs, or a featured strip for any page) and `apps/web/app/case-studies/[slug]` is the detail template. Wording lives in Site settings, Wording. Starting content and the page come from `packages/database/prisma/seed-case-studies.ts` and `case-studies-lib.ts`. To add this to an existing database run `npx tsx prisma/apply-case-studies.ts` (safe to repeat, never overwrites edits; it also removes Startup Advisory from the top menu and adds Case Studies). Production order: `prisma migrate deploy`, then that script, then push.
+
 ## Chatbot
 
 Rules-based chat window with editable answers and tap-to-ask pills. Engine is behind the `ChatProvider` interface in `packages/core/src/chat.ts` so an LLM can replace it later. How it works, how to edit it and the LLM plan: `docs/CHATBOT.md`. Answers must pull contact facts from the `{placeholders}`, never copy them.

@@ -24,5 +24,5 @@ export function CountUp({ value, decimals = 0, prefix = "", suffix = "", duratio
     io.observe(el);
     return () => { io.disconnect(); cancelAnimationFrame(raf); };
   }, [value, duration]);
-  return <span ref={ref} aria-label={`${prefix}${value}${suffix}`}>{prefix}{n.toFixed(decimals)}{suffix}</span>;
+  return <span ref={ref} aria-label={`${prefix}${value}${suffix}`}>{prefix}{n.toLocaleString("en-IN", { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}{suffix}</span>;
 }

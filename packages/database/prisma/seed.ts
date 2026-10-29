@@ -12,6 +12,7 @@ import { CHATBOT_SETTINGS, CHAT_ANSWERS } from "./seed-chat";
 import { FAQS } from "./seed-faqs";
 import { POSTS } from "./seed-posts";
 import { GROUPS, SERVICES } from "./seed-services";
+import { applyCaseStudies } from "./case-studies-lib";
 
 try {
   process.loadEnvFile(new URL("../../../.env", import.meta.url));
@@ -52,7 +53,7 @@ async function main() {
       prisma.pageVersion.deleteMany(), prisma.page.deleteMany(), prisma.sharedBlock.deleteMany(),
       prisma.serviceOffering.deleteMany(), prisma.service.deleteMany(), prisma.serviceGroup.deleteMany(),
       prisma.teamMember.deleteMany(), prisma.testimonial.deleteMany(), prisma.logoItem.deleteMany(),
-      prisma.blogPost.deleteMany(), prisma.blogCategory.deleteMany(), prisma.office.deleteMany(), prisma.redirect.deleteMany(), prisma.siteSetting.deleteMany(),
+      prisma.caseStudy.deleteMany(), prisma.caseStudyDomain.deleteMany(), prisma.blogPost.deleteMany(), prisma.blogCategory.deleteMany(), prisma.office.deleteMany(), prisma.redirect.deleteMany(), prisma.siteSetting.deleteMany(),
     ]);
   }
 
@@ -85,7 +86,6 @@ async function main() {
       mainLinks: [
         { label: "About", href: "/about" },
         { label: "Services", href: "/services" },
-        { label: "Startup Advisory", href: "/services#startup-advisory" },
         { label: "Our Team", href: "/team" },
         { label: "Insights", href: "/blog" },
         { label: "Careers", href: "/careers" },
@@ -353,6 +353,7 @@ async function main() {
       },
     });
   }
+  await applyCaseStudies(prisma);
   console.log("Seed complete.");
 }
 

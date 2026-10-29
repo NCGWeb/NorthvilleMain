@@ -16,6 +16,10 @@ const GROUPS: { title: string; items: Item[] }[] = [
     { href: "/testimonials", label: "Testimonials", area: "testimonials", hint: "Client quotes" },
     { href: "/logos", label: "Logos", area: "logos", hint: "Clients, investors..." },
   ] },
+  { title: "Case studies", items: [
+    { href: "/caseStudies", label: "Case studies", area: "caseStudies", hint: "Past work" },
+    { href: "/caseStudyDomains", label: "Case study areas", area: "caseStudies", hint: "Web, marketing, finance..." },
+  ] },
   { title: "Blog", items: [
     { href: "/blog", label: "Blog posts", area: "blog", hint: "Write and publish" },
     { href: "/blogCategories", label: "Blog categories", area: "blog", hint: "Topics" },

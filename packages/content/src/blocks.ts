@@ -225,6 +225,18 @@ export const BLOCKS: BlockDef[] = [
     ],
   },
   {
+    type: "caseStudies",
+    label: "Case studies",
+    description: "Shows your case studies. Choose the full browser with filter tabs, or just the featured ones as a short strip for the home page.",
+    pullsFrom: { label: "Case studies", href: "/caseStudies" },
+    fields: [
+      { kind: "text", name: "heading", label: "Heading", maxLength: 100 },
+      { kind: "textarea", name: "intro", label: "Intro text", rows: 3, maxLength: 300 },
+      { kind: "select", name: "mode", label: "What to show", help: "The browser lists everything with filter tabs. Featured shows only the case studies you marked as featured.", options: [{ value: "browser", label: "Everything, with filter tabs" }, { value: "featured", label: "Featured only (short strip)" }], default: "browser" },
+      { kind: "number", name: "count", label: "How many (featured strip)", help: "Only used for the featured strip. For example 3." },
+    ],
+  },
+  {
     type: "blogList",
     label: "Blog articles",
     description: "Shows the latest published blog posts.",
