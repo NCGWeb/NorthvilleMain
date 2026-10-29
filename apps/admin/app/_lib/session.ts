@@ -1,14 +1,16 @@
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { loadUser, SESSION_COOKIE, verifySessionToken, type CurrentUser } from "@northville/auth";
 
-export async function getCurrentUser(): Promise<CurrentUser | null> {
+// Cached per request: the layout and the page both ask, but the database is read once.
+export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
   const token = (await cookies()).get(SESSION_COOKIE)?.value;
   const secret = process.env.ADMIN_SESSION_JWT_SECRET;
   if (!token || !secret) return null;
   const session = await verifySessionToken(token, secret);
   return session ? loadUser(session.userId, session.version) : null;
-}
+});
 
 /** For pages: signed in and allowed, otherwise redirect. */
 export async function requireUser(permission?: string): Promise<CurrentUser> {

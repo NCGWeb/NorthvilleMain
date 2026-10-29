@@ -4,6 +4,7 @@ import { Plus, ExternalLink } from "lucide-react";
 import { COLLECTION_BY_KEY } from "@northville/content";
 import { PageHeader } from "../../_components/Chrome";
 import { RowActions } from "../../_components/RowActions";
+import { ReorderList } from "../../_components/ReorderList";
 import { SavedNotice } from "../../_components/SavedNotice";
 import { delegate } from "../../_lib/collection";
 import { requireUser } from "../../_lib/session";
@@ -21,7 +22,7 @@ export default async function ListPage({ params, searchParams }: { params: Promi
   const page = Math.max(1, Number(pageRaw) || 1);
   const where = q.trim() ? { [def.titleField]: { contains: q.trim(), mode: "insensitive" } } : undefined;
   const [rows, total]: [Record<string, unknown>[], number] = await Promise.all([
-    delegate(def.model).findMany({ where, orderBy: def.orderBy, skip: (page - 1) * PAGE_SIZE, take: PAGE_SIZE }),
+    delegate(def.model).findMany({ where, orderBy: [def.orderBy, { id: "asc" }], skip: (page - 1) * PAGE_SIZE, take: PAGE_SIZE }),
     delegate(def.model).count({ where }),
   ]);
   const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
@@ -45,12 +46,11 @@ export default async function ListPage({ params, searchParams }: { params: Promi
       {rows.length === 0 ? (
         <div className="card p-10 text-center text-muted">{q ? "Nothing matches that search." : "Nothing here yet."}{!q && canEdit && <> <Link href={`/${def.key}/new`} className="font-semibold text-royal">Add the first one.</Link></>}{canEdit && <> <Link href={`/${def.key}/new`} className="font-semibold text-royal">Add the first one.</Link></>}</div>
       ) : (
-        <ul className="card divide-y divide-line">
-          {rows.map((r, i) => {
+        <ReorderList collection={def.key} offset={(page - 1) * PAGE_SIZE} total={total} rows={rows.map((r, i) => {
             const hidden = def.visibleField ? !r[def.visibleField] : false;
             const path = def.publicPath?.(r);
-            return (
-              <li key={String(r.id)} className="flex flex-wrap items-center gap-x-4 gap-y-2 p-4">
+            return { id: String(r.id), group: groupLabel(r), node: (
+              <li className="flex flex-wrap items-center gap-x-4 gap-y-2 p-4">
                 <div className="min-w-0 flex-1">
                   {def.readOnly ? <span className="font-semibold text-navy">{String(r[def.titleField] ?? "")}</span> : <Link href={`/${def.key}/${r.id}`} className="font-semibold text-navy hover:text-royal">{String(r[def.titleField] ?? "Untitled")}</Link>}
                   {def.subtitleField && <p className="truncate text-sm text-muted">{r[def.subtitleField] instanceof Date ? (r[def.subtitleField] as Date).toLocaleString("en-IN") : String(r[def.subtitleField] ?? "").slice(0, 110)}</p>}
@@ -62,9 +62,8 @@ export default async function ListPage({ params, searchParams }: { params: Promi
                 {def.key === "chatQuestions" && <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${r.answered ? "bg-green-100 text-green-800" : "bg-amber-100 text-amber-800"}`}>{r.answered ? "Answered" : "Not answered"}</span>}
                 {(canEdit || (def.readOnly && canDelete)) && <RowActions collection={def.key} id={String(r.id)} canMove={sortable && def.key !== "blog" && !def.readOnly} canOpen={!def.readOnly} first={(page - 1) * PAGE_SIZE + i === 0} last={(page - 1) * PAGE_SIZE + i === total - 1} canDelete={user.permissions.includes(`${def.area}:delete`)} />}
               </li>
-            );
-          })}
-        </ul>
+            ) };
+          })} />
       )}
       {pages > 1 && (
         <nav aria-label="Pages" className="mt-6 flex items-center justify-between text-sm text-muted">

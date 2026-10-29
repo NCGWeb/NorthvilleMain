@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { z } from "zod";
 import { prisma } from "@northville/database";
 import { refreshWebsite } from "@northville/core";
@@ -21,13 +21,20 @@ export const POST = handle(async (req: Request, { params }: { params: Promise<{ 
   const current = await delegate(def.model).findUnique({ where: { id } });
   if (!current) return NextResponse.json({ error: "That item no longer exists." }, { status: 404 });
   const where = def.groupBy && current[def.groupBy] != null ? { [def.groupBy]: current[def.groupBy] } : undefined;
-  const rows: { id: string }[] = await delegate(def.model).findMany({ where, orderBy: def.orderBy, select: { id: true } });
+  // Same order as the admin list, with id as a tie breaker so equal positions never shuffle.
+  const rows: { id: string; sortOrder: number }[] = await delegate(def.model).findMany({ where, orderBy: [def.orderBy, { id: "asc" }], select: { id: true, sortOrder: true } });
   const i = rows.findIndex((r) => r.id === id), j = i + dir;
   if (i < 0 || j < 0 || j >= rows.length) return NextResponse.json({ ok: true });
-  [rows[i], rows[j]] = [rows[j], rows[i]];
   // Renumber from the group's smallest existing position so groups never overlap.
-  const base = Math.min(...(await delegate(def.model).findMany({ where, select: { sortOrder: true } })).map((r: { sortOrder: number }) => r.sortOrder), 0);
-  await prisma.$transaction(rows.map((r, n) => (prisma as never as Record<string, { update: (a: unknown) => never }>)[def.model].update({ where: { id: r.id }, data: { sortOrder: base + n } })));
-  await refreshWebsite();
+  const base = Math.min(...rows.map((r) => r.sortOrder), 0);
+  const order = rows.map((r) => r.id);
+  [order[i], order[j]] = [order[j], order[i]];
+  // Only write the rows whose position actually changes (usually just the two that swapped).
+  const was = new Map(rows.map((r) => [r.id, r.sortOrder]));
+  const changes = order.map((rid, n) => ({ id: rid, sortOrder: base + n })).filter((c) => was.get(c.id) !== c.sortOrder);
+  const model = (prisma as never as Record<string, { update: (a: unknown) => never }>)[def.model];
+  if (changes.length) await prisma.$transaction(changes.map((c) => model.update({ where: { id: c.id }, data: { sortOrder: c.sortOrder } })));
+  // The editor does not wait for the website to refresh.
+  after(() => refreshWebsite());
   return NextResponse.json({ ok: true });
 });
