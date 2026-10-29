@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@northville/database";
-import { refreshWebsite } from "@northville/core";
+import { refreshFor } from "../../../_lib/refresh";
 import { apiUser } from "../../../_lib/session";
 import { handle } from "../../../_lib/api";
 import { audit } from "../../../_lib/audit";
@@ -56,7 +56,7 @@ export const POST = handle(async (req: Request, { params }: Ctx) => {
     return row;
   });
   await audit(user.id, "created", `${def.singular}: ${String(created[def.titleField] ?? "")}`);
-  await refreshWebsite();
+  await refreshFor(def.key);
   return NextResponse.json({ id: created.id });
 });
 

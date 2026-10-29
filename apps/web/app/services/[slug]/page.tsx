@@ -11,7 +11,8 @@ import { WhatsappIcon } from "../../_components/Icons";
 import { Button, Section } from "../../_components/ui";
 import { abs, breadcrumbLd, buildMetadata } from "../../_lib/site";
 
-export const revalidate = 3600;
+// The admin refreshes this page the moment it changes, so a daily check is only a safety net.
+export const revalidate = 86400;
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {

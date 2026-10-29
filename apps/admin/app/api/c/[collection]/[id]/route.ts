@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@northville/database";
-import { refreshWebsite } from "@northville/core";
+import { refreshFor } from "../../../../_lib/refresh";
 import { apiUser } from "../../../../_lib/session";
 import { handle } from "../../../../_lib/api";
 import { audit } from "../../../../_lib/audit";
@@ -51,7 +51,7 @@ export const PUT = handle(async (req: Request, { params }: Ctx) => {
   // A changed web address keeps working: the old one now points to the new one.
   await redirectOnRename(def.key, before?.slug, typeof row.slug === "string" ? row.slug : undefined);
   await audit(user.id, "edited", `${def.singular}: ${String(row[def.titleField] ?? "")}`);
-  await refreshWebsite();
+  await refreshFor(def.key);
   return NextResponse.json({ ok: true });
 });
 
@@ -67,6 +67,6 @@ export const DELETE = handle(async (_req: Request, { params }: Ctx) => {
   const row = await delegate(def.model).delete({ where: { id } });
   await redirectOnDelete(def.key, typeof row.slug === "string" ? row.slug : undefined);
   await audit(user.id, "deleted", `${def.singular}: ${String(row[def.titleField] ?? "")}`);
-  await refreshWebsite();
+  await refreshFor(def.key);
   return NextResponse.json({ ok: true });
 });

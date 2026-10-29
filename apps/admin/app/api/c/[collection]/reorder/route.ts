@@ -1,7 +1,7 @@
 import { NextResponse, after } from "next/server";
 import { z } from "zod";
 import { prisma } from "@northville/database";
-import { refreshWebsite } from "@northville/core";
+import { refreshFor } from "../../../../_lib/refresh";
 import { apiUser } from "../../../../_lib/session";
 import { handle } from "../../../../_lib/api";
 import { delegate, getDef } from "../../../../_lib/collection";
@@ -35,6 +35,6 @@ export const POST = handle(async (req: Request, { params }: { params: Promise<{ 
   const model = (prisma as never as Record<string, { update: (a: unknown) => never }>)[def.model];
   if (changes.length) await prisma.$transaction(changes.map((c) => model.update({ where: { id: c.id }, data: { sortOrder: c.sortOrder } })));
   // The editor does not wait for the website to refresh.
-  after(() => refreshWebsite());
+  after(() => refreshFor(def.key));
   return NextResponse.json({ ok: true });
 });
